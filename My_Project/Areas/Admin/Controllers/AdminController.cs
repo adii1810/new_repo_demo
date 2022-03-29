@@ -136,8 +136,42 @@ namespace My_Project.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> ShowProduct(int MyDrop)
+        public async Task<ActionResult> ShowProduct(int MyDrop , string restaurant_Name="")
         {
+            if (restaurant_Name == null)
+                restaurant_Name = "null";
+            CategoryViewModel vm = new CategoryViewModel();
+            //var str = HttpContext.Session.GetString("Admin");
+            //if (str != null)
+            //{
+                HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.BaseAddress = new Uri("http://localhost:39658");
+                HttpResponseMessage httpResponse = await client.GetAsync($"api/AdminApi/Category");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var result = httpResponse.Content.ReadAsStringAsync().Result;
+                    //UserDataViewModel userData = new UserDataViewModel();
+                    List<SelectListItem> enums = new List<SelectListItem>();
+                    enums = JsonConvert.DeserializeObject<List<SelectListItem>>(result);
+                    vm.Categories = enums;
+
+                    ViewBag.category = vm;
+                }
+
+          
+                HttpClient client1 = new HttpClient();
+                client1.BaseAddress = new Uri("http://localhost:39658");
+                var httpResponse1 = await client1.GetAsync($"api/Adminapi/Showproduct/{MyDrop}/{restaurant_Name}");
+                if (httpResponse1.IsSuccessStatusCode)
+                {
+                    var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
+                    //UserDataViewModel userData = new UserDataViewModel();
+                    List<ShowProductViewModel> data1 = new List<ShowProductViewModel>();
+                    data1 = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result1);
+                    return View(data1);
+                }
+            
             return View();  
         }
 

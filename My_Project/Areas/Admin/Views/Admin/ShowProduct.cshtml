@@ -102,13 +102,13 @@
 <form asp-area="Admin" asp-controller="Admin" asp-action="ShowProduct" method="post">
     <table class="table">
         <tr>
-            <td data-label="Select Food Type">
+            <td >
                 <select name="myDrop" asp-items="@data.Categories"  class="form-control">
-                    <option selected >Select Type</option>
+                    <option selected value="-1" >Select Type</option>
                 </select>
             </td>
-            <td data-label="Select Restaurant">
-                <input type="text" name="Sub" class="form-control" id="Name" placeholder="Restaurant" />
+            <td >
+                <input type="text" value="" name="restaurant_Name" class="form-control" id="Name" placeholder="Restaurant" />
             </td>
             <td>
                 <input type="submit" value="Submit" class=" form-control btn btn-dark text-blue  "/>

@@ -45,6 +45,19 @@ namespace Food_Delivery_Api.Controllers
             return data;
             }
 
+        [HttpGet("ShowProduct")]
+        public IEnumerable<Product> ShowProduct()
+        {
+            var data = _admin.ShowProduct();
+            return data;
+        }
+
+        [HttpGet("ShowProduct/{mainId}/{name}")]
+        public IEnumerable<Product> ShowProduct(int mainId,string name=null)
+        {
+            var data = _admin.ShowProduct(mainId,name);
+            return data;
+        }
         [HttpGet("myR")]
         public IEnumerable<string> myR(string pre)
         {
@@ -94,13 +107,14 @@ namespace Food_Delivery_Api.Controllers
             return data;
         }
 
-        [HttpGet("ShowProduct")]
-        public IEnumerable<Product> ShowProduct()
-        {
-            var data = _admin.ShowProduct();
-            return data;
-        }
-        // POST api/<AdminApiController>
+        
+        //[HttpGet("ShowProduct/{MainId,name}")]
+        //public IEnumerable<Product> ShowProduct(int MainId, string name)
+        //{
+        //    var data = _admin.ShowProduct(MainId, name);
+        //    return data;
+        //}
+        //POST api/<AdminApiController>
         [HttpPost]
         public void Post([FromBody] string value)
         {

@@ -17,8 +17,10 @@ namespace Food_Delivery_Api.Repository
         public IList<SelectListItem> AutocompleteMainCategory();
         public IEnumerable<SubViewModel> AutocompleteSubCategory(int mainId);
         public IEnumerable< string> MyRestaurant(string pre);
-
         public IEnumerable<Product> ShowProduct();
+        public IEnumerable<Product> ShowProduct(int id,string name);
+        //public IEnumerable<Product> ShowProductByFoodType(int mainId);
+        //public IEnumerable<Product> ShowProductByRestaurant(string name);
 
 
     }

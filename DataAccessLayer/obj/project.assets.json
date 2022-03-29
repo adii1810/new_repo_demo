@@ -15,11 +15,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\AdityaBackup\\Demo\\Demo_Project1\\DataAccessLayer\\DataAccessLayer.csproj",
+      "projectUniqueName": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\DataAccessLayer\\DataAccessLayer.csproj",
       "projectName": "DataAccessLayer",
-      "projectPath": "E:\\AdityaBackup\\Demo\\Demo_Project1\\DataAccessLayer\\DataAccessLayer.csproj",
+      "projectPath": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\DataAccessLayer\\DataAccessLayer.csproj",
       "packagesPath": "C:\\Users\\Ulcom31\\.nuget\\packages\\",
-      "outputPath": "E:\\AdityaBackup\\Demo\\Demo_Project1\\DataAccessLayer\\obj\\",
+      "outputPath": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\DataAccessLayer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

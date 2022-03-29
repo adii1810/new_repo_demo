@@ -55,14 +55,8 @@ namespace Food_Delivery_Api.Repository
 
         public IEnumerable<string> MyRestaurant(string pre)
         {
-           // List<RestaurantViewModel> l = new List<RestaurantViewModel>();
+           
             var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Name.StartsWith(pre)).Select(x => x.Restaurant_Detail_Name).ToList();
-            //foreach (var item in data)
-            //{
-            //    RestaurantViewModel r = new RestaurantViewModel();
-            //    r.RestaurantName = item;
-            //    l.Add(r);
-            //}
             return data;
         }
 
@@ -108,12 +102,74 @@ namespace Food_Delivery_Api.Repository
             }
             return ol;
         }
-
         public IEnumerable<Product> ShowProduct()
-        {
+        { 
             var data = _context.Product.ToList();
             return data;
         }
+        public IEnumerable<Product> ShowProduct(int mainId, string name)
+        {
+
+            if (mainId >= 0 && name.Equals("null"))
+            {
+                List<Product> l = new List<Product>();
+                var data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
+
+                foreach (var item in data)
+                {
+                    Product p = new Product();
+                    p.Product_Id = item.Product_Id;
+                    p.Product_Name = item.Product_Name;
+                    p.Product_Price = item.Product_Price;
+                    p.Product_Status = item.Product_Status;
+                    l.Add(p);
+                }
+                return l;
+            }
+            else if (mainId < 0 && name != null)
+            {
+                //var subCat = _context.Sub_Categorie.Where(x => (int)x.Main_Category_Id == mainId)
+                List<Product> l = new List<Product>();
+                //var data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
+                var data = _context.Product.Include("Restaurant_Detail").Where(x => x.Restaurant_Detail.Restaurant_Detail_Name == name).ToList();
+                foreach (var item in data)
+                {
+                    Product p = new Product();
+                    p.Product_Id = item.Product_Id;
+                    p.Product_Name = item.Product_Name;
+                    p.Product_Price = item.Product_Price;
+                    p.Product_Status = item.Product_Status;
+                    l.Add(p);
+                }
+                return l;
+            }
+            else
+            {
+                List<Product> l = new List<Product>();
+                var data = _context.Product.Include("Restaurant_Detail").Include("Sub_Category").Where(x => x.Restaurant_Detail.Restaurant_Detail_Name == name && (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
+                foreach (var item in data)
+                {
+                    Product p = new Product();
+                    p.Product_Id = item.Product_Id;
+                    p.Product_Name = item.Product_Name;
+                    p.Product_Price = item.Product_Price;
+                    p.Product_Status = item.Product_Status;
+                    l.Add(p);
+                }
+                return l;
+            }
+        }
+
+        // public IEnumerable<Product> ShowProductByFoodType(int mainId)
+        // {
+        //     //var subCat = _context.Sub_Categorie.Where(x => (int)x.Main_Category_Id == mainId)
+
+        // }
+
+        // public IEnumerable<Product> ShowProductByRestaurant(string name)
+        // {
+
+        // }
 
         public async Task<IEnumerable<User_Data>> ShowUser()
         {
