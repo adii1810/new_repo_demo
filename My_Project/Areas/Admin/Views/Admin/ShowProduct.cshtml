@@ -103,15 +103,16 @@
     <table class="table">
         <tr>
             <td >
-                <select name="myDrop" asp-items="@data.Categories"  class="form-control">
+                <select name="myDrop" asp-items="@data.Categories"  class="form-control" id="Drop">
                     <option selected value="-1" >Select Type</option>
                 </select>
             </td>
             <td >
-                <input type="text" value="" name="restaurant_Name" class="form-control" id="Name" placeholder="Restaurant" />
+                <input type="text" value="" name="restaurant_Name" class="form-control" id="Name" placeholder="Restaurant"  />
             </td>
             <td>
-                <input type="submit" value="Submit" class=" form-control btn btn-dark text-blue  "/>
+                @*<input type="submit" value="Submit" class=" form-control btn btn-dark text-blue  "/>*@
+                <button value="Submit" class=" form-control btn btn-dark text-blue" id="btnSearch">Search</button>
             </td>
         </tr>
     </table>

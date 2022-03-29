@@ -37,4 +37,21 @@ $("#Name").autocomplete({
     messages: {
         noResults: "", results: ""
         }
-    });
+});
+
+$("#btnSearch").click(function(){
+  
+    
+        var id = document.getElementById("Drop");
+        var name = document.getElementById("Name");
+        $.ajax({
+            url: "/Admin/Admin/ShowProduct",
+            type: "POST",
+            dataType: "json",
+            data: { mainId: id, Name: name },
+            success: function(data) {
+                console.log(typeof (data));
+            }
+        })
+    
+});

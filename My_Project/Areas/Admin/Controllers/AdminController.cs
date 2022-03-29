@@ -136,7 +136,7 @@ namespace My_Project.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> ShowProduct(int MyDrop , string restaurant_Name="")
+        public async Task<JsonResult> ShowProduct(int MyDrop , string restaurant_Name="")
         {
             if (restaurant_Name == null)
                 restaurant_Name = "null";
@@ -169,10 +169,10 @@ namespace My_Project.Areas.Admin.Controllers
                     //UserDataViewModel userData = new UserDataViewModel();
                     List<ShowProductViewModel> data1 = new List<ShowProductViewModel>();
                     data1 = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result1);
-                    return View(data1);
+                    return Json(data1);
                 }
             
-            return View();  
+            return null ;  
         }
 
         [HttpPost]
