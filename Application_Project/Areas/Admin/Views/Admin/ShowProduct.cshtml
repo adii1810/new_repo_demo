@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewData["Title"] = "ShowProduct";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var data1 = ViewBag.category;
+    var sub = ViewBag.subcat;
+}
+
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+@*<script src="~/js/site.js"></script>*@
+<h1>ShowProduct</h1>
+<form asp-action="ShowProduct" asp-controller="Admin" asp-area="Admin" method="post">
+    <div class="row align-content-center mx-auto">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                @*<select  asp-for="@data.Id" asp-items="@data.Categories" class="form-control" id="main">
+                                        <option selected>Select Item</option>
+                                    </select>*@
+
+                                @Html.DropDownListFor(x => data1, new SelectList(data1.Categories, "Value", "Text"), "Please Select", htmlAttributes: new { @class = "form-control", id = "main12", })
+                            </div>
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group ">
+
+                                <select class="form-control" id="subcate" name="subcate"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                <input type="text" id="Restaurant" placeholder="Find Restaurant" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <input type="submit" class="btn btn-dark" value="Search" />
+
+                        </div>
+
+                        <p>
+
+                            @ViewBag.data
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<script>
+
+    window.onload = function () {
+        if (window.jQuery) {
+            // jQuery is loaded
+            alert("Yeah22!");
+        } else {
+            // jQuery is not loaded
+            alert("Doesn't Work");
+        }
+    }
+
+    $("#main12").change(function () {
+        alert("Yeah22!");
+        var selectedval = $(this).val();
+        $.ajax({
+            type: 'POST',
+            url: '/Admin/Admin/ShowProduct',
+            data: { mainId: selectedval },
+            success:
+                function (response) {
+                    alert(response.data);
+                    var markup = "<option value='0'> Select Type<option/>"
+                    for (var i = 0; i < response.data.length; i++) {
+                        markup = "<option value=" + response.data[i].sub_Category_Id + ">" + response.data[i].sub_Category_Name + "<option/>";
+                    }
+                    $("#subcate").html(markup);
+                },
+            error:
+                function (response) {
+                    alert(response.data);
+                }
+        });
+    })
+
+    $(document).ready(function () {
+        alert("hello");
+        $("#Restaurant").autocomplete({
+
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/Admin/MyProducts",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.title, value: item.title }
+                        }))
+                    }
+                })
+            },
+            message: {
+                noResult: "", results: ""
+            }
+        });
+    })
+
+
+</script>
+

@@ -1,0 +1,171 @@
+﻿@model IEnumerable<My_Project.Areas.Admin.ViewModels.ShowProductViewModel>
+
+@{
+    ViewData["Title"] = "ShowProduct";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var data = ViewBag.category;
+}
+<style>
+    table {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+        table caption {
+            font-size: 1.5em;
+            margin: .5em 0 .75em;
+        }
+
+        table tr {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: .35em;
+        }
+
+        table th,
+        table td {
+            padding: .625em;
+            text-align: center;
+        }
+
+        table th {
+            font-size: .85em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+    @@media screen and (max-width: 600px) {
+        table {
+            border: 0;
+        }
+
+            table caption {
+                font-size: 1.3em;
+            }
+
+            table thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+
+            table tr {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+
+            table td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+            }
+
+                table td::before {
+                    /*
+                    * aria-label has no advantage, it won't be read inside a table
+                    content: attr(aria-label);
+                    */
+                    content: attr(data-label);
+                    float: left;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+
+                table td:last-child {
+                    border-bottom: 0;
+                }
+    }
+    /* general styling */
+    body {
+        font-family: "Open Sans", sans-serif;
+        line-height: 1.25;
+    }
+</style>
+
+
+<div class="py-4">
+    <label class="text-blue"><i class="fas fa-hamburger"> Products</i></label>
+</div>
+
+<form asp-area="Admin" asp-controller="Admin" asp-action="ShowProduct" method="post">
+    <table class="table">
+        <tr>
+            <td data-label="Select Food Type">
+                <select name="myDrop" asp-items="@data.Categories"  class="form-control">
+                    <option selected >Select Type</option>
+                </select>
+            </td>
+            <td data-label="Select Restaurant">
+                <input type="text" name="Sub" class="form-control" id="Name" placeholder="Restaurant" />
+            </td>
+            <td>
+                <input type="submit" value="Submit" class=" form-control btn btn-dark text-blue  "/>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Product Id
+            </th>
+            <th>
+                Product Name
+            </th>
+            <th>
+                Product Price
+            </th>
+            <th>
+                Product Description
+            </th>
+            <th>
+                Product Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td data-label="Product Id">
+                    @Html.DisplayFor(modelItem => item.Product_Id)
+                </td>
+                <td data-label="Product Name">
+                    @Html.DisplayFor(modelItem => item.Product_Name)
+                </td>
+                <td data-label="Product Price">
+                    @Html.DisplayFor(modelItem => item.Product_Price)
+                </td>
+                <td data-label="Product Description">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td data-label="Product status">
+
+                    @if (item.Product_Status == true)
+                    {
+                        <label class="btn btn-success text-white">Active</label>
+                    }
+                    else
+                    {
+                        <label class="btn btn-danger text-white">InActive</label>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
