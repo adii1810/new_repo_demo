@@ -99,7 +99,7 @@
     <label class="text-blue"><i class="fas fa-hamburger"> Products</i></label>
 </div>
 
-<form asp-area="Admin" asp-controller="Admin" asp-action="ShowProduct" method="post">
+@*<form asp-area="Admin">*@
     <table class="table">
         <tr>
             <td >
@@ -116,57 +116,59 @@
             </td>
         </tr>
     </table>
-</form>
+@*</form>*@
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Product Id
-            </th>
-            <th>
-                Product Name
-            </th>
-            <th>
-                Product Price
-            </th>
-            <th>
-                Product Description
-            </th>
-            <th>
-                Product Status
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="customtbl">
+    <table class="table">
+
+        <thead>
             <tr>
-                <td data-label="Product Id">
-                    @Html.DisplayFor(modelItem => item.Product_Id)
-                </td>
-                <td data-label="Product Name">
-                    @Html.DisplayFor(modelItem => item.Product_Name)
-                </td>
-                <td data-label="Product Price">
-                    @Html.DisplayFor(modelItem => item.Product_Price)
-                </td>
-                <td data-label="Product Description">
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td data-label="Product status">
-
-                    @if (item.Product_Status == true)
-                    {
-                        <label class="btn btn-success text-white">Active</label>
-                    }
-                    else
-                    {
-                        <label class="btn btn-danger text-white">InActive</label>
-                    }
-                </td>
+                <th>
+                    Product Id
+                </th>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Product Price
+                </th>
+               
+                <th>
+                    Product Status
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @*@foreach (var item in Model)
+                {
+                    <tr>
+                        <td data-label="Product Id" id="Product_Id">
+                            @Html.DisplayFor(modelItem => item.Product_Id)
+                        </td>
+                        <td data-label="Product Name" id="Product_Name">
+                            @Html.DisplayFor(modelItem => item.Product_Name)
+                        </td>
+                        <td data-label="Product Price" id="Product_Price">
+                            @Html.DisplayFor(modelItem => item.Product_Price)
+                        </td>
+                        <td data-label="Product Description" id="Product_Description">
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td data-label="Product status" id="Product_Status">
+
+                            @if (item.Product_Status == true)
+                            {
+                                <label class="btn btn-success text-white">Active</label>
+                            }
+                            else
+                            {
+                                <label class="btn btn-danger text-white">InActive</label>
+                            }
+                        </td>
+                    </tr>
+                }*@
+        </tbody>
+
+    </table>
+</div>

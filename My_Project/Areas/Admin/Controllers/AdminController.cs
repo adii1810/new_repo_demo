@@ -82,33 +82,49 @@ namespace My_Project.Areas.Admin.Controllers
 
         public async Task<ActionResult> ShowProduct()
         {
-            //// var str = HttpContext.Session.GetString("Admin");
-            // if (str != null)
-            // {
-
             CategoryViewModel vm = new CategoryViewModel();
             //var str = HttpContext.Session.GetString("Admin");
             //if (str != null)
             //{
-                HttpClient client = new HttpClient();
+            HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.BaseAddress = new Uri("http://localhost:39658");
-                HttpResponseMessage httpResponse = await client.GetAsync($"api/AdminApi/Category");
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    var result = httpResponse.Content.ReadAsStringAsync().Result;
-                    //UserDataViewModel userData = new UserDataViewModel();
-                    List<SelectListItem> enums = new List<SelectListItem>();
-                    enums = JsonConvert.DeserializeObject<List<SelectListItem>>(result);
-                    vm.Categories = enums;
+            HttpResponseMessage httpResponse = await client.GetAsync($"api/AdminApi/Category");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                //UserDataViewModel userData = new UserDataViewModel();
+                List<SelectListItem> enums = new List<SelectListItem>();
+                enums = JsonConvert.DeserializeObject<List<SelectListItem>>(result);
+                vm.Categories = enums;
 
-                    ViewBag.category = vm;
-                }
+                ViewBag.category = vm;
+            }
+            //// var str = HttpContext.Session.GetString("Admin");
+            // if (str != null)
+            // {
+
+
+            //var str = HttpContext.Session.GetString("Admin");
+            //if (str != null)
+            //{
+
+            //  }
+            return View();
+        }
+
+        public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1()
+        {
+            //// var str = HttpContext.Session.GetString("Admin");
+            // if (str != null)
+            // {
+
+            
 
             // return RedirectToAction("AdminLogin");
 
             HttpClient client1 = new HttpClient();
-           
+
             client1.BaseAddress = new Uri("http://localhost:39658");
             var httpResponse1 = await client1.GetAsync($"api/Adminapi/ShowProduct");
             if (httpResponse1.IsSuccessStatusCode)
@@ -117,9 +133,9 @@ namespace My_Project.Areas.Admin.Controllers
                 //UserDataViewModel userData = new UserDataViewModel();
                 List<ShowProductViewModel> data1 = new List<ShowProductViewModel>();
                 data1 = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result1);
-                return View(data1);
+                return data1;
             }
-            return View();
+            return null;
             //  }
         }
         // GET: AdminController/Details/5
@@ -136,40 +152,23 @@ namespace My_Project.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<JsonResult> ShowProduct(int MyDrop , string restaurant_Name="")
+        public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1( int Drop , string Name="")
         {
-            if (restaurant_Name == null)
-                restaurant_Name = "null";
-            CategoryViewModel vm = new CategoryViewModel();
-            //var str = HttpContext.Session.GetString("Admin");
-            //if (str != null)
-            //{
-                HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.BaseAddress = new Uri("http://localhost:39658");
-                HttpResponseMessage httpResponse = await client.GetAsync($"api/AdminApi/Category");
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    var result = httpResponse.Content.ReadAsStringAsync().Result;
-                    //UserDataViewModel userData = new UserDataViewModel();
-                    List<SelectListItem> enums = new List<SelectListItem>();
-                    enums = JsonConvert.DeserializeObject<List<SelectListItem>>(result);
-                    vm.Categories = enums;
-
-                    ViewBag.category = vm;
-                }
+            if (Name == null)
+                Name = "null";
+            
 
           
                 HttpClient client1 = new HttpClient();
                 client1.BaseAddress = new Uri("http://localhost:39658");
-                var httpResponse1 = await client1.GetAsync($"api/Adminapi/Showproduct/{MyDrop}/{restaurant_Name}");
+                var httpResponse1 = await client1.GetAsync($"api/Adminapi/Showproduct/{Drop}/{Name}");
                 if (httpResponse1.IsSuccessStatusCode)
                 {
                     var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
                     //UserDataViewModel userData = new UserDataViewModel();
                     List<ShowProductViewModel> data1 = new List<ShowProductViewModel>();
                     data1 = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result1);
-                    return Json(data1);
+                    return data1;
                 }
             
             return null ;  

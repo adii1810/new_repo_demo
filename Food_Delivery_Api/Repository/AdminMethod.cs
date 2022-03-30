@@ -109,55 +109,35 @@ namespace Food_Delivery_Api.Repository
         }
         public IEnumerable<Product> ShowProduct(int mainId, string name)
         {
-
+            List<Product> data ;
+            
             if (mainId >= 0 && name.Equals("null"))
             {
-                List<Product> l = new List<Product>();
-                var data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
-
-                foreach (var item in data)
-                {
-                    Product p = new Product();
-                    p.Product_Id = item.Product_Id;
-                    p.Product_Name = item.Product_Name;
-                    p.Product_Price = item.Product_Price;
-                    p.Product_Status = item.Product_Status;
-                    l.Add(p);
-                }
-                return l;
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
             }
-            else if (mainId < 0 && name != null)
+            else if (mainId < 0 && name != "null")
             {
-                //var subCat = _context.Sub_Categorie.Where(x => (int)x.Main_Category_Id == mainId)
-                List<Product> l = new List<Product>();
-                //var data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
-                var data = _context.Product.Include("Restaurant_Detail").Where(x => x.Restaurant_Detail.Restaurant_Detail_Name == name).ToList();
-                foreach (var item in data)
-                {
-                    Product p = new Product();
-                    p.Product_Id = item.Product_Id;
-                    p.Product_Name = item.Product_Name;
-                    p.Product_Price = item.Product_Price;
-                    p.Product_Status = item.Product_Status;
-                    l.Add(p);
-                }
-                return l;
+                data = _context.Product.Include("Restaurant_Detail").Where(x => x.Restaurant_Detail.Restaurant_Detail_Name == name).ToList();
+            }
+            else if(mainId >= 0 && name != "null")
+            {
+                data = _context.Product.Include("Restaurant_Detail").Include("Sub_Category").Where(x => x.Restaurant_Detail.Restaurant_Detail_Name == name && (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
             }
             else
             {
-                List<Product> l = new List<Product>();
-                var data = _context.Product.Include("Restaurant_Detail").Include("Sub_Category").Where(x => x.Restaurant_Detail.Restaurant_Detail_Name == name && (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
-                foreach (var item in data)
-                {
-                    Product p = new Product();
-                    p.Product_Id = item.Product_Id;
-                    p.Product_Name = item.Product_Name;
-                    p.Product_Price = item.Product_Price;
-                    p.Product_Status = item.Product_Status;
-                    l.Add(p);
-                }
-                return l;
+                data = _context.Product.ToList(); 
             }
+            List<Product> l = new List<Product>();
+            foreach (var item in data)
+            {
+                Product p = new Product();
+                p.Product_Id = item.Product_Id;
+                p.Product_Name = item.Product_Name;
+                p.Product_Price = item.Product_Price;
+                p.Product_Status = item.Product_Status;
+                l.Add(p);
+            }
+            return l;
         }
 
         // public IEnumerable<Product> ShowProductByFoodType(int mainId)
