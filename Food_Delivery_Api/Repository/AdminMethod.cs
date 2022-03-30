@@ -102,12 +102,31 @@ namespace Food_Delivery_Api.Repository
             }
             return ol;
         }
-        public IEnumerable<Product> ShowProduct()
+
+        public IEnumerable<ProductRatingViewModel> ShowProduct()
         { 
             var data = _context.Product.ToList();
-            return data;
+            
+            List<ProductRatingViewModel> l = new List<ProductRatingViewModel>();
+
+            foreach (var item in data)
+            {
+                double rate = 5;
+                if (_context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count() > 0)
+                {
+                    rate = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Average(x => x.User_Rating_Star);
+                }
+                ProductRatingViewModel p = new ProductRatingViewModel();
+                p.Product_Id = item.Product_Id;
+                p.Product_Name = item.Product_Name;
+                p.Product_Price = item.Product_Price;
+                p.Product_Status = item.Product_Status;
+                p.rate = rate;
+                l.Add(p);
+            }
+            return l;
         }
-        public IEnumerable<Product> ShowProduct(int mainId, string name)
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name)
         {
             List<Product> data ;
             
@@ -127,14 +146,22 @@ namespace Food_Delivery_Api.Repository
             {
                 data = _context.Product.ToList(); 
             }
-            List<Product> l = new List<Product>();
+
+            
+            List<ProductRatingViewModel> l = new List<ProductRatingViewModel>();
             foreach (var item in data)
             {
-                Product p = new Product();
+                double rate = 5;
+                if (_context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count() > 0)
+                {
+                    rate = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Average(x => x.User_Rating_Star);
+                }
+                ProductRatingViewModel p = new ProductRatingViewModel();
                 p.Product_Id = item.Product_Id;
                 p.Product_Name = item.Product_Name;
                 p.Product_Price = item.Product_Price;
                 p.Product_Status = item.Product_Status;
+                p.rate = rate;
                 l.Add(p);
             }
             return l;
@@ -156,5 +183,7 @@ namespace Food_Delivery_Api.Repository
             var data = await _context.User_Data.OrderByDescending(x => x.User_Id).ToListAsync();
             return data;
         }
+
+
     }
 }

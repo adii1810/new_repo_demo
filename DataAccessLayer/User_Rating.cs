@@ -10,6 +10,8 @@ namespace DataAccessLayer
         [Key]
         public int User_Rating_Id { get; set; }
         public int User_Rating_Star { get; set; }
+        public int ProductId { get; set; }
+        public int User_DataId { get; set; }
         public Product Product { get; set; }
         public User_Data User_Data { get; set; }
 

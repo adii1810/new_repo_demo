@@ -46,14 +46,14 @@ namespace Food_Delivery_Api.Controllers
             }
 
         [HttpGet("ShowProduct")]
-        public IEnumerable<Product> ShowProduct()
+        public IEnumerable<ProductRatingViewModel> ShowProduct()
         {
             var data = _admin.ShowProduct();
             return data;
         }
 
         [HttpGet("ShowProduct/{mainId}/{name}")]
-        public IEnumerable<Product> ShowProduct(int mainId,string name=null)
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId,string name=null)
         {
             var data = _admin.ShowProduct(mainId,name);
             return data;
@@ -64,12 +64,7 @@ namespace Food_Delivery_Api.Controllers
             var data = _admin.MyRestaurant(pre);
             return data;
         }
-        // GET api/<AdminApiController>/5
-        //[HttpGet("{id}")]
-        // public string Get( int Id)
-        // {
-        //     return Id+"";
-        // }
+        
 
         [HttpGet("{user,pass}")]
         public string Login(string user,string pass)
@@ -92,6 +87,8 @@ namespace Food_Delivery_Api.Controllers
             var data = await _admin.ShowUser();
             return data;
         }
+
+       
 
         [HttpGet("ShowOrder/{UserId}")]
         public async Task<IEnumerable<OrderViewModel>> ShowOrder(int UserId)

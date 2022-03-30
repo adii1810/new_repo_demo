@@ -4,14 +4,16 @@ using Food_Delivery_Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Food_Delivery_Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220330101821_Init10")]
+    partial class Init10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -221,10 +223,16 @@ namespace Food_Delivery_Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("PId")
                         .HasColumnType("int");
 
-                    b.Property<int>("User_DataId")
+                    b.Property<int?>("Product_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("User_DataUser_Id")
                         .HasColumnType("int");
 
                     b.Property<int>("User_Rating_Star")
@@ -232,9 +240,9 @@ namespace Food_Delivery_Api.Migrations
 
                     b.HasKey("User_Rating_Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("Product_Id");
 
-                    b.HasIndex("User_DataId");
+                    b.HasIndex("User_DataUser_Id");
 
                     b.ToTable("User_Rating");
                 });
@@ -348,15 +356,11 @@ namespace Food_Delivery_Api.Migrations
                 {
                     b.HasOne("DataAccessLayer.Product", "Product")
                         .WithMany("User_Ratings")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Product_Id");
 
                     b.HasOne("DataAccessLayer.User_Data", "User_Data")
                         .WithMany("User_Ratings")
-                        .HasForeignKey("User_DataId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("User_DataUser_Id");
                 });
 
             modelBuilder.Entity("DataAccessLayer.User_Review", b =>
