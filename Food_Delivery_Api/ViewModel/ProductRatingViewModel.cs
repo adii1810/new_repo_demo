@@ -13,5 +13,6 @@ namespace Food_Delivery_Api.ViewModel
         public string Description { get; set; }
         public bool Product_Status { get; set; }
         public double rate { get; set; }
+        public int user { get; set; }
     }
 }

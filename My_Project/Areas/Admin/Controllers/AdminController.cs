@@ -117,10 +117,7 @@ namespace My_Project.Areas.Admin.Controllers
         {
             //// var str = HttpContext.Session.GetString("Admin");
             // if (str != null)
-            // {
-
-            
-
+            // {x
             // return RedirectToAction("AdminLogin");
 
             HttpClient client1 = new HttpClient();

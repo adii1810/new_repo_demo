@@ -39,80 +39,70 @@ $("#Name").autocomplete({
         }
 });
 
-$(document).ready(() => {
-    $.ajax({
-        url: `/Admin/Admin/ShowProduct1`,
-        type: "Get",
-        //data: { Drop: id, Name: name },
-        success: function (response) {
-            console.log(response);
+//$(document).ready(() => {
+//    $.ajax({
+//        url: `/Admin/Admin/ShowProduct1`,
+//        type: "Get",
+//        //data: { Drop: id, Name: name },
+//        success: function (response) {
+//            console.log(response);
            
-            $(".customtbl .table tbody").empty();
-            for (var i = 0; i < response.length; i++) {
-                if (response[i].product_Status === true) {
-                    var data = "<label class='btn btn-success text - white'>Active</label>"
-                }
-                else {
-                    data = "<label class='btn btn-danger text-white'>InActive</label>"
-                }
-                $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
-                    <td data-label="Product Price">${response[i].product_Price}</td><td data-label="Product Status">${data}</td></tr>`);
-            }
+//            $(".customtbl .table tbody").empty();
+//            for (var i = 0; i < response.length; i++) {
+//                if (response[i].product_Status === true) {
+//                    var data = "<label class='btn btn-success text - white'>Active</label>"
+//                }
+//                else {
+//                    data = "<label class='btn btn-danger text-white'>InActive</label>"
+//                }
+//                $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
+//                    <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
+//            }
            
-        },
-        failure: function (response) {
-            console.log("failure")
+//        },
+//        failure: function (response) {
+//            console.log("failure")
 
-            alert(response.responseText);
-        },
-        error: function (response) {
-            console.log("error")
+//            alert(response.responseText);
+//        },
+//        error: function (response) {
+//            console.log("error")
 
-            alert(response.responseText);
-        }
-    })
+//            alert(response.responseText);
+//        }
+//    })
 
+//})
+
+$(document).ready(function () {
+    $("#pager").hide();
 })
 
-$("#btnSearch").click(function(){
+$("#btnSearch").click(function () {
+   
+    $("#pager").show();
         var id = document.getElementById("Drop").value;
     var name = document.getElementById("Name").value;
-    //api/Adminapi/Showproduct/{MyDrop}/{restaurant_Name}
-    //`Admin/Admin/ShowProduct1/${id}/${name}`
-        $.ajax({
-            url: `/Admin/Admin/ShowProduct1`,
-            type: "Post",
-            data: {Drop : id,Name : name},
-           // dataType: "json",
-            success: function (response) {
-                console.log(response);
-                //$(response).each(function () {
-                //    $("#table1 tr").each(function () {
-                //        this.show();
-                //    })
-                //})
-                $(".customtbl .table tbody").empty();
-                for (var i = 0; i < response.length; i++) {
-                    if (response[i].product_Status === true) {
-                        var data = "<label class='btn btn-success text - white'>Active</label>"
-                    }
-                    else {
-                        data = "<label class='btn btn-danger text-white'>InActive</label>"
-                    }
-                    $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
-                    <td data-label="Product Price">${response[i].product_Price}</td><td data-label="Product Status">${data}</td></tr>`);
-                }
-                //$(response).each(function () {
-                //    console.log(this.product_Name);
-                //    $("#product_Id").html(this.product_Id);
-                //    $("#product_Name").html(this.product_Name);
-                //    $("#product_Price").html(this.product_Price);
-                //    $("#product_Description").html(this.description);
-                //    $("#product_Status").html(this.product_Status);
+    var $pagination = $('#pagination'),
+        totalRecords = 0,
+        records = [],
+        response = [],
+        recPerPage = 5,
+        page = 1,
+        totalPages = 0;
+    $.ajax({
+        url: `/Admin/Admin/ShowProduct1`,
+        type: "Post",
+        data: {Drop : id,Name : name},
 
-                //})
-            },
-            failure: function (response) {
+        success: function (mydata) {
+            records = mydata;
+            console.log(records);
+            totalRecords = records.length;
+            totalPages = Math.ceil(totalRecords / recPerPage);
+            apply_pagination();
+        },
+        failure: function (response) {
                 console.log("failure")
 
                 alert(response.responseText);
@@ -122,6 +112,95 @@ $("#btnSearch").click(function(){
 
                 alert(response.responseText);
             }
-        })
+    });
+    function generate_table() {
+        var tr;
+        $(".customtbl .table tbody").empty();
+
+        for (var i = 0; i < response.length; i++) {
+            if (response[i].product_Status === true) {
+                var data = "<label class='btn btn-success text - white'>Active</label>"
+            }
+            else {
+                data = "<label class='btn btn-danger text-white'>InActive</label>"
+            }
+            $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
+                    <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
+        }
+    }
+
+    function apply_pagination() {
+
+        if ($('#pagination').data("twbs-pagination"))
+            $('#pagination').twbsPagination('destroy');
+
+        $pagination.twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 6,
+            onPageClick: function (event, page) {
+                displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+                endRec = (displayRecordsIndex) + recPerPage;
+
+                response = records.slice(displayRecordsIndex, endRec);
+                generate_table();
+            }
+        });
+    }
+
+});
+
+$(document).ready(() => {
+    $("#pager").show();
+    var $pagination = $('#pagination'),
+        totalRecords = 0,
+        records = [],
+        response = [],
+        recPerPage = 5,
+        page = 1,
+        totalPages = 0;
+    $.ajax({
+        url: `/Admin/Admin/ShowProduct1`,
+
+        success: function (data) {
+            records = data;
+            console.log(records);
+            totalRecords = records.length;
+            totalPages = Math.ceil(totalRecords / recPerPage);
+            apply_pagination();
+        }
+    });
+    function generate_table() {
+        var tr;
+        $(".customtbl .table tbody").empty();
+
+        for (var i = 0; i < response.length; i++) {
+            if (response[i].product_Status === true) {
+                var data = "<label class='btn btn-success text - white'>Active</label>"
+            }
+            else {
+                data = "<label class='btn btn-danger text-white'>InActive</label>"
+            }
+            $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
+                    <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
+        }
+    }
+
+    function apply_pagination() {
+
+        if ($('#pagination').data("twbs-pagination"))
+            $('#pagination').twbsPagination('destroy');
+
+        $pagination.twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 6,
+            onPageClick: function (event, page) {
+                displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+                endRec = (displayRecordsIndex) + recPerPage;
+
+                response = records.slice(displayRecordsIndex, endRec);
+                generate_table();
+            }
+        });
+    }
     
 });

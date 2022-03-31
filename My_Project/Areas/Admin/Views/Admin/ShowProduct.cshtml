@@ -92,6 +92,33 @@
         font-family: "Open Sans", sans-serif;
         line-height: 1.25;
     }
+
+   @@charset "UTF-8";
+:root {
+  --star-size: 30px;
+  --star-color: #fff;
+  --star-background: #fc0;
+}
+
+.Stars {
+  --percent: calc(var(--rating) / 5 * 100%);
+  display: inline-block;
+  font-size: var(--star-size);
+  font-family: Times;
+  line-height: 0.5;
+}
+.Stars::before {
+  content: "★★★★★";
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, var(--star-background) var(--percent), var(--star-color) var(--percent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+    * {
+        position: relative;
+        box-sizing: border-box;
+    }
+
 </style>
 
 
@@ -112,7 +139,8 @@
             </td>
             <td>
                 @*<input type="submit" value="Submit" class=" form-control btn btn-dark text-blue  "/>*@
-                <button value="Submit" class=" form-control btn btn-dark text-blue" id="btnSearch">Search</button>
+                @*<button value="Submit" class=" form-control btn btn-blue text-blue" id="btnSearch">Search</button>*@
+                <input type="button"  class="btn btn-warning text-dark form-control" id="btnSearch"  value="Search" />
             </td>
         </tr>
     </table>
@@ -132,13 +160,16 @@
                 <th>
                     Product Price
                 </th>
-               
+                <th>
+                    Rating
+                </th>
                 <th>
                     Product Status
                 </th>
                 <th></th>
             </tr>
         </thead>
+       
         <tbody>
             @*@foreach (var item in Model)
                 {

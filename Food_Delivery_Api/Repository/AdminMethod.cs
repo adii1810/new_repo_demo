@@ -112,7 +112,8 @@ namespace Food_Delivery_Api.Repository
             foreach (var item in data)
             {
                 double rate = 5;
-                if (_context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count() > 0)
+                int user = 0;
+                if ((user = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count()) > 0)
                 {
                     rate = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Average(x => x.User_Rating_Star);
                 }
@@ -122,14 +123,14 @@ namespace Food_Delivery_Api.Repository
                 p.Product_Price = item.Product_Price;
                 p.Product_Status = item.Product_Status;
                 p.rate = rate;
+                p.user = user;
                 l.Add(p);
             }
             return l;
         }
         public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name)
         {
-            List<Product> data ;
-            
+            List<Product> data ;            
             if (mainId >= 0 && name.Equals("null"))
             {
                 data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
@@ -152,7 +153,8 @@ namespace Food_Delivery_Api.Repository
             foreach (var item in data)
             {
                 double rate = 5;
-                if (_context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count() > 0)
+                int user = 0;
+                if ( (user = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count()) > 0)
                 {
                     rate = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Average(x => x.User_Rating_Star);
                 }
@@ -162,6 +164,7 @@ namespace Food_Delivery_Api.Repository
                 p.Product_Price = item.Product_Price;
                 p.Product_Status = item.Product_Status;
                 p.rate = rate;
+                p.user = user;
                 l.Add(p);
             }
             return l;

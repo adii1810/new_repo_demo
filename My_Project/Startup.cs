@@ -49,10 +49,6 @@ namespace My_Project
 
             app.UseEndpoints(endpoints =>
             {
-
-                
-
-
                 endpoints.MapControllerRoute(
                      name: "Admin",
                     pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");

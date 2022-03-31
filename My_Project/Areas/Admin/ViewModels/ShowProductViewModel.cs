@@ -12,5 +12,7 @@ namespace My_Project.Areas.Admin.ViewModels
         public int Product_Price { get; set; }
         public string Description { get; set; }
         public bool Product_Status { get; set; }
+        public float rate { get; set; }
+        public int user { get; set; }
     }
 }
