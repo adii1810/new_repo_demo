@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace DataAccessLayer
+namespace My_Project.Areas.Admin.ViewModels
 {
-   public class Restaurant_Detail
+    public class RestaurantViewModel
     {
-        [Key]
         public int Restaurant_Detail_Id { get; set; }
         public string Restaurant_Detail_Name { get; set; }
         public string Restaurant_Detail_User_Name { get; set; }
@@ -19,10 +17,6 @@ namespace DataAccessLayer
         public string Restaurant_Detail_City { get; set; }
         public string Restaurant_Detail_State { get; set; }
         public string Restaurant_Detail_Zipcode { get; set; }
-
-        [DefaultValue(false)]
         public bool status_by_Admin { get; set; }
-
-        public ICollection<Product> Products { get; set; } = new HashSet<Product>();
     }
 }

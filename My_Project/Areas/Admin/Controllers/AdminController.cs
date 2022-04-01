@@ -13,13 +13,13 @@ namespace My_Project.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminController : Controller
     {
-       
+
         // GET: AdminController
         //public ActionResult Index()
         //{
         //    return View();
         //}
-       
+
         public async Task<ActionResult> ShowUser()
         {
             //// var str = HttpContext.Session.GetString("Admin");
@@ -39,7 +39,7 @@ namespace My_Project.Areas.Admin.Controllers
             return View();
             //  }
         }
-        
+
         public async Task<ActionResult> ShowOrders(int Id)
         {
             //// var str = HttpContext.Session.GetString("Admin");
@@ -59,7 +59,7 @@ namespace My_Project.Areas.Admin.Controllers
             return View();
             //  }
         }
-        public async Task<ActionResult> ShowOrdersDetails(int Id,int total)
+        public async Task<ActionResult> ShowOrdersDetails(int Id, int total)
         {
             //// var str = HttpContext.Session.GetString("Admin");
             // if (str != null)
@@ -135,6 +135,41 @@ namespace My_Project.Areas.Admin.Controllers
             return null;
             //  }
         }
+
+        public async Task<ActionResult> ShowRestaurant()
+        {
+            //// var str = HttpContext.Session.GetString("Admin");
+            // if (str != null)
+            // {x
+            // return RedirectToAction("AdminLogin");
+
+           
+            return View();
+            //  }
+        }
+        [HttpGet]
+        public async Task<IEnumerable<RestaurantViewModel>> ShowRestaurant1()
+        {
+            //// var str = HttpContext.Session.GetString("Admin");
+            // if (str != null)
+            // {x
+            // return RedirectToAction("AdminLogin");
+
+            HttpClient client1 = new HttpClient();
+            client1.BaseAddress = new Uri("http://localhost:39658");
+            var httpResponse1 = await client1.GetAsync($"api/Adminapi/ShowRestaurant");
+            if (httpResponse1.IsSuccessStatusCode)
+            {
+                var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
+                //UserDataViewModel userData = new UserDataViewModel();
+                List<RestaurantViewModel> data1 = new List<RestaurantViewModel>();
+                data1 = JsonConvert.DeserializeObject<List<RestaurantViewModel>>(result1);
+                return data1;
+            }
+            return null;
+            //  }
+        }
+
         // GET: AdminController/Details/5
         public ActionResult Details(int id)
         {
@@ -149,42 +184,33 @@ namespace My_Project.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1( int Drop , string Name="")
+        public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1(int Drop, string Name = "")
         {
             if (Name == null)
                 Name = "null";
-            
 
-          
-                HttpClient client1 = new HttpClient();
-                client1.BaseAddress = new Uri("http://localhost:39658");
-                var httpResponse1 = await client1.GetAsync($"api/Adminapi/Showproduct/{Drop}/{Name}");
-                if (httpResponse1.IsSuccessStatusCode)
-                {
-                    var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
-                    //UserDataViewModel userData = new UserDataViewModel();
-                    List<ShowProductViewModel> data1 = new List<ShowProductViewModel>();
-                    data1 = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result1);
-                    return data1;
-                }
-            
-            return null ;  
+            HttpClient client1 = new HttpClient();
+            client1.BaseAddress = new Uri("http://localhost:39658");
+            var httpResponse1 = await client1.GetAsync($"api/Adminapi/Showproduct/{Drop}/{Name}");
+            if (httpResponse1.IsSuccessStatusCode)
+            {
+                var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
+                List<ShowProductViewModel> data1 = new List<ShowProductViewModel>();
+                data1 = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result1);
+                return data1;
+            }
+            return null;
         }
 
         [HttpPost]
         public async Task<JsonResult> myResturant(string Prefix)
         {
             HttpClient client1 = new HttpClient();
-
             client1.BaseAddress = new Uri("http://localhost:39658");
             var httpResponse1 = await client1.GetAsync($"api/Adminapi/MyR?pre={Prefix}");
             if (httpResponse1.IsSuccessStatusCode)
             {
-                
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
-                //UserDataViewModel userData = new UserDataViewModel();
-                //List<restaurantNameViewModel> data1 = new List<restaurantNameViewModel>();
-                //data1 = JsonConvert.DeserializeObject<List<restaurantNameViewModel>>(result1);
                 return Json(result1);
             }
             return null;

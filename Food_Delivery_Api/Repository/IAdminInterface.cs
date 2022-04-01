@@ -19,7 +19,7 @@ namespace Food_Delivery_Api.Repository
         public IEnumerable< string> MyRestaurant(string pre);
         public IEnumerable<ProductRatingViewModel> ShowProduct();
         public IEnumerable<ProductRatingViewModel> ShowProduct(int id,string name);
-         
+        public IEnumerable<Restaurant_Detail> ShowRestaurant();
         //public IEnumerable<Product> ShowProductByFoodType(int mainId);
         //public IEnumerable<Product> ShowProductByRestaurant(string name);
 

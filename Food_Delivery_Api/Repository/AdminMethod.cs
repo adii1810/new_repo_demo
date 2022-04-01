@@ -187,6 +187,12 @@ namespace Food_Delivery_Api.Repository
             return data;
         }
 
+        public IEnumerable<Restaurant_Detail> ShowRestaurant()
+        {
+            var data = _context.Restaurant_Detail.ToList();
+            return data;
+        }
+
 
     }
 }

@@ -1,0 +1,236 @@
+﻿@model IEnumerable<My_Project.Areas.Admin.ViewModels.RestaurantViewModel>
+
+@{
+    ViewData["Title"] = "ShowRestaurant";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    table {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+        table caption {
+            font-size: 1.5em;
+            margin: .5em 0 .75em;
+        }
+
+        table tr {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: .35em;
+        }
+
+        table th,
+        table td {
+            padding: .625em;
+            text-align: center;
+        }
+
+        table th {
+            font-size: .85em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+    @@media screen and (max-width: 600px) {
+        table {
+            border: 0;
+        }
+
+            table caption {
+                font-size: 1.3em;
+            }
+
+            table thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+
+            table tr {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+
+            table td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+            }
+
+                table td::before {
+                    /*
+                    * aria-label has no advantage, it won't be read inside a table
+                    content: attr(aria-label);
+                    */
+                    content: attr(data-label);
+                    float: left;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+
+                table td:last-child {
+                    border-bottom: 0;
+                }
+    }
+    /* general styling */
+    body {
+        font-family: "Open Sans", sans-serif;
+        line-height: 1.25;
+    }
+
+    /*CheckBox css toggle*/
+
+   
+
+   
+
+    /* Switch 1 Specific Styles Start */
+
+    .box_1 {
+        background: #eee;
+    }
+
+    input[type="checkbox"].switch_1 {
+        font-size: 20px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 1em;
+        height: 1em;
+        background: #ff0000;
+        border-radius: 2em;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+        -webkit-transition: all .2s ease-in-out;
+        transition: all .2s ease-in-out;
+    }
+
+        input[type="checkbox"].switch_1:checked {
+            background: #0ebeff;
+        }
+
+        input[type="checkbox"].switch_1:after {
+            position: absolute;
+            content: "";
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+            background: #fff;
+            -webkit-box-shadow: 0 0 .25em rgba(0,0,0,.3);
+            box-shadow: 0 0 .25em rgba(0,0,0,.3);
+            -webkit-transform: scale(.7);
+            transform: scale(.7);
+            left: 0;
+            -webkit-transition: all .2s ease-in-out;
+            transition: all .2s ease-in-out;
+        }
+
+        input[type="checkbox"].switch_1:checked:after {
+            left: calc(100% - 1.5em);
+        }
+
+    /* Switch 1 Specific Style End */
+
+
+</style>
+
+<div class="py-4">
+    <label class="text-blue"><i class="fa-solid fa-fork-knife"> Restaurant</i></label>
+</div>
+
+@*<form asp-area="Admin">*@
+<table class="table">
+    <tr class="row border-0">
+        
+        <td class="col-10 border-0">
+            <input type="text" value="" name="restaurant_Name" class="form-control" id="Name" placeholder="Restaurant" />
+        </td>
+        <td class="col-2 border-0"">
+            @*<input type="submit" value="Submit" class=" form-control btn btn-dark text-blue  "/>*@
+            @*<button value="Submit" class=" form-control btn btn-blue text-blue" id="btnSearch">Search</button>*@
+            <input type="button" class="btn btn-warning text-dark form-control" id="btnSearch" value="Search" />
+        </td>
+    </tr>
+</table>
+
+<div class="customtbl">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Restaurant Id
+                </th>
+                <th>
+                    Reastaurant Name
+                </th>
+                <th>
+                    Restaurant Email
+                </th>
+                <th>
+                    Restaurant
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_User_Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Password)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_PhoneNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_City)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_State)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Zipcode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.status_by_Admin)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                            </td>
+                        </tr>
+                }*@
+        </tbody>
+    </table>
+
+</div>

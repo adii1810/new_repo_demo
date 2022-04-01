@@ -88,7 +88,15 @@ namespace Food_Delivery_Api.Controllers
             return data;
         }
 
-       
+        [HttpGet("ShowRestaurant")]
+        public IEnumerable<Restaurant_Detail> ShowRestaurant()
+        {
+
+            var data =  _admin.ShowRestaurant();
+            return data;
+        }
+
+
 
         [HttpGet("ShowOrder/{UserId}")]
         public async Task<IEnumerable<OrderViewModel>> ShowOrder(int UserId)

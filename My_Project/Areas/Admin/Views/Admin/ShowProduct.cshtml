@@ -171,34 +171,7 @@
         </thead>
        
         <tbody>
-            @*@foreach (var item in Model)
-                {
-                    <tr>
-                        <td data-label="Product Id" id="Product_Id">
-                            @Html.DisplayFor(modelItem => item.Product_Id)
-                        </td>
-                        <td data-label="Product Name" id="Product_Name">
-                            @Html.DisplayFor(modelItem => item.Product_Name)
-                        </td>
-                        <td data-label="Product Price" id="Product_Price">
-                            @Html.DisplayFor(modelItem => item.Product_Price)
-                        </td>
-                        <td data-label="Product Description" id="Product_Description">
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td data-label="Product status" id="Product_Status">
-
-                            @if (item.Product_Status == true)
-                            {
-                                <label class="btn btn-success text-white">Active</label>
-                            }
-                            else
-                            {
-                                <label class="btn btn-danger text-white">InActive</label>
-                            }
-                        </td>
-                    </tr>
-                }*@
+           
         </tbody>
 
     </table>

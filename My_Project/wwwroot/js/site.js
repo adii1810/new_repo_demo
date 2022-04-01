@@ -14,10 +14,11 @@
 //        }
 //    })
 //}
+var location1 = "https://localhost:44397/Admin/Admin/";
 
 $("#Name").autocomplete({
     maxShowItems: 1,
-        source: function (request, response) {
+    source: function (request, response) {
         $.ajax({
             url: "/Admin/Admin/myResturant",
             type: "POST",
@@ -36,52 +37,17 @@ $("#Name").autocomplete({
     },
     messages: {
         noResults: "", results: ""
-        }
+    }
 });
-
-//$(document).ready(() => {
-//    $.ajax({
-//        url: `/Admin/Admin/ShowProduct1`,
-//        type: "Get",
-//        //data: { Drop: id, Name: name },
-//        success: function (response) {
-//            console.log(response);
-           
-//            $(".customtbl .table tbody").empty();
-//            for (var i = 0; i < response.length; i++) {
-//                if (response[i].product_Status === true) {
-//                    var data = "<label class='btn btn-success text - white'>Active</label>"
-//                }
-//                else {
-//                    data = "<label class='btn btn-danger text-white'>InActive</label>"
-//                }
-//                $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
-//                    <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
-//            }
-           
-//        },
-//        failure: function (response) {
-//            console.log("failure")
-
-//            alert(response.responseText);
-//        },
-//        error: function (response) {
-//            console.log("error")
-
-//            alert(response.responseText);
-//        }
-//    })
-
-//})
 
 $(document).ready(function () {
     $("#pager").hide();
 })
 
 $("#btnSearch").click(function () {
-   
+
     $("#pager").show();
-        var id = document.getElementById("Drop").value;
+    var id = document.getElementById("Drop").value;
     var name = document.getElementById("Name").value;
     var $pagination = $('#pagination'),
         totalRecords = 0,
@@ -93,7 +59,7 @@ $("#btnSearch").click(function () {
     $.ajax({
         url: `/Admin/Admin/ShowProduct1`,
         type: "Post",
-        data: {Drop : id,Name : name},
+        data: { Drop: id, Name: name },
 
         success: function (mydata) {
             records = mydata;
@@ -103,15 +69,15 @@ $("#btnSearch").click(function () {
             apply_pagination();
         },
         failure: function (response) {
-                console.log("failure")
+            console.log("failure")
 
-                alert(response.responseText);
-            },
-            error: function (response) {
-                console.log("error")
+            alert(response.responseText);
+        },
+        error: function (response) {
+            console.log("error")
 
-                alert(response.responseText);
-            }
+            alert(response.responseText);
+        }
     });
     function generate_table() {
         var tr;
@@ -150,57 +116,121 @@ $("#btnSearch").click(function () {
 });
 
 $(document).ready(() => {
-    $("#pager").show();
-    var $pagination = $('#pagination'),
-        totalRecords = 0,
-        records = [],
-        response = [],
-        recPerPage = 5,
-        page = 1,
-        totalPages = 0;
-    $.ajax({
-        url: `/Admin/Admin/ShowProduct1`,
+    if (window.location == location1 + "ShowProduct") {
 
-        success: function (data) {
-            records = data;
-            console.log(records);
-            totalRecords = records.length;
-            totalPages = Math.ceil(totalRecords / recPerPage);
-            apply_pagination();
-        }
-    });
-    function generate_table() {
-        var tr;
-        $(".customtbl .table tbody").empty();
+        $("#pager").show();
+        var $pagination = $('#pagination'),
+            totalRecords = 0,
+            records = [],
+            response = [],
+            recPerPage = 5,
+            page = 1,
+            totalPages = 0;
+        $.ajax({
+            url: `/Admin/Admin/ShowProduct1`,
 
-        for (var i = 0; i < response.length; i++) {
-            if (response[i].product_Status === true) {
-                var data = "<label class='btn btn-success text - white'>Active</label>"
-            }
-            else {
-                data = "<label class='btn btn-danger text-white'>InActive</label>"
-            }
-            $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
-                    <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
-        }
-    }
-
-    function apply_pagination() {
-
-        if ($('#pagination').data("twbs-pagination"))
-            $('#pagination').twbsPagination('destroy');
-
-        $pagination.twbsPagination({
-            totalPages: totalPages,
-            visiblePages: 6,
-            onPageClick: function (event, page) {
-                displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
-                endRec = (displayRecordsIndex) + recPerPage;
-
-                response = records.slice(displayRecordsIndex, endRec);
-                generate_table();
+            success: function (data) {
+                records = data;
+                console.log(records);
+                totalRecords = records.length;
+                totalPages = Math.ceil(totalRecords / recPerPage);
+                apply_pagination();
             }
         });
+        function generate_table() {
+
+            $(".customtbl .table tbody").empty();
+
+            for (var i = 0; i < response.length; i++) {
+                if (response[i].product_Status === true) {
+                    var data = "<label class='btn btn-success text - white'>Active</label>"
+                }
+                else {
+                    data = "<label class='btn btn-danger text-white'>InActive</label>"
+                }
+                $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
+                    <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
+            }
+        }
+
+        function apply_pagination() {
+
+            if ($('#pagination').data("twbs-pagination"))
+                $('#pagination').twbsPagination('destroy');
+
+            $pagination.twbsPagination({
+                totalPages: totalPages,
+                visiblePages: 6,
+                onPageClick: function (event, page) {
+                    displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+                    endRec = (displayRecordsIndex) + recPerPage;
+
+                    response = records.slice(displayRecordsIndex, endRec);
+                    generate_table();
+                }
+            });
+        }
     }
-    
+});
+
+$(document).ready(() => {
+    if (window.location == location1 + "ShowRestaurant") {
+        $("#pager").show();
+        
+        var $pagination = $('#pagination'),
+            totalRecords = 0,
+            records = [],
+            response = [],
+            recPerPage = 5,
+            page = 1,
+            totalPages = 0;
+        $.ajax({
+            url: `/Admin/Admin/ShowRestaurant1`,
+            type:"Get",
+            success: function (data) {
+                console.log(data);
+                records = data;
+                console.log(records);
+                totalRecords = records.length;
+                totalPages = Math.ceil(totalRecords / recPerPage);
+                apply_pagination();
+            }
+        });
+
+        function generate_table() {
+
+            $(".customtbl .table tbody").empty();
+
+            for (var i = 0; i < response.length; i++) {
+                if (response[i].status_by_Admin == true) {
+                    var data = "<div><div><input type='checkbox' checked class='switch_1'></div>";
+                }
+                else {
+                    data = "<div ><div><input type='checkbox' class='switch_1'></div>";
+                }
+                $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].restaurant_Detail_Id}</td><td data-label="Product Name">${response[i].restaurant_Detail_Name}</td>
+                    <td data-label="Product Price">${response[i].restaurant_Detail_Email}</td></td><td data-label="Product Status">${data}</td></tr>`);
+            }
+        }
+
+        function apply_pagination() {
+
+            if ($('#pagination').data("twbs-pagination"))
+                $('#pagination').twbsPagination('destroy');
+
+            $pagination.twbsPagination({
+                totalPages: totalPages,
+                visiblePages: 6,
+                onPageClick: function (event, page) {
+                    displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+                    endRec = (displayRecordsIndex) + recPerPage;
+
+                    response = records.slice(displayRecordsIndex, endRec);
+                    generate_table();
+                }
+            });
+        }
+    }
+
+
 });
