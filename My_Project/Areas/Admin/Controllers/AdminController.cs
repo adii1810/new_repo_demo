@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EmailServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using My_Project.Areas.Admin.ViewModels;
@@ -13,6 +14,12 @@ namespace My_Project.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminController : Controller
     {
+        private readonly IEmailSender _emailSender;
+
+        public AdminController(IEmailSender emailSender)
+        {
+            _emailSender = emailSender;
+        }
 
         // GET: AdminController
         //public ActionResult Index()
@@ -211,6 +218,24 @@ namespace My_Project.Areas.Admin.Controllers
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
+                return Json(result1);
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> updateStatus(int Id,bool Status,string Email)
+        {
+            //
+           // string[] str =  Email.Split("");
+            HttpClient client1 = new HttpClient();
+            client1.BaseAddress = new Uri("http://localhost:39658");
+            var httpResponse1 = await client1.GetAsync($"api/Adminapi/updateStatus/{Id}/{Status}");
+            if (httpResponse1.IsSuccessStatusCode)
+            {
+                var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
+                var message = new Message(new string[] {""}, "Test email", "Hello there");
+                _emailSender.SendEmail(message);
                 return Json(result1);
             }
             return null;

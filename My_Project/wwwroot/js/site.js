@@ -173,17 +173,21 @@ $(document).ready(() => {
     }
 });
 
+
+
 $(document).ready(() => {
     if (window.location == location1 + "ShowRestaurant") {
         $("#pager").show();
         
-        var $pagination = $('#pagination'),
-            totalRecords = 0,
-            records = [],
-            response = [],
-            recPerPage = 5,
-            page = 1,
-            totalPages = 0;
+        var $pagination = $('#pagination');
+        var totalRecords = 0;
+        var records = [];
+        var response = [];
+        var recPerPage = 5;
+        var page = 1;
+        var totalPages = 0;
+
+     
         $.ajax({
             url: `/Admin/Admin/ShowRestaurant1`,
             type:"Get",
@@ -197,19 +201,23 @@ $(document).ready(() => {
             }
         });
 
+
         function generate_table() {
 
             $(".customtbl .table tbody").empty();
 
             for (var i = 0; i < response.length; i++) {
+
+                alert(typeof response[i].restaurant_Detail_Email)
                 if (response[i].status_by_Admin == true) {
-                    var data = "<div><div><input type='checkbox' checked class='switch_1'></div>";
+                    var data = `<div><div><input type="checkbox" checked class="switch_1" id="restaurantStatus" onClick="resStatus( ${response[i].restaurant_Detail_Id},' ${ response[i].restaurant_Detail_Email } ')"></div></div>`;
+                    alert(data);
                 }
                 else {
-                    data = "<div ><div><input type='checkbox' class='switch_1'></div>";
-                }
+                    data = `<div><div><input type="checkbox" class="switch_1" id="restaurantStatus" onClick="resStatus( ${response[i].restaurant_Detail_Id},'${response[i].restaurant_Detail_Email} ')"></div></div>`;
+                    }
                 $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].restaurant_Detail_Id}</td><td data-label="Product Name">${response[i].restaurant_Detail_Name}</td>
-                    <td data-label="Product Price">${response[i].restaurant_Detail_Email}</td></td><td data-label="Product Status">${data}</td></tr>`);
+                    <td data-label="Product Price" id='Restaurant_Email'>${response[i].restaurant_Detail_Email}</td></td><td data-label="Product Status">${data}</td></tr>`);
             }
         }
 
@@ -234,3 +242,38 @@ $(document).ready(() => {
 
 
 });
+
+$("#restaurantStatus").click(function(){
+    debugger;
+    var data = document.getElementById("restaurantStatus");
+    console.log(data);
+    alert(data);
+});
+
+function resStatus(value,email) {
+   
+    debugger;
+    const statusFunction = (status) => {
+        $.ajax({
+            url: `/Admin/Admin/UpdateStatus`,
+            type: "Post",
+            data: { Status: status,Id:value ,Email:email },
+            success: function (response) {
+                alert("Update Success");
+            }
+        });
+    }
+    if ($('#restaurantStatus').prop('checked')) {
+        statusFunction(true);
+       
+    }
+    else {
+       // $('#restaurantStatus').prop('checked', false);
+        statusFunction(false);
+    }
+    console.log(data);
+   // alert(data);
+}
+
+
+

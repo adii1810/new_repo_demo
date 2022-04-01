@@ -95,6 +95,13 @@ namespace Food_Delivery_Api.Controllers
             var data =  _admin.ShowRestaurant();
             return data;
         }
+        [HttpGet("updateStatus/{Id}/{Status}")]
+        public string ShowRestaurant(int Id,bool Status)
+        {
+
+            var data = _admin.updateStatus(Id, Status);
+            return data;
+        }
 
 
 

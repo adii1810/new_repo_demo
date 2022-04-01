@@ -192,7 +192,16 @@ namespace Food_Delivery_Api.Repository
             var data = _context.Restaurant_Detail.ToList();
             return data;
         }
-
-
+        public string updateStatus(int Id, bool Status)
+        {
+            if ((_context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Id == Id).Count()) > 0)
+            {
+                var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Id == Id).FirstOrDefault();
+                data.status_by_Admin = Status;
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
+        }
     }
 }

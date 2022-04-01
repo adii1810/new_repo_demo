@@ -1,0 +1,10 @@
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\EmailServices\bin\Debug\netcoreapp3.1\EmailServices.deps.json
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\EmailServices\bin\Debug\netcoreapp3.1\EmailServices.dll
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\EmailServices\bin\Debug\netcoreapp3.1\EmailServices.pdb
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\EmailServices\obj\Debug\netcoreapp3.1\EmailServices.csproj.AssemblyReference.cache
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\EmailServices\obj\Debug\netcoreapp3.1\EmailServices.GeneratedMSBuildEditorConfig.editorconfig
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\EmailServices\obj\Debug\netcoreapp3.1\EmailServices.AssemblyInfoInputs.cache
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\EmailServices\obj\Debug\netcoreapp3.1\EmailServices.AssemblyInfo.cs
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\EmailServices\obj\Debug\netcoreapp3.1\EmailServices.csproj.CoreCompileInputs.cache
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\EmailServices\obj\Debug\netcoreapp3.1\EmailServices.dll
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\EmailServices\obj\Debug\netcoreapp3.1\EmailServices.pdb

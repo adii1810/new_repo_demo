@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmailServices\EmailServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="wwwroot\js\front.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
