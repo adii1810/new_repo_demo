@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace My_Project.Areas.Admin.Controllers
 {
@@ -15,10 +16,14 @@ namespace My_Project.Areas.Admin.Controllers
     public class AdminController : Controller
     {
         private readonly IEmailSender _emailSender;
+        private readonly IConfiguration _config;
+        public string AdminApiString;
 
-        public AdminController(IEmailSender emailSender)
+        public AdminController(IEmailSender emailSender,IConfiguration config)
         {
             _emailSender = emailSender;
+            _config = config;
+            AdminApiString =  _config.GetValue<string>("APISTRING");
         }
 
         // GET: AdminController
@@ -33,8 +38,8 @@ namespace My_Project.Areas.Admin.Controllers
             // if (str != null)
             // {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:39658");
-            HttpResponseMessage httpResponse = await client.GetAsync($"api/Adminapi/ShowUser");
+            client.BaseAddress = new Uri(AdminApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"ShowUser");
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
@@ -53,8 +58,8 @@ namespace My_Project.Areas.Admin.Controllers
             // if (str != null)
             // {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:39658");
-            HttpResponseMessage httpResponse = await client.GetAsync($"api/Adminapi/ShowOrder/{Id}");
+            client.BaseAddress = new Uri(AdminApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"ShowOrder/{Id}");
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
@@ -72,8 +77,8 @@ namespace My_Project.Areas.Admin.Controllers
             // if (str != null)
             // {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:39658");
-            HttpResponseMessage httpResponse = await client.GetAsync($"api/Adminapi/ShowOrderDetails/{Id}");
+            client.BaseAddress = new Uri(AdminApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"ShowOrderDetails/{Id}");
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
@@ -94,17 +99,14 @@ namespace My_Project.Areas.Admin.Controllers
             //if (str != null)
             //{
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.BaseAddress = new Uri("http://localhost:39658");
-            HttpResponseMessage httpResponse = await client.GetAsync($"api/AdminApi/Category");
+            client.BaseAddress = new Uri(AdminApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"Category");
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
-                //UserDataViewModel userData = new UserDataViewModel();
                 List<SelectListItem> enums = new List<SelectListItem>();
                 enums = JsonConvert.DeserializeObject<List<SelectListItem>>(result);
                 vm.Categories = enums;
-
                 ViewBag.category = vm;
             }
             //// var str = HttpContext.Session.GetString("Admin");
@@ -129,8 +131,8 @@ namespace My_Project.Areas.Admin.Controllers
 
             HttpClient client1 = new HttpClient();
 
-            client1.BaseAddress = new Uri("http://localhost:39658");
-            var httpResponse1 = await client1.GetAsync($"api/Adminapi/ShowProduct");
+            client1.BaseAddress = new Uri(AdminApiString);
+            var httpResponse1 = await client1.GetAsync($"ShowProduct");
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
@@ -163,8 +165,8 @@ namespace My_Project.Areas.Admin.Controllers
             // return RedirectToAction("AdminLogin");
 
             HttpClient client1 = new HttpClient();
-            client1.BaseAddress = new Uri("http://localhost:39658");
-            var httpResponse1 = await client1.GetAsync($"api/Adminapi/ShowRestaurant");
+            client1.BaseAddress = new Uri(AdminApiString);
+            var httpResponse1 = await client1.GetAsync($"ShowRestaurant");
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
@@ -197,8 +199,8 @@ namespace My_Project.Areas.Admin.Controllers
                 Name = "null";
 
             HttpClient client1 = new HttpClient();
-            client1.BaseAddress = new Uri("http://localhost:39658");
-            var httpResponse1 = await client1.GetAsync($"api/Adminapi/Showproduct/{Drop}/{Name}");
+            client1.BaseAddress = new Uri(AdminApiString);
+            var httpResponse1 = await client1.GetAsync($"Showproduct/{Drop}/{Name}");
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
@@ -213,8 +215,8 @@ namespace My_Project.Areas.Admin.Controllers
         public async Task<JsonResult> myResturant(string Prefix)
         {
             HttpClient client1 = new HttpClient();
-            client1.BaseAddress = new Uri("http://localhost:39658");
-            var httpResponse1 = await client1.GetAsync($"api/Adminapi/MyR?pre={Prefix}");
+            client1.BaseAddress = new Uri(AdminApiString);
+            var httpResponse1 = await client1.GetAsync($"MyR?pre={Prefix}");
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
@@ -226,15 +228,15 @@ namespace My_Project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> updateStatus(int Id,bool Status,string Email)
         {
-            //
-           // string[] str =  Email.Split("");
+         
             HttpClient client1 = new HttpClient();
-            client1.BaseAddress = new Uri("http://localhost:39658");
-            var httpResponse1 = await client1.GetAsync($"api/Adminapi/updateStatus/{Id}/{Status}");
+            client1.BaseAddress = new Uri(AdminApiString);
+            var httpResponse1 = await client1.GetAsync($"updateStatus/{Id}/{Status}");
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
-                var message = new Message(new string[] {""}, "Test email", "Hello there");
+                var MsgBody = Status == true ? "<p class='text-danger'>Account Has Been Activated</p>" : "<p class='text-danger'>Account Has Been Dectivated</p>";
+                var message = new Message(Email, "No Reply",MsgBody);
                 _emailSender.SendEmail(message);
                 return Json(result1);
             }

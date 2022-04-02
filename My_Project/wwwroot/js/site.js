@@ -16,18 +16,50 @@
 //}
 var location1 = "https://localhost:44397/Admin/Admin/";
 
+function generate_table() {
+
+    $(".customtbl .table tbody").empty();
+
+    for (var i = 0; i < response.length; i++) {
+        if (response[i].product_Status === true) {
+            var data = "<label class='btn btn-success text - white'>Active</label>"
+        }
+        else {
+            data = "<label class='btn btn-danger text-white'>InActive</label>"
+        }
+        $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
+                    <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
+    }
+}
+
+function apply_pagination() {
+
+    if ($('#pagination').data("twbs-pagination"))
+        $('#pagination').twbsPagination('destroy');
+
+    $pagination.twbsPagination({
+        totalPages: totalPages,
+        visiblePages: 6,
+        onPageClick: function (event, page) {
+            displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+            endRec = (displayRecordsIndex) + recPerPage;
+
+            response = records.slice(displayRecordsIndex, endRec);
+            generate_table();
+        }
+    });
+}
+
 $("#Name").autocomplete({
-    maxShowItems: 1,
+    maxShowItems: 3,
     source: function (request, response) {
         $.ajax({
-            url: "/Admin/Admin/myResturant",
+            url: location1+"myResturant",
             type: "POST",
             dataType: "json",
             data: { Prefix: request.term },
             success: function (data) {
                 var data2 = JSON.parse(data);
-                console.log(typeof (data2));
-                console.log(data2);
                 response($.map(data2, function (item) {
                     return item;
                 }))
@@ -53,11 +85,11 @@ $("#btnSearch").click(function () {
         totalRecords = 0,
         records = [],
         response = [],
-        recPerPage = 5,
+        recPerPage = 1,
         page = 1,
         totalPages = 0;
     $.ajax({
-        url: `/Admin/Admin/ShowProduct1`,
+        url: location1+`ShowProduct1`,
         type: "Post",
         data: { Drop: id, Name: name },
 
@@ -85,10 +117,10 @@ $("#btnSearch").click(function () {
 
         for (var i = 0; i < response.length; i++) {
             if (response[i].product_Status === true) {
-                var data = "<label class='btn btn-success text - white'>Active</label>"
+                var data = "<label class='btn btn-success text - white' disabled>Active</label>"
             }
             else {
-                data = "<label class='btn btn-danger text-white'>InActive</label>"
+                data = "<label class='btn btn-danger text-white' disabled>InActive</label>"
             }
             $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
                     <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
@@ -118,16 +150,18 @@ $("#btnSearch").click(function () {
 $(document).ready(() => {
     if (window.location == location1 + "ShowProduct") {
 
+
+
         $("#pager").show();
         var $pagination = $('#pagination'),
             totalRecords = 0,
             records = [],
             response = [],
-            recPerPage = 5,
+            recPerPage = 1,
             page = 1,
             totalPages = 0;
         $.ajax({
-            url: `/Admin/Admin/ShowProduct1`,
+            url: location1+`ShowProduct1`,
 
             success: function (data) {
                 records = data;
@@ -137,39 +171,39 @@ $(document).ready(() => {
                 apply_pagination();
             }
         });
-        function generate_table() {
+        //function generate_table() {
 
-            $(".customtbl .table tbody").empty();
+        //    $(".customtbl .table tbody").empty();
 
-            for (var i = 0; i < response.length; i++) {
-                if (response[i].product_Status === true) {
-                    var data = "<label class='btn btn-success text - white'>Active</label>"
-                }
-                else {
-                    data = "<label class='btn btn-danger text-white'>InActive</label>"
-                }
-                $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
-                    <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
-            }
-        }
+        //    for (var i = 0; i < response.length; i++) {
+        //        if (response[i].product_Status === true) {
+        //            var data = "<label class='btn btn-success text - white'>Active</label>"
+        //        }
+        //        else {
+        //            data = "<label class='btn btn-danger text-white'>InActive</label>"
+        //        }
+        //        $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
+        //            <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
+        //    }
+        //}
 
-        function apply_pagination() {
+        //function apply_pagination() {
 
-            if ($('#pagination').data("twbs-pagination"))
-                $('#pagination').twbsPagination('destroy');
+        //    if ($('#pagination').data("twbs-pagination"))
+        //        $('#pagination').twbsPagination('destroy');
 
-            $pagination.twbsPagination({
-                totalPages: totalPages,
-                visiblePages: 6,
-                onPageClick: function (event, page) {
-                    displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
-                    endRec = (displayRecordsIndex) + recPerPage;
+        //    $pagination.twbsPagination({
+        //        totalPages: totalPages,
+        //        visiblePages: 6,
+        //        onPageClick: function (event, page) {
+        //            displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+        //            endRec = (displayRecordsIndex) + recPerPage;
 
-                    response = records.slice(displayRecordsIndex, endRec);
-                    generate_table();
-                }
-            });
-        }
+        //            response = records.slice(displayRecordsIndex, endRec);
+        //            generate_table();
+        //        }
+        //    });
+        //}
     }
 });
 
@@ -189,7 +223,7 @@ $(document).ready(() => {
 
      
         $.ajax({
-            url: `/Admin/Admin/ShowRestaurant1`,
+            url: location1+`ShowRestaurant1`,
             type:"Get",
             success: function (data) {
                 console.log(data);
@@ -208,14 +242,15 @@ $(document).ready(() => {
 
             for (var i = 0; i < response.length; i++) {
 
-                alert(typeof response[i].restaurant_Detail_Email)
+                
                 if (response[i].status_by_Admin == true) {
-                    var data = `<div><div><input type="checkbox" checked class="switch_1" id="restaurantStatus" onClick="resStatus( ${response[i].restaurant_Detail_Id},' ${ response[i].restaurant_Detail_Email } ')"></div></div>`;
-                    alert(data);
+                    var data = `<div><div><input type="checkbox" resid="${response[i].restaurant_Detail_Id}" checked class="switch_1" id="restaurantStatus_${response[i].restaurant_Detail_Id}" onClick="resStatus( ${response[i].restaurant_Detail_Id},' ${ response[i].restaurant_Detail_Email } ')"></div></div>`;
+                   // alert(data);
                 }
                 else {
-                    data = `<div><div><input type="checkbox" class="switch_1" id="restaurantStatus" onClick="resStatus( ${response[i].restaurant_Detail_Id},'${response[i].restaurant_Detail_Email} ')"></div></div>`;
-                    }
+                    data = `<div><div><input type="checkbox" class="switch_1" id="restaurantStatus_${response[i].restaurant_Detail_Id}" onClick="resStatus( ${response[i].restaurant_Detail_Id},'${response[i].restaurant_Detail_Email} ')"></div></div>`;
+                }
+               // alert(response[i].status_by_Admin);
                 $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].restaurant_Detail_Id}</td><td data-label="Product Name">${response[i].restaurant_Detail_Name}</td>
                     <td data-label="Product Price" id='Restaurant_Email'>${response[i].restaurant_Detail_Email}</td></td><td data-label="Product Status">${data}</td></tr>`);
             }
@@ -243,19 +278,22 @@ $(document).ready(() => {
 
 });
 
-$("#restaurantStatus").click(function(){
-    debugger;
-    var data = document.getElementById("restaurantStatus");
-    console.log(data);
-    alert(data);
+
+$('a.pagerlink').click(function () {
+    var id = $(this).attr('id');
+    $container.cycle(id.replace('#', ''));
+    return false;
 });
 
 function resStatus(value,email) {
-   
-    debugger;
+
+    //debugger;
     const statusFunction = (status) => {
+
+        alert(status)
+        //debugger;
         $.ajax({
-            url: `/Admin/Admin/UpdateStatus`,
+            url: location1+`UpdateStatus`,
             type: "Post",
             data: { Status: status,Id:value ,Email:email },
             success: function (response) {
@@ -263,16 +301,18 @@ function resStatus(value,email) {
             }
         });
     }
-    if ($('#restaurantStatus').prop('checked')) {
+
+
+    alert($('#restaurantStatus_' + value).prop('checked'))
+    //debugger;
+
+    if ($('#restaurantStatus_' + value).prop('checked')) {
         statusFunction(true);
-       
     }
     else {
-       // $('#restaurantStatus').prop('checked', false);
         statusFunction(false);
     }
     console.log(data);
-   // alert(data);
 }
 
 
