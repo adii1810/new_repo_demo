@@ -28,7 +28,15 @@ namespace My_Project
             services.AddSingleton(emailConfig);
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddControllersWithViews();
-           // services.AddRazorPages();
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                
+            });
+
+            // services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +56,7 @@ namespace My_Project
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

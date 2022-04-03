@@ -98,19 +98,14 @@
     <label class="text-blue"><i class="fa-brands fa-opencart"> User Details</i></label>
 </div>
 
-<table class="table">
-    <tr>
-        <td>
-            <input  />
-        </td>
-    </tr>
-</table>
 
+
+<div class="customtbl">
 <table class="table">
     <thead>
         <tr>
             <th>
-                Order Id
+                Sr.No
             </th>
             <th>
                 Order Date
@@ -125,26 +120,27 @@
         </tr>
     </thead>
     <tbody>
+        @{
+            var i = 1;
+            }
         @foreach (var item in Model)
         {
-            <tr>
-                <td data-label="Order Id">
-                    @Html.DisplayFor(modelItem => item.Order_Id)
+            
+           <tr>
+               <td>@i</td>
+            <td>@item.Order_Date</td>
+            <td>@item.Valet_id</td>
+            <td>@item.Total</td>
+             <td>
+                    <a class="text-blue" asp-controller="Admin" asp-action="ShowOrdersDetails" asp-route-Id= "@item.Order_Id" asp-route-total ="@item.Total"> <i class=" fa-solid fa-cart-arrow-down"></i> Show Orders</a>
                 </td>
-                <td data-label="Order Date">
-                    @Html.DisplayFor(modelItem => item.Order_Date)
-                </td>
-                <td data-label="Valet Id">
-                    @Html.DisplayFor(modelItem => item.Valet_id)
-                </td>
-                <td data-label="Total">
-                    @Html.DisplayFor(modelItem => item.Total)
-                </td>
-                <td>
-                  <a class="text-blue" asp-controller="Admin" asp-action="ShowOrdersDetails" asp-route-Id="@item.Order_Id" asp-route-total="@item.Total"><i class="fa-solid fa-burger-fries">Orders Details</i> </a>
-
-                </td>
-            </tr>
-        }
+                    @{
+                        i++;
+                    }
+        </tr>
+                
+            }
+        
     </tbody>
 </table>
+</div>

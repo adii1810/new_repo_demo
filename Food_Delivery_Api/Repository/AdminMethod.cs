@@ -60,6 +60,13 @@ namespace Food_Delivery_Api.Repository
             return data;
         }
 
+        public IEnumerable<string> MyUser(string pre)
+        {
+
+            var data = _context.User_Data.Where(x => x.User_FirstName.StartsWith(pre)).Select(x => x.User_FirstName).ToList();
+            return data;
+        }
+
         public async Task<IEnumerable<OrderDetailViewModel>> OrderDetailsPerUser(int OrderId)
         {
             List<OrderDetailViewModel> ol = new List<OrderDetailViewModel>();
@@ -170,20 +177,15 @@ namespace Food_Delivery_Api.Repository
             return l;
         }
 
-        // public IEnumerable<Product> ShowProductByFoodType(int mainId)
-        // {
-        //     //var subCat = _context.Sub_Categorie.Where(x => (int)x.Main_Category_Id == mainId)
-
-        // }
-
-        // public IEnumerable<Product> ShowProductByRestaurant(string name)
-        // {
-
-        // }
-
         public async Task<IEnumerable<User_Data>> ShowUser()
         {
             var data = await _context.User_Data.OrderByDescending(x => x.User_Id).ToListAsync();
+            return data;
+        }
+
+        public async Task<IEnumerable<User_Data>> ShowUser1(string name)
+        {
+            var data = await _context.User_Data.Where(x=>x.User_FirstName == name).OrderByDescending(x => x.User_Id).ToListAsync();
             return data;
         }
 

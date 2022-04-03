@@ -23,14 +23,6 @@ namespace Food_Delivery_Api.Controllers
             _admin = admin;
         }
 
-        // GET: api/<AdminApiController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value134", "value2" };
-        //}
-
-
         [HttpGet("Category")]
         public IList<SelectListItem> Category()
         {
@@ -64,7 +56,13 @@ namespace Food_Delivery_Api.Controllers
             var data = _admin.MyRestaurant(pre);
             return data;
         }
-        
+
+        [HttpGet("myU")]
+        public IEnumerable<string> myU(string pre)
+        {
+            var data = _admin.MyUser(pre);
+            return data;
+        }
 
         [HttpGet("{user,pass}")]
         public string Login(string user,string pass)
@@ -87,7 +85,13 @@ namespace Food_Delivery_Api.Controllers
             var data = await _admin.ShowUser();
             return data;
         }
+        [HttpGet("ShowUser1/{name}")]
+        public async Task<IEnumerable<User_Data>> ShowUser1(string name)
+        {
 
+            var data = await _admin.ShowUser1(name);
+            return data;
+        }
         [HttpGet("ShowRestaurant")]
         public IEnumerable<Restaurant_Detail> ShowRestaurant()
         {
@@ -120,12 +124,6 @@ namespace Food_Delivery_Api.Controllers
         }
 
         
-        //[HttpGet("ShowProduct/{MainId,name}")]
-        //public IEnumerable<Product> ShowProduct(int MainId, string name)
-        //{
-        //    var data = _admin.ShowProduct(MainId, name);
-        //    return data;
-        //}
         //POST api/<AdminApiController>
         [HttpPost]
         public void Post([FromBody] string value)

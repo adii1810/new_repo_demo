@@ -97,12 +97,23 @@
     <label class="text-blue"><i class="fa-solid fa-user"> User Details</i></label>
 </div>
 
+    <table class="table">
+        <tr>
+            <td >
+                <input type="text" value=""  class="form-control" id="UserName" placeholder="User Name"  />
+            </td>
+            <td>
+                <input type="button"  class="btn btn-warning text-dark form-control" id="btnSearchUser"  value="Search" />
+            </td>
+        </tr>
+    </table>
 
+<div class="customtbl">
 <table class="table" asp-area="Admin">
     <thead>
         <tr>
             <th>
-                User Id
+                Sr.No
             </th>
 
             <th>
@@ -112,12 +123,12 @@
                 Email
             </th>
 
-            <th></th>
+            <th Phone No></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
+        @*@foreach (var item in Model)*@
+        @*{
             <tr>
                 <td data-label="ID">
                     @Html.DisplayFor(modelItem => item.User_Id)
@@ -131,11 +142,9 @@
 
                 <td>
                     <a class="text-blue" asp-controller="Admin" asp-action="ShowOrders" asp-route-Id= "@item.User_Id"><i class="fa-solid fa-cart-arrow-down"></i> Show Orders</a>
-                    
-
                 </td>
             </tr>
-        }
+        }*@
     </tbody>
 </table>
-
+</div>

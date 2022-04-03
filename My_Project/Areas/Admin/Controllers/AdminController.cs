@@ -26,78 +26,91 @@ namespace My_Project.Areas.Admin.Controllers
             AdminApiString =  _config.GetValue<string>("APISTRING");
         }
 
-        // GET: AdminController
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
-
+        public async Task<ActionResult> AdminLogin()
+        {
+            return View();
+        }
         public async Task<ActionResult> ShowUser()
         {
-            //// var str = HttpContext.Session.GetString("Admin");
-            // if (str != null)
-            // {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(AdminApiString);
-            HttpResponseMessage httpResponse = await client.GetAsync($"ShowUser");
-            if (httpResponse.IsSuccessStatusCode)
+            var str = HttpContext.Session.GetString("Admin");
+
+            if (str == "Admin")
             {
-                var result = httpResponse.Content.ReadAsStringAsync().Result;
-                //UserDataViewModel userData = new UserDataViewModel();
-                List<UserDataViewModel> data = new List<UserDataViewModel>();
-                data = JsonConvert.DeserializeObject<List<UserDataViewModel>>(result);
-                return View(data);
+                return View();
             }
-            return View();
-            //  }
+            return RedirectToAction("AdminLogin","Admin");
+        }
+        
+        [HttpGet]
+        public async Task<IEnumerable<UserDataViewModel>> ShowUser1()
+        {
+           
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(AdminApiString);
+                HttpResponseMessage httpResponse = await client.GetAsync($"ShowUser");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var result = httpResponse.Content.ReadAsStringAsync().Result;
+                    List<UserDataViewModel> data = new List<UserDataViewModel>();
+                    data = JsonConvert.DeserializeObject<List<UserDataViewModel>>(result);
+                    return data;
+                }
+                return null;
+            
         }
 
         public async Task<ActionResult> ShowOrders(int Id)
         {
-            //// var str = HttpContext.Session.GetString("Admin");
-            // if (str != null)
-            // {
+            var str = HttpContext.Session.GetString("Admin");
+
+            if (str == "Admin")
+            {           
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(AdminApiString);
             HttpResponseMessage httpResponse = await client.GetAsync($"ShowOrder/{Id}");
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
-                //UserDataViewModel userData = new UserDataViewModel();
+
                 List<OrderViewModel> data = new List<OrderViewModel>();
                 data = JsonConvert.DeserializeObject<List<OrderViewModel>>(result);
                 return View(data);
             }
             return View();
-            //  }
+            }
+            return RedirectToAction("AdminLogin");
         }
+
         public async Task<ActionResult> ShowOrdersDetails(int Id, int total)
         {
-            //// var str = HttpContext.Session.GetString("Admin");
-            // if (str != null)
-            // {
-            HttpClient client = new HttpClient();
+            var str = HttpContext.Session.GetString("Admin");
+
+            if (str == "Admin")
+            {
+
+                HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(AdminApiString);
             HttpResponseMessage httpResponse = await client.GetAsync($"ShowOrderDetails/{Id}");
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
-                //UserDataViewModel userData = new UserDataViewModel();
                 List<OrderDetailViewModel> data = new List<OrderDetailViewModel>();
                 data = JsonConvert.DeserializeObject<List<OrderDetailViewModel>>(result);
                 ViewBag.total = total;
                 return View(data);
             }
             return View();
-            //  }
+            }
+            return RedirectToAction("AdminLogin");
         }
 
         public async Task<ActionResult> ShowProduct()
         {
+            var str = HttpContext.Session.GetString("Admin");
+
+            if (str == "Admin")
+            {           
             CategoryViewModel vm = new CategoryViewModel();
-            //var str = HttpContext.Session.GetString("Admin");
-            //if (str != null)
-            //{
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(AdminApiString);
             HttpResponseMessage httpResponse = await client.GetAsync($"Category");
@@ -109,26 +122,13 @@ namespace My_Project.Areas.Admin.Controllers
                 vm.Categories = enums;
                 ViewBag.category = vm;
             }
-            //// var str = HttpContext.Session.GetString("Admin");
-            // if (str != null)
-            // {
-
-
-            //var str = HttpContext.Session.GetString("Admin");
-            //if (str != null)
-            //{
-
-            //  }
             return View();
+            }
+            return RedirectToAction("AdminLogin");
         }
 
         public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1()
         {
-            //// var str = HttpContext.Session.GetString("Admin");
-            // if (str != null)
-            // {x
-            // return RedirectToAction("AdminLogin");
-
             HttpClient client1 = new HttpClient();
 
             client1.BaseAddress = new Uri(AdminApiString);
@@ -136,61 +136,62 @@ namespace My_Project.Areas.Admin.Controllers
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
-                //UserDataViewModel userData = new UserDataViewModel();
                 List<ShowProductViewModel> data1 = new List<ShowProductViewModel>();
                 data1 = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result1);
                 return data1;
             }
             return null;
-            //  }
         }
 
-        public async Task<ActionResult> ShowRestaurant()
+        public ActionResult ShowRestaurant()
         {
-            //// var str = HttpContext.Session.GetString("Admin");
-            // if (str != null)
-            // {x
-            // return RedirectToAction("AdminLogin");
+            var str = HttpContext.Session.GetString("Admin");
 
-           
-            return View();
-            //  }
+            if (str == "Admin")
+            {
+                return View();
+            }
+            return RedirectToAction("AdminLogin");
         }
         [HttpGet]
         public async Task<IEnumerable<RestaurantViewModel>> ShowRestaurant1()
         {
-            //// var str = HttpContext.Session.GetString("Admin");
-            // if (str != null)
-            // {x
-            // return RedirectToAction("AdminLogin");
-
             HttpClient client1 = new HttpClient();
             client1.BaseAddress = new Uri(AdminApiString);
             var httpResponse1 = await client1.GetAsync($"ShowRestaurant");
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
-                //UserDataViewModel userData = new UserDataViewModel();
                 List<RestaurantViewModel> data1 = new List<RestaurantViewModel>();
                 data1 = JsonConvert.DeserializeObject<List<RestaurantViewModel>>(result1);
                 return data1;
             }
             return null;
-            //  }
         }
 
-        // GET: AdminController/Details/5
-        public ActionResult Details(int id)
+        [HttpPost]
+        public async Task<ActionResult> AdminLogin(string User, string Pass)
         {
-            return View();
-        }
+            var str = HttpContext.Session.GetString("Admin");
+            if (str == null)
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri("http://localhost:39658");
+                HttpResponseMessage httpResponse = await client.GetAsync($"api/Adminapi/Login?user={User}&pass={Pass}");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var result = httpResponse.Content.ReadAsStringAsync().Result;
+                    if (result == "true")
+                    {
+                        HttpContext.Session.SetString("Admin", User);
+                        return RedirectToAction("Index");
 
-        // GET: AdminController/Create
-        public ActionResult Create()
-        {
-            return View();
+                    }
+                }
+                return View();
+            }
+            return RedirectToAction("Index");
         }
-
 
         [HttpPost]
         public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1(int Drop, string Name = "")
@@ -204,6 +205,7 @@ namespace My_Project.Areas.Admin.Controllers
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
+                
                 List<ShowProductViewModel> data1 = new List<ShowProductViewModel>();
                 data1 = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result1);
                 return data1;
@@ -224,6 +226,19 @@ namespace My_Project.Areas.Admin.Controllers
             }
             return null;
         }
+        [HttpPost]
+        public async Task<JsonResult> myUser(string Prefix)
+        {
+            HttpClient client1 = new HttpClient();
+            client1.BaseAddress = new Uri(AdminApiString);
+            var httpResponse1 = await client1.GetAsync($"MyU?pre={Prefix}");
+            if (httpResponse1.IsSuccessStatusCode)
+            {
+                var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
+                return Json(result1);
+            }
+            return null;
+        }
 
         [HttpPost]
         public async Task<JsonResult> updateStatus(int Id,bool Status,string Email)
@@ -235,68 +250,27 @@ namespace My_Project.Areas.Admin.Controllers
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
-                var MsgBody = Status == true ? "<p class='text-danger'>Account Has Been Activated</p>" : "<p class='text-danger'>Account Has Been Dectivated</p>";
+                var MsgBody = Status == true ? "Account Has Been Activated" : "Account Has Been Dectivated";
                 var message = new Message(Email, "No Reply",MsgBody);
                 _emailSender.SendEmail(message);
                 return Json(result1);
             }
             return null;
         }
-        // POST: AdminController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IEnumerable<UserDataViewModel>> FindUser(string Name)
         {
-            try
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(AdminApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"ShowUser1/{Name}");
+            if (httpResponse.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(Index));
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                List<UserDataViewModel> data = new List<UserDataViewModel>();
+                data = JsonConvert.DeserializeObject<List<UserDataViewModel>>(result);
+                return data;
             }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: AdminController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: AdminController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: AdminController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: AdminController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            return null;
+        }         
     }
 }

@@ -1,34 +1,29 @@
 {
   "format": 1,
   "restore": {
-    "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\My_Project\\My_Project.csproj": {}
+    "F:\\my_data\\new_repo_demo\\My_Project\\My_Project.csproj": {}
   },
   "projects": {
-    "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\EmailServices\\EmailServices.csproj": {
+    "F:\\my_data\\new_repo_demo\\EmailServices\\EmailServices.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\EmailServices\\EmailServices.csproj",
+        "projectUniqueName": "F:\\my_data\\new_repo_demo\\EmailServices\\EmailServices.csproj",
         "projectName": "EmailServices",
-        "projectPath": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\EmailServices\\EmailServices.csproj",
-        "packagesPath": "C:\\Users\\Ulcom31\\.nuget\\packages\\",
-        "outputPath": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\EmailServices\\obj\\",
+        "projectPath": "F:\\my_data\\new_repo_demo\\EmailServices\\EmailServices.csproj",
+        "packagesPath": "C:\\Users\\jay\\.nuget\\packages\\",
+        "outputPath": "F:\\my_data\\new_repo_demo\\EmailServices\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Ulcom31\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\jay\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://packagesource": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
@@ -66,42 +61,37 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.405\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\My_Project\\My_Project.csproj": {
+    "F:\\my_data\\new_repo_demo\\My_Project\\My_Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\My_Project\\My_Project.csproj",
+        "projectUniqueName": "F:\\my_data\\new_repo_demo\\My_Project\\My_Project.csproj",
         "projectName": "My_Project",
-        "projectPath": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\My_Project\\My_Project.csproj",
-        "packagesPath": "C:\\Users\\Ulcom31\\.nuget\\packages\\",
-        "outputPath": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\My_Project\\obj\\",
+        "projectPath": "F:\\my_data\\new_repo_demo\\My_Project\\My_Project.csproj",
+        "packagesPath": "C:\\Users\\jay\\.nuget\\packages\\",
+        "outputPath": "F:\\my_data\\new_repo_demo\\My_Project\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Ulcom31\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\jay\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://packagesource": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\EmailServices\\EmailServices.csproj": {
-                "projectPath": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\EmailServices\\EmailServices.csproj"
+              "F:\\my_data\\new_repo_demo\\EmailServices\\EmailServices.csproj": {
+                "projectPath": "F:\\my_data\\new_repo_demo\\EmailServices\\EmailServices.csproj"
               }
             }
           }
@@ -119,6 +109,10 @@
             "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
               "target": "Package",
               "version": "[3.1.23, )"
+            },
+            "Microsoft.AspNetCore.Session": {
+              "target": "Package",
+              "version": "[2.2.0, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
@@ -143,7 +137,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.405\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
