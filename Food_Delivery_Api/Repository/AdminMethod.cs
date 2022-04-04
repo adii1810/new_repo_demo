@@ -185,13 +185,28 @@ namespace Food_Delivery_Api.Repository
 
         public async Task<IEnumerable<User_Data>> ShowUser1(string name)
         {
-            var data = await _context.User_Data.Where(x=>x.User_FirstName == name).OrderByDescending(x => x.User_Id).ToListAsync();
+            List<User_Data> data;
+            if(name == "null")
+                data = await _context.User_Data.OrderByDescending(x => x.User_Id).ToListAsync();
+            else
+                data = await _context.User_Data.Where(x=>x.User_FirstName == name).OrderByDescending(x => x.User_Id).ToListAsync();
+
             return data;
         }
 
         public IEnumerable<Restaurant_Detail> ShowRestaurant()
         {
             var data = _context.Restaurant_Detail.ToList();
+            return data;
+        }
+        
+        public IEnumerable<Restaurant_Detail> ShowRestaurant1(string name)
+        {
+            List<Restaurant_Detail> data;
+            if (name == "null")
+                 data = _context.Restaurant_Detail.ToList();
+            else
+                 data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Name == name).ToList();
             return data;
         }
         public string updateStatus(int Id, bool Status)

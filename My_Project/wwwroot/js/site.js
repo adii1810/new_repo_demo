@@ -160,7 +160,7 @@ $("#btnSearch").click(function () {
         type: "Post",
         data: { Drop: id, Name: name },
         success: function (data) {
-            if (mydata.length == 0) {
+            if (data.length == 0) {
                 $(".customtbl .table tbody").empty();
             }
             page1(data);
@@ -187,6 +187,29 @@ $("#btnSearchUser").click(function () {
         data: { Name: name },
         success: function (data) {
                 $(".customtbl .table tbody").empty();
+            page1(data);
+        },
+        failure: function (response) {
+            console.log("failure");
+            alert(response.responseText);
+        },
+        error: function (response) {
+            console.log("error");
+            alert(response.responseText);
+        }
+    });
+});
+$("#btnSearchRestaurant").click(function () {
+
+    $("#pager").show();
+
+    var name = document.getElementById("Name").value;
+    $.ajax({
+        url: location1 + `FindRestaurant`,
+        type: "Post",
+        data: { Name: name },
+        success: function (data) {
+            $(".customtbl .table tbody").empty();
             page1(data);
         },
         failure: function (response) {
@@ -251,13 +274,14 @@ $('a.pagerlink').click(function () {
 });
 
 function resStatus(value, email) {
-
+    $('#restaurantStatus_' + value).addClass('lds-dual-ring');
     const statusFunction = (status) => {
         $.ajax({
             url: location1 + `UpdateStatus`,
             type: "Post",
             data: { Status: status, Id: value, Email: email },
             success: function (response) {
+                $('#restaurantStatus_' + value).removeClass('lds-dual-ring');
                 alert("Update Success");
             }
         });
@@ -268,7 +292,7 @@ function resStatus(value, email) {
     else {
         statusFunction(false);
     }
-    console.log(data);
+    //console.log(data);
 }
 
 

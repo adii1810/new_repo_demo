@@ -9,10 +9,16 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace My_Project.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="Admin")]
+    
     public class AdminController : Controller
     {
         private readonly IEmailSender _emailSender;
@@ -24,21 +30,10 @@ namespace My_Project.Areas.Admin.Controllers
             _emailSender = emailSender;
             _config = config;
             AdminApiString =  _config.GetValue<string>("APISTRING");
-        }
-
-        public async Task<ActionResult> AdminLogin()
-        {
-            return View();
-        }
+        }        
         public async Task<ActionResult> ShowUser()
         {
-            var str = HttpContext.Session.GetString("Admin");
-
-            if (str == "Admin")
-            {
                 return View();
-            }
-            return RedirectToAction("AdminLogin","Admin");
         }
         
         [HttpGet]
@@ -61,10 +56,7 @@ namespace My_Project.Areas.Admin.Controllers
 
         public async Task<ActionResult> ShowOrders(int Id)
         {
-            var str = HttpContext.Session.GetString("Admin");
-
-            if (str == "Admin")
-            {           
+           
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(AdminApiString);
             HttpResponseMessage httpResponse = await client.GetAsync($"ShowOrder/{Id}");
@@ -77,18 +69,13 @@ namespace My_Project.Areas.Admin.Controllers
                 return View(data);
             }
             return View();
-            }
-            return RedirectToAction("AdminLogin");
+            
+          
         }
 
         public async Task<ActionResult> ShowOrdersDetails(int Id, int total)
         {
-            var str = HttpContext.Session.GetString("Admin");
-
-            if (str == "Admin")
-            {
-
-                HttpClient client = new HttpClient();
+            HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(AdminApiString);
             HttpResponseMessage httpResponse = await client.GetAsync($"ShowOrderDetails/{Id}");
             if (httpResponse.IsSuccessStatusCode)
@@ -100,16 +87,11 @@ namespace My_Project.Areas.Admin.Controllers
                 return View(data);
             }
             return View();
-            }
-            return RedirectToAction("AdminLogin");
         }
 
         public async Task<ActionResult> ShowProduct()
         {
-            var str = HttpContext.Session.GetString("Admin");
-
-            if (str == "Admin")
-            {           
+                
             CategoryViewModel vm = new CategoryViewModel();
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(AdminApiString);
@@ -123,8 +105,7 @@ namespace My_Project.Areas.Admin.Controllers
                 ViewBag.category = vm;
             }
             return View();
-            }
-            return RedirectToAction("AdminLogin");
+           
         }
 
         public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1()
@@ -145,13 +126,7 @@ namespace My_Project.Areas.Admin.Controllers
 
         public ActionResult ShowRestaurant()
         {
-            var str = HttpContext.Session.GetString("Admin");
-
-            if (str == "Admin")
-            {
                 return View();
-            }
-            return RedirectToAction("AdminLogin");
         }
         [HttpGet]
         public async Task<IEnumerable<RestaurantViewModel>> ShowRestaurant1()
@@ -169,29 +144,7 @@ namespace My_Project.Areas.Admin.Controllers
             return null;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> AdminLogin(string User, string Pass)
-        {
-            var str = HttpContext.Session.GetString("Admin");
-            if (str == null)
-            {
-                HttpClient client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:39658");
-                HttpResponseMessage httpResponse = await client.GetAsync($"api/Adminapi/Login?user={User}&pass={Pass}");
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    var result = httpResponse.Content.ReadAsStringAsync().Result;
-                    if (result == "true")
-                    {
-                        HttpContext.Session.SetString("Admin", User);
-                        return RedirectToAction("Index");
-
-                    }
-                }
-                return View();
-            }
-            return RedirectToAction("Index");
-        }
+        
 
         [HttpPost]
         public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1(int Drop, string Name = "")
@@ -260,6 +213,9 @@ namespace My_Project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IEnumerable<UserDataViewModel>> FindUser(string Name)
         {
+            if (Name == null)
+                Name = "null";
+
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(AdminApiString);
             HttpResponseMessage httpResponse = await client.GetAsync($"ShowUser1/{Name}");
@@ -271,6 +227,32 @@ namespace My_Project.Areas.Admin.Controllers
                 return data;
             }
             return null;
-        }         
+        }
+
+        [HttpPost]
+        public async Task<IEnumerable<RestaurantViewModel>> FindRestaurant(string Name)
+        {
+            if (Name == null)
+                Name = "null";
+
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(AdminApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"ShowRestaurant1/{Name}");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                List<RestaurantViewModel> data = new List<RestaurantViewModel>();
+                data = JsonConvert.DeserializeObject<List<RestaurantViewModel>>(result);
+                return data;
+            }
+            return null;
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            var login = HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return LocalRedirect("~/Home/AdminLogin");
+        }
     }
 }

@@ -40,7 +40,7 @@
           <div class="col-lg-5 px-lg-4">
             <h1 class="text-base text-primary text-uppercase mb-4">Admin Login</h1>
             <h2 class="mb-4">Welcome back!</h2>
-            <form id="loginForm" asp-area="Admin" asp-controller="Admin" asp-action="ShowUser" class="mt-4" method="post">
+            <form id="loginForm" asp-controller="Home" asp-action="AdminLogin" class="mt-4" method="post">
               <div class="form-group mb-4">
                 <input type="text" name="User" placeholder="Username or Email address" class="form-control border-0 shadow form-control-lg">
               </div>
@@ -50,6 +50,8 @@
              
               <button type="submit" class="btn btn-primary shadow px-5">Log in</button>
             </form>
+          </div>
+            </div>
           </div>
         
     </div>

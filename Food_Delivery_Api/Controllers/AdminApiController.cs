@@ -44,6 +44,7 @@ namespace Food_Delivery_Api.Controllers
             return data;
         }
 
+
         [HttpGet("ShowProduct/{mainId}/{name}")]
         public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId,string name=null)
         {
@@ -97,6 +98,13 @@ namespace Food_Delivery_Api.Controllers
         {
 
             var data =  _admin.ShowRestaurant();
+            return data;
+        }
+        [HttpGet("ShowRestaurant1/{name}")]
+        public IEnumerable<Restaurant_Detail> ShowRestaurant1(string name)
+        {
+
+            var data = _admin.ShowRestaurant1(name);
             return data;
         }
         [HttpGet("updateStatus/{Id}/{Status}")]

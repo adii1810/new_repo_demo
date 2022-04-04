@@ -94,9 +94,9 @@
 
     /*CheckBox css toggle*/
 
-   
 
-   
+
+
 
     /* Switch 1 Specific Styles Start */
 
@@ -145,8 +145,35 @@
         }
 
     /* Switch 1 Specific Style End */
+    /*================Spinner====================*/
 
+    .lds-dual-ring {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+    }
 
+        .lds-dual-ring:after {
+            content: "";
+            display: block;
+            width: 30px;
+            height: 30px;
+            margin: 1px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            border-color: green transparent deepskyblue transparent;
+            animation: lds-dual-ring 1.2s linear infinite;
+        }
+
+    @@keyframes lds-dual-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 </style>
 
 <div class="py-4">
@@ -156,14 +183,13 @@
 @*<form asp-area="Admin">*@
 <table class="table">
     <tr class="row border-0">
-        
+
         <td class="col-10 border-0">
             <input type="text" value="" name="restaurant_Name" class="form-control" id="Name" placeholder="Restaurant" />
         </td>
-        <td class="col-2 border-0"">
-            @*<input type="submit" value="Submit" class=" form-control btn btn-dark text-blue  "/>*@
-            @*<button value="Submit" class=" form-control btn btn-blue text-blue" id="btnSearch">Search</button>*@
-            <input type="button" class="btn btn-warning text-dark form-control" id="btnSearch" value="Search" />
+        <td class="col-2 border-0" ">
+
+            <input type="button" class="btn btn-warning text-dark form-control" id="btnSearchRestaurant" value="Search" />
         </td>
     </tr>
 </table>
@@ -188,48 +214,6 @@
             </tr>
         </thead>
         <tbody>
-            @*@foreach (var item in Model) {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_User_Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Password)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Address)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_PhoneNo)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Email)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_City)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_State)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Restaurant_Detail_Zipcode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.status_by_Admin)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                            </td>
-                        </tr>
-                }*@
         </tbody>
     </table>
 

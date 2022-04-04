@@ -22,6 +22,7 @@ namespace Food_Delivery_Api.Repository
         public IEnumerable<ProductRatingViewModel> ShowProduct();
         public IEnumerable<ProductRatingViewModel> ShowProduct(int id,string name);
         public IEnumerable<Restaurant_Detail> ShowRestaurant();
+        public IEnumerable<Restaurant_Detail> ShowRestaurant1(string name);
         public string updateStatus(int Id,bool Status);
 
     }
