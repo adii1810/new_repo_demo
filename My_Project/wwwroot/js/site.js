@@ -57,21 +57,21 @@ function generate_table() {
             else {
                 data = "<label class='btn btn-danger text-white'>InActive</label>"
             }
-            $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].product_Id}</td><td data-label="Product Name">${response[i].product_Name}</td>
+            $('.customtbl .table tbody').append(`<tr ><td data-label="Sr.No" class="col-2">${i+1}</td><td data-label="Product Name">${response[i].product_Name}</td>
                     <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
         }
     }
     else if (window.location == location1 + "ShowRestaurant") {
         $(".customtbl .table tbody").empty();
-        for (var i = 0; i < response.length; i++) {
+        for ( i = 0; i < response.length; i++) {
 
             if (response[i].status_by_Admin == true) {
-                var data = `<div><div><input type="checkbox" resid="${response[i].restaurant_Detail_Id}" checked class="switch_1" id="restaurantStatus_${response[i].restaurant_Detail_Id}" onClick="resStatus( ${response[i].restaurant_Detail_Id},' ${response[i].restaurant_Detail_Email} ')"></div></div>`;
+                 data = `<div><div><input type="checkbox" resid="${response[i].restaurant_Detail_Id}" checked class="switch_1" id="restaurantStatus_${response[i].restaurant_Detail_Id}" onClick="resStatus( ${response[i].restaurant_Detail_Id},' ${response[i].restaurant_Detail_Email} ')"></div></div>`;
             }
             else {
                 data = `<div><div><input type="checkbox" class="switch_1" id="restaurantStatus_${response[i].restaurant_Detail_Id}" onClick="resStatus( ${response[i].restaurant_Detail_Id},'${response[i].restaurant_Detail_Email} ')"></div></div>`;
             }
-            $('.customtbl .table tbody').append(`<tr><td data-label="Product Id">${response[i].restaurant_Detail_Id}</td><td data-label="Product Name">${response[i].restaurant_Detail_Name}</td>
+            $('.customtbl .table tbody').append(`<tr><td data-label="Sr.No">${i+1}</td><td data-label="Product Name">${response[i].restaurant_Detail_Name}</td>
                     <td data-label="Product Price" id='Restaurant_Email'>${response[i].restaurant_Detail_Email}</td><td data-label="Product Status">${data}</td></tr>`);
         }
     }
