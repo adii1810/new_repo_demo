@@ -1,0 +1,170 @@
+﻿@model My_Project.Areas.Client.ViewModels.RestaurantDetailViewModel
+
+@{
+    ViewData["Title"] = "VendorReg";
+    Layout = null;
+}
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+</head>
+
+
+<form asp-action="VendorReg" asp-area="Client" asp-controller="Client">
+
+    <div class="row">
+        <div class="col-6">
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                    </div>
+                    <input asp-for="Restaurant_Detail_Name" class="form-control" placeholder="Enter Restaurant Name" />
+                    <span asp-validation-for="Restaurant_Detail_Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                    </div>
+                    <input asp-for="Restaurant_Detail_Password" class="form-control" placeholder="Enter Password" id="pass1" />
+                    <span asp-validation-for="Restaurant_Detail_Password" class="text-danger" id="Error1"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-at"></i>
+                        </div>
+                    </div>
+                    <input asp-for="Restaurant_Detail_Email" class="form-control" placeholder="Enter Email" />
+                    <span asp-validation-for="Restaurant_Detail_Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-map"></i>
+                        </div>
+                    </div>
+                    <input asp-for="Restaurant_Detail_Address" class="form-control" placeholder="Enter Restaurant Address" />
+                    <span asp-validation-for="Restaurant_Detail_Address" class="text-danger"></span>
+                </div>
+                </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-flag-usa"></i>
+                        </div>
+                    </div>
+                    <input asp-for="Restaurant_Detail_State" class="form-control" placeholder="Enter State" />
+                    <span asp-validation-for="Restaurant_Detail_State" class="text-danger"></span>
+                </div>
+            </div>
+       </div>
+        <div class="col-6">
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                    </div>
+                    <input asp-for="Restaurant_Detail_User_Name" class="form-control" placeholder="Enter Username" />
+                    <span asp-validation-for="Restaurant_Detail_User_Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-check-double"></i>
+                        </div>
+                    </div>
+                    <input type="password" class="form-control" placeholder="Re-Enter Password" id="pass2" />
+                    <span asp-validation-for="Restaurant_Detail_Password" class="text-danger" id="Error"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                    </div>
+                    <input asp-for="Restaurant_Detail_PhoneNo" class="form-control" placeholder="Enter Contact No" />
+                    <span asp-validation-for="Restaurant_Detail_PhoneNo" class="text-danger"></span>
+                </div>
+                </div>
+
+
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-city"></i>
+                        </div>
+                    </div>
+                    <input asp-for="Restaurant_Detail_City" class="form-control" placeholder="Enter City" />
+                    <span asp-validation-for="Restaurant_Detail_City" class="text-danger"></span>
+                </div>
+                </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-location-pin"></i>
+                        </div>
+                    </div>
+                    <input asp-for="Restaurant_Detail_Zipcode" class="form-control" placeholder="Enter Zipcode" />
+                    <span asp-validation-for="Restaurant_Detail_Zipcode" class="text-danger"></span>
+                </div>
+            </div>
+            </div>
+    </div>
+    <input type="submit" value="Register" class="btn btn-success btn-block " disabled id="btnsubmit" /> 
+   
+</form>
+
+
+<script>
+    $("#pass2").keyup(() => {
+       
+        var data = document.getElementById("pass1").value;
+        var data2 = document.getElementById("pass2").value;
+       
+        if (data2 != data) {
+            $('#Error1').html("Password Does Not Match");
+            $('#Error').html("Password Does Not Match");
+        }
+        else {
+            $('#Error1').html("");
+            $('#Error').html("");
+        }
+        if ($('#Error1').html("") && $('#Error2').html("")) {
+            $('#btnsubmit').removeAttr('disabled');
+        }
+    })
+
+    
+
+
+</script>

@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "jEK36uSfEiWFxpp+J+/Qv+UP95ju5/X2sviZytknZOfQC2fuMjsdEANaYVoFqX/XZdaYXW9vVoDJDvitDc5Qaw==",
+  "dgSpecHash": "dXW/szSxWTDTRzGtLAXBMIojoyMHfnAAhYqtNQhG458HyBRvqv/TGHp6hesol8Xggn0HjHvNT73R4Z7uufC7Yg==",
   "success": true,
   "projectFilePath": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\My_Project\\My_Project.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ulcom31\\.nuget\\packages\\mailkit\\2.6.0\\mailkit.2.6.0.nupkg.sha512",
+    "C:\\Users\\Ulcom31\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.7\\microsoft.aspnet.webapi.client.5.2.7.nupkg.sha512",
     "C:\\Users\\Ulcom31\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\2.2.0\\microsoft.aspnetcore.cryptography.internal.2.2.0.nupkg.sha512",
     "C:\\Users\\Ulcom31\\.nuget\\packages\\microsoft.aspnetcore.dataprotection\\2.2.0\\microsoft.aspnetcore.dataprotection.2.2.0.nupkg.sha512",
     "C:\\Users\\Ulcom31\\.nuget\\packages\\microsoft.aspnetcore.dataprotection.abstractions\\2.2.0\\microsoft.aspnetcore.dataprotection.abstractions.2.2.0.nupkg.sha512",
@@ -51,6 +52,7 @@
     "C:\\Users\\Ulcom31\\.nuget\\packages\\netcore.mailkit\\2.0.3\\netcore.mailkit.2.0.3.nupkg.sha512",
     "C:\\Users\\Ulcom31\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\Ulcom31\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
+    "C:\\Users\\Ulcom31\\.nuget\\packages\\newtonsoft.json.bson\\1.0.1\\newtonsoft.json.bson.1.0.1.nupkg.sha512",
     "C:\\Users\\Ulcom31\\.nuget\\packages\\nuget.frameworks\\4.7.0\\nuget.frameworks.4.7.0.nupkg.sha512",
     "C:\\Users\\Ulcom31\\.nuget\\packages\\portable.bouncycastle\\1.8.5\\portable.bouncycastle.1.8.5.nupkg.sha512",
     "C:\\Users\\Ulcom31\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
