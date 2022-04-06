@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer;
 using Food_Delivery_Api.Repository;
+using Food_Delivery_Api.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,11 +21,24 @@ namespace Food_Delivery_Api.Controllers
             _restaurant = restaurant;
         }
 
-        [HttpPost]
-        public string AddRestaurant(Restaurant_Detail vm)
+        public string Get()
         {
+            return "abc";
+        }
 
+        [HttpGet("RestaurantLogin/{uname?}/{pass?}")]
+        public int RestaurantLogin(string uname, string pass)
+        {
+            var data = _restaurant.RestaurantLogin(uname, pass);
+            return data;
+        }
+
+
+        [HttpPost("AddRestaurant")]
+        public string AddRestaurant(RestaurantDetails vm)
+        {
+            _restaurant.AddRestaurant(vm);
             return "true";
         }
-    }
+    }    
 }

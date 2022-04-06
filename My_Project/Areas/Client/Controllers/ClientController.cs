@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EmailServices;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using My_Project.Areas.Client.ViewModels;
 using System;
@@ -12,13 +13,14 @@ namespace My_Project.Controllers
     [Area("Client")]
     public class ClientController : Controller
     {
+        private readonly IEmailSender _emailSender;
         private readonly IConfiguration _config;
-        public string AdminApiString;
-
-        public ClientController(IConfiguration config, string adminApiString)
+        public string RestaurantApiString;
+        public ClientController(IEmailSender emailSender, IConfiguration config)
         {
+            _emailSender = emailSender;
             _config = config;
-            AdminApiString = adminApiString;
+            RestaurantApiString = _config.GetValue<string>("RESTAURANTAPISTRING");
         }
 
         public IActionResult Index()
@@ -35,10 +37,13 @@ namespace My_Project.Controllers
         public async Task<IActionResult> VendorReg(RestaurantDetailViewModel vm)
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(AdminApiString);
+            client.BaseAddress = new Uri(RestaurantApiString);
             HttpResponseMessage response = await client.PostAsJsonAsync("AddRestaurant", vm);
-
-            return View();
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
         }
     }
 }

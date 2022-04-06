@@ -31,6 +31,7 @@ namespace Food_Delivery_Api
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IAdminInterface, AdminMethod>();
+            services.AddTransient<IRestaurantInterface, RestaurantMethod>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

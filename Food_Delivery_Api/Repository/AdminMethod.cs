@@ -196,7 +196,7 @@ namespace Food_Delivery_Api.Repository
 
         public IEnumerable<Restaurant_Detail> ShowRestaurant()
         {
-            var data = _context.Restaurant_Detail.ToList();
+            var data = _context.Restaurant_Detail.OrderByDescending(x=>x.Restaurant_Detail_Id).ToList();
             return data;
         }
         
@@ -204,9 +204,9 @@ namespace Food_Delivery_Api.Repository
         {
             List<Restaurant_Detail> data;
             if (name == "null")
-                 data = _context.Restaurant_Detail.ToList();
+                 data = _context.Restaurant_Detail.OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
             else
-                 data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Name == name).ToList();
+                 data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Name == name).OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
             return data;
         }
         public string updateStatus(int Id, bool Status)
