@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http
+using Microsoft.AspNetCore.Http;
 
 namespace My_Project.Areas.Restaurant.Controllers
 {
@@ -60,7 +60,7 @@ namespace My_Project.Areas.Restaurant.Controllers
         public async Task<IActionResult> Login(string uname, string pass)
         {
             
-            HttpContext.Session.se
+            
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(RestaurantApiString);
             HttpResponseMessage httpResponse = await client.GetAsync($"RestaurantLogin/{uname}/{pass}");
@@ -69,7 +69,7 @@ namespace My_Project.Areas.Restaurant.Controllers
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
                 if(Convert.ToInt32(result) > 0)
                 {
-                   
+                    HttpContext.Session.SetString("ResId", result);
                     return RedirectToAction("Index");
                 }                
             }
