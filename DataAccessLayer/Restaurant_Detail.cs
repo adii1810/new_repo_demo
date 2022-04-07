@@ -24,5 +24,6 @@ namespace DataAccessLayer
         public bool status_by_Admin { get; set; }
 
         public ICollection<Product> Products { get; set; } = new HashSet<Product>();
+        
     }
 }

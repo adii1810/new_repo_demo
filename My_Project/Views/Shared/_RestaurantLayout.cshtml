@@ -92,8 +92,8 @@
         <div id="sidebar" class="sidebar py-3">
             <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">MAIN</div>
             <ul class="sidebar-menu list-unstyled">
-                <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Admin" asp-controller="Admin" asp-action="ShowUser"><i class="h3">U&nbsp; </i>  <span> Users</span></a></li>
-                <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Admin" asp-controller="Admin" asp-action="ShowProduct"><i class="h3">P&nbsp;</i><span>Product</span></a></li>
+                <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Restaurant" asp-controller="Restaurant" asp-action="AddOrEditProduct"><i class="h3">P&nbsp; </i>  <span> Add Product</span></a></li>
+                <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Restaurant" asp-controller="Restaurant" asp-action="ShowProduct"><i class="h3">S&nbsp;</i><span>Show Product</span></a></li>
                 <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Admin" asp-controller="Admin" asp-action="ShowRestaurant"><i class="h3">R&nbsp;</i><span>Restaurant</span></a></li>
 
                 <li class="sidebar-list-item"><a asp-area="Admin" asp-controller="Admin" asp-action="Logout" class="sidebar-link text-muted"><i class="o-exit-1 mr-3 text-gray"></i><span>Logout</span></a></li>
@@ -105,8 +105,6 @@
             <div class="container-fluid px-xl-5">
                 @RenderBody()
             </div>
-
-
 
             <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
                 <div class="container-fluid">

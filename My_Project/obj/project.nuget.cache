@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "dXW/szSxWTDTRzGtLAXBMIojoyMHfnAAhYqtNQhG458HyBRvqv/TGHp6hesol8Xggn0HjHvNT73R4Z7uufC7Yg==",
+  "dgSpecHash": "075GTebzuK3emHjSmS3eVeJyhR7r+ZgPcJJbpkHH5d1G2ttwmrntQj6lcP7tFLVKP1JVF/oWfDP21ivOzkkDaw==",
   "success": true,
   "projectFilePath": "E:\\AdityaBackup\\Demo\\Demo_Project1\\new_repo_demo\\My_Project\\My_Project.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Ulcom31\\.nuget\\packages\\firebaseauthentication.net\\3.7.2\\firebaseauthentication.net.3.7.2.nupkg.sha512",
+    "C:\\Users\\Ulcom31\\.nuget\\packages\\firebasestorage.net\\1.0.3\\firebasestorage.net.1.0.3.nupkg.sha512",
     "C:\\Users\\Ulcom31\\.nuget\\packages\\mailkit\\2.6.0\\mailkit.2.6.0.nupkg.sha512",
     "C:\\Users\\Ulcom31\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.7\\microsoft.aspnet.webapi.client.5.2.7.nupkg.sha512",
     "C:\\Users\\Ulcom31\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\2.2.0\\microsoft.aspnetcore.cryptography.internal.2.2.0.nupkg.sha512",

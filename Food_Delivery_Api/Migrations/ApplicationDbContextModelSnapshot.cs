@@ -80,6 +80,9 @@ namespace Food_Delivery_Api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("FoodType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Product_Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -89,19 +92,40 @@ namespace Food_Delivery_Api.Migrations
                     b.Property<bool>("Product_Status")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("Restaurant_Detail_Id")
+                    b.Property<int>("Restaurant_DetailId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Sub_Category_Id")
+                    b.Property<int>("Sub_CategoryId")
                         .HasColumnType("int");
 
                     b.HasKey("Product_Id");
 
-                    b.HasIndex("Restaurant_Detail_Id");
+                    b.HasIndex("Restaurant_DetailId");
 
-                    b.HasIndex("Sub_Category_Id");
+                    b.HasIndex("Sub_CategoryId");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.ProductImages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Restaurant_DetailId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("imgName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Restaurant_Detail", b =>
@@ -340,11 +364,15 @@ namespace Food_Delivery_Api.Migrations
                 {
                     b.HasOne("DataAccessLayer.Restaurant_Detail", "Restaurant_Detail")
                         .WithMany("Products")
-                        .HasForeignKey("Restaurant_Detail_Id");
+                        .HasForeignKey("Restaurant_DetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DataAccessLayer.Sub_Category", "Sub_Category")
                         .WithMany("Products")
-                        .HasForeignKey("Sub_Category_Id");
+                        .HasForeignKey("Sub_CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DataAccessLayer.User_Rating", b =>

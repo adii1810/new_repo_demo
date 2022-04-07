@@ -1643,3 +1643,6 @@ E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Restaurant\Views\Restaurant\ShowProduct.cshtml.g.cs
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Restaurant\Views\Restaurant\Login.cshtml.g.cs
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Restaurant\Views\_ViewImports.cshtml.g.cs
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Restaurant\Views\Restaurant\AddOrEditProduct.cshtml.g.cs
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\bin\Debug\netcoreapp3.1\Firebase.Auth.dll
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\bin\Debug\netcoreapp3.1\Firebase.Storage.dll

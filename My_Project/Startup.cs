@@ -40,7 +40,8 @@ namespace My_Project
             });
             services.AddSession(options =>
             {
-                
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
             });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 

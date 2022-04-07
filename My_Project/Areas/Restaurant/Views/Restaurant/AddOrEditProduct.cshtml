@@ -1,0 +1,147 @@
+﻿@model My_Project.Areas.Restaurant.ViewModels.ProductViewModel
+
+@{
+    ViewData["Title"] = "AddOrEditProduct";
+    Layout = "~/Views/Shared/_RestaurantLayout.cshtml";
+    var data = ViewBag.categories;
+    var sub = ViewBag.subCategory;
+    //var foodType = ViewBag.FoodType;
+}
+
+<style>
+
+
+    .form-control{
+        border-radius:5px;
+    }
+
+    /*==============Switch==============================*/
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+
+<div class="container ">
+
+    <div class="py-4">
+        <label class="text-blue"><i class="fas fa-hamburger"> Add Product</i></label>
+    </div>
+
+    <form asp-action="AddOrEditProduct" enctype="multipart/form-data">
+        
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <select asp-items="@data.Categories" class="form-control" id="Drop">
+                    <option selected value="-1">Select Type</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <select asp-for="FoodType" asp-items="@data.FoodType" class="form-control" id="Drop2">
+                    <option selected value="-1">Select Type</option>
+                </select>
+            </div>
+
+        
+            <div class="form-group">
+                <select asp-for="Sub_Category" class="form-control" id="Drop2">
+                    <option selected value="-1">Select Type</option>
+                    @foreach (var item in sub)
+                    {
+                        <option value="@item.Sub_Category_Id"> @item.Sub_Category_Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input asp-for="Product_Name" class="form-control" placeholder="Product Name" />
+                <span asp-validation-for="Product_Name" class="text-danger"></span>
+            </div>
+        
+
+
+
+            <div class="form-group">
+                <input asp-for="Product_Price" class="form-control" placeholder="Product Price" />
+                <span asp-validation-for="Product_Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Description" class="form-control" placeholder="Description" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+      
+
+
+            <div class="form-group">
+                <input asp-for="images" class="form-control" multiple />
+                <span asp-validation-for="images" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label class="switch">
+                    <input asp-for="Product_Status" type="checkbox" />
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </form>
+
+</div>

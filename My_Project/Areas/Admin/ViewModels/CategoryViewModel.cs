@@ -13,5 +13,6 @@ namespace My_Project.Areas.Admin.ViewModels
 
 
         public List<SelectListItem> Categories { get; set; }
+        public List<SelectListItem> FoodType { get; set; }
     }
 }

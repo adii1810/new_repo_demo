@@ -41,7 +41,7 @@ namespace My_Project.Controllers
             HttpResponseMessage response = await client.PostAsJsonAsync("AddRestaurant", vm);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Login","Restaurant");
             }
             return RedirectToAction("Index");
         }
