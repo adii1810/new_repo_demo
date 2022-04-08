@@ -102,5 +102,71 @@ namespace Food_Delivery_Api.Repository
             var data = await _context.Product.OrderByDescending(x => x.Product_Id).Take(1).Select(x => x.Product_Id).FirstOrDefaultAsync();
             return data;
         }
+
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int id)
+        {
+            var data = _context.Product.Where(x=>x.Restaurant_DetailId == id).OrderByDescending(x=>x.Product_Id).ToList();
+
+            List<ProductRatingViewModel> l = new List<ProductRatingViewModel>();
+
+            foreach (var item in data)
+            {
+                double rate = 5;
+                int user = 0;
+                if ((user = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count()) > 0)
+                {
+                    rate = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Average(x => x.User_Rating_Star);
+                }
+                ProductRatingViewModel p = new ProductRatingViewModel();
+                p.Product_Id = item.Product_Id;
+                p.Product_Name = item.Product_Name;
+                p.Product_Price = item.Product_Price;
+                p.Product_Status = item.Product_Status;
+                p.rate = rate;
+                p.user = user;
+                l.Add(p);
+            }
+            return l;
+        }
+        public string updateStatus(int ProdId, bool Status)
+        {
+                var data = _context.Product.Where(x => x.Product_Id == ProdId).FirstOrDefault();
+                data.Product_Status = Status;
+                _context.SaveChanges();
+                return "true";
+        }
+        public async Task<ProductViewModel> GetProductDetail(int ProdId)
+        {
+            var data = await _context.Product.Where(x => x.Product_Id == ProdId).FirstOrDefaultAsync();
+            ProductViewModel pvm = new ProductViewModel();
+            pvm.Product_Id = ProdId;
+            pvm.Product_Name = data.Product_Name;
+            pvm.Product_Price = data.Product_Price;
+            pvm.Product_Status = data.Product_Status;
+            pvm.Description = data.Description;
+            pvm.FoodType = (int)data.FoodType;
+            pvm.Restaurant_Detail = data.Restaurant_DetailId;
+            pvm.Sub_Category = data.Sub_CategoryId;
+            return pvm;
+        }
+
+        //Get images list Product wise
+
+        public async Task<IEnumerable<ImageViewModel>> UpdateImage(int Prodid) {
+            List<ImageViewModel> l = new List<ImageViewModel>();
+            var data = await _context.ProductImages.Where(x => x.ProductId == Prodid).ToListAsync();
+
+            foreach (var item in data)
+            {
+                ImageViewModel ivm = new ImageViewModel();
+                ivm.ImageName = item.imgName;
+                ivm.ImgId = item.Id;
+                ivm.ProdId = item.ProductId;
+                ivm.ResId = item.Restaurant_DetailId;
+
+                l.Add(ivm);
+            }
+            return l;
+        }
     }
 }

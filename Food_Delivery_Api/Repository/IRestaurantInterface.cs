@@ -17,5 +17,9 @@ namespace Food_Delivery_Api.Repository
         public string AddProduct(ProductViewModel vm);
         public Task<int> StoringImages(ProductImageViewModel pm);
         public Task<int> GetCurrentRecordId();
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int id);
+        public string updateStatus(int ProdId, bool Status);
+        public Task<ProductViewModel> GetProductDetail(int ProdId);
+        public Task<IEnumerable<ImageViewModel>> UpdateImage(int Prodid);
     }
 }

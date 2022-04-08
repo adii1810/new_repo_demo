@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_RestaurantLayout.cshtml";
     var data = ViewBag.categories;
     var sub = ViewBag.subCategory;
-    //var foodType = ViewBag.FoodType;
+    //var foodType = ViewBag.FoodType
 }
 
 <style>
@@ -85,8 +85,10 @@
     </div>
 
     <form asp-action="AddOrEditProduct" enctype="multipart/form-data">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Product_Id" />
         
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <select asp-items="@data.Categories" class="form-control" id="Drop">
                     <option selected value="-1">Select Type</option>
@@ -99,7 +101,7 @@
                 </select>
             </div>
 
-        
+
             <div class="form-group">
                 <select asp-for="Sub_Category" class="form-control" id="Drop2">
                     <option selected value="-1">Select Type</option>
@@ -109,38 +111,37 @@
                     }
                 </select>
             </div>
-            <div class="form-group">
-                <input asp-for="Product_Name" class="form-control" placeholder="Product Name" />
-                <span asp-validation-for="Product_Name" class="text-danger"></span>
-            </div>
-        
+       
+       
+        <div class="form-group">
+            <input asp-for="Product_Name" class="form-control" placeholder="Product Name" />
+            <span asp-validation-for="Product_Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input asp-for="Product_Price" class="form-control" placeholder="Product Price" />
+            <span asp-validation-for="Product_Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Description" class="form-control" placeholder="Description" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
 
 
 
-            <div class="form-group">
-                <input asp-for="Product_Price" class="form-control" placeholder="Product Price" />
-                <span asp-validation-for="Product_Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input asp-for="Description" class="form-control" placeholder="Description" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-      
+        <div class="form-group">
+            <input asp-for="images" class="form-control" multiple />
+            <span asp-validation-for="images" class="text-danger"></span>
+        </div>
 
 
-            <div class="form-group">
-                <input asp-for="images" class="form-control" multiple />
-                <span asp-validation-for="images" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label class="switch">
+                <input asp-for="Product_Status" type="checkbox" />
+                <span class="slider round"></span>
+            </label>
+        </div>
 
-
-            <div class="form-group">
-                <label class="switch">
-                    <input asp-for="Product_Status" type="checkbox" />
-                    <span class="slider round"></span>
-                </label>
-            </div>
-        
         <input type="submit" value="Create" class="btn btn-primary" />
     </form>
 

@@ -196,7 +196,6 @@ namespace My_Project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> updateStatus(int Id,bool Status,string Email)
         {
-         
             HttpClient client1 = new HttpClient();
             client1.BaseAddress = new Uri(AdminApiString);
             var httpResponse1 = await client1.GetAsync($"updateStatus/{Id}/{Status}");

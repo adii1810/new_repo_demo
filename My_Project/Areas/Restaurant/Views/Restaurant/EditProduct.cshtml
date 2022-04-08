@@ -1,0 +1,53 @@
+﻿@model My_Project.Areas.Restaurant.ViewModels.ProductViewModel
+
+@{
+    ViewData["Title"] = "EditProduct";
+    Layout = "~/Views/Shared/_RestaurantLayout.cshtml";
+}
+<style>
+    .form-control{
+        border-radius : 2px;
+    }
+    .btn {
+        border-radius: 2px;
+    }
+</style>
+<h1>EditProduct</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditProduct">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Product_Id" class="form-control" />
+                <span asp-validation-for="Product_Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Product_Name" class="form-control" placeholder="Product Name" />
+                <span asp-validation-for="Product_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Product_Price" class="form-control"  placeholder="Product Price"  />
+                <span asp-validation-for="Product_Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Description" class="form-control"  placeholder="Description"  />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <span>
+                    <input type="submit" value="Save Details" class="btn btn-primary" />
+                </span>
+                <span>
+                    <button class="btn btn-dark" asp-action="UpdateImages" asp-route-Prodid="@Model.Product_Id">Update Images</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

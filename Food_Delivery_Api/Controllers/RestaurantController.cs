@@ -72,5 +72,31 @@ namespace Food_Delivery_Api.Controllers
             var data = await _restaurant.GetCurrentRecordId();
             return data;
         }
+
+        [HttpGet("ShowProduct/{id}")]
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int id)
+        {
+            var data = _restaurant.ShowProduct(id);
+            return data;
+        }
+        [HttpGet("ChangeStatus/{id}/{status}")]
+        public string ChangeStatus(int id,bool status)
+        {
+            var data = _restaurant.updateStatus(id,status) ;
+            return data;
+        }
+        [HttpGet("GetProductDetail/{id}")]
+        public async Task<ProductViewModel> GetProductDetail(int id)
+        {
+            var data = await _restaurant.GetProductDetail(id);
+            return data;
+        }
+
+        [HttpGet("UpdateImage/{id}")]
+        public async Task<IEnumerable<ImageViewModel>> UpdateImage(int id)
+        {
+            var data = await _restaurant.UpdateImage(id);
+            return data;
+        }
     }    
 }
