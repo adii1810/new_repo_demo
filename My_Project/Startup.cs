@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using EmailServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using My_Project.Areas.Restaurant.Models;
 
 namespace My_Project
 {
@@ -30,7 +31,7 @@ namespace My_Project
             services.AddSingleton(emailConfig);
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddControllersWithViews();
-
+            services.AddTransient<ImgUpload>();
             services.AddDistributedMemoryCache();
             services.Configure<CookiePolicyOptions>(options =>
             {

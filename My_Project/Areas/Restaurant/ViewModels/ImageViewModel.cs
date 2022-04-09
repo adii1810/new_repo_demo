@@ -11,5 +11,6 @@ namespace My_Project.Areas.Restaurant.ViewModels
         public int ResId { get; set; }
         public int ProdId { get; set; }
         public string ImageName { get; set; }
+        public string imgLink { get; set; }
     }
 }

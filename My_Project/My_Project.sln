@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "My_Project", "My_Project.csproj", "{624B57BD-D3E4-45F4-BC47-6AF883EE6C36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailServices", "..\EmailServices\EmailServices.csproj", "{DAF7A97F-7262-42C7-B071-529B28E7647C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailServices", "..\EmailServices\EmailServices.csproj", "{DAF7A97F-7262-42C7-B071-529B28E7647C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -43,6 +43,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ImageName)
             </td>
+            
+            <td>
+                <img src="@item.imgLink" height="50" width="50" />
+            </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |

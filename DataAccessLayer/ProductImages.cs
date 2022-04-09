@@ -10,6 +10,7 @@ namespace DataAccessLayer
         public int Restaurant_DetailId { get; set; }
         public int ProductId { get; set; }
         public string imgName { get; set; }
-        
+        public string ImgLink { get; set; }
+
     }
 }

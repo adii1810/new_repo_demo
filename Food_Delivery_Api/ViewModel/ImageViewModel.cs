@@ -11,5 +11,7 @@ namespace Food_Delivery_Api.ViewModel
         public int ResId { get; set; }
         public int ProdId { get; set; }
         public string ImageName { get; set; }
+        public string ImgLink { get; set; }
+
     }
 }

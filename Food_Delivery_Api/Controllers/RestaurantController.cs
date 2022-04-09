@@ -98,5 +98,12 @@ namespace Food_Delivery_Api.Controllers
             var data = await _restaurant.UpdateImage(id);
             return data;
         }
+
+        [HttpPut("imgLink/{uniqueName}")]
+        public string imgLink(string uniqueName,ProductImageViewModel pvm)
+        {
+           var data =  _restaurant.AddImgLink( uniqueName,pvm);
+            return "true";
+        }
     }    
 }

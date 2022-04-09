@@ -36,7 +36,7 @@ namespace Food_Delivery_Api.Repository
             return "true";
         }
 
-        public int RestaurantLogin(string uname,string pass)
+        public int RestaurantLogin(string uname, string pass)
         {
             var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_User_Name == uname && x.Restaurant_Detail_Password == pass).Select(x => x.Restaurant_Detail_Id).FirstOrDefault();
             return data;
@@ -55,7 +55,8 @@ namespace Food_Delivery_Api.Repository
 
         public IList<SubViewModel> AutocompleteSubCategory()
         {
-            var data = _context.Sub_Categorie.Select(x => new {
+            var data = _context.Sub_Categorie.Select(x => new
+            {
                 x.Sub_Category_Id,
                 x.Sub_Category_Name
             }).ToList();
@@ -85,17 +86,20 @@ namespace Food_Delivery_Api.Repository
             _context.SaveChanges();
             return "true";
         }
-        
 
 
-        public async Task<int> StoringImages(ProductImageViewModel pmvm) {
+
+        public async Task<int> StoringImages(ProductImageViewModel pmvm)
+        {
             ProductImages pm = new ProductImages();
-            pmvm.imgName = pm.imgName;
-            pmvm.ProductId = pm.ProductId;
-            pmvm.Restaurant_DetailId = pm.Restaurant_DetailId;
+            pm.imgName = pmvm.imgName;
+            pm.ProductId = pmvm.ProductId;
+            pm.Restaurant_DetailId = pmvm.Restaurant_DetailId;
+            pm.ImgLink = null;
 
             _ = await _context.ProductImages.AddAsync(pm);
-            return 1;        
+            _context.SaveChanges();
+            return 1;
         }
         public async Task<int> GetCurrentRecordId()
         {
@@ -105,7 +109,7 @@ namespace Food_Delivery_Api.Repository
 
         public IEnumerable<ProductRatingViewModel> ShowProduct(int id)
         {
-            var data = _context.Product.Where(x=>x.Restaurant_DetailId == id).OrderByDescending(x=>x.Product_Id).ToList();
+            var data = _context.Product.Where(x => x.Restaurant_DetailId == id).OrderByDescending(x => x.Product_Id).ToList();
 
             List<ProductRatingViewModel> l = new List<ProductRatingViewModel>();
 
@@ -130,10 +134,10 @@ namespace Food_Delivery_Api.Repository
         }
         public string updateStatus(int ProdId, bool Status)
         {
-                var data = _context.Product.Where(x => x.Product_Id == ProdId).FirstOrDefault();
-                data.Product_Status = Status;
-                _context.SaveChanges();
-                return "true";
+            var data = _context.Product.Where(x => x.Product_Id == ProdId).FirstOrDefault();
+            data.Product_Status = Status;
+            _context.SaveChanges();
+            return "true";
         }
         public async Task<ProductViewModel> GetProductDetail(int ProdId)
         {
@@ -152,7 +156,8 @@ namespace Food_Delivery_Api.Repository
 
         //Get images list Product wise
 
-        public async Task<IEnumerable<ImageViewModel>> UpdateImage(int Prodid) {
+        public async Task<IEnumerable<ImageViewModel>> UpdateImage(int Prodid)
+        {
             List<ImageViewModel> l = new List<ImageViewModel>();
             var data = await _context.ProductImages.Where(x => x.ProductId == Prodid).ToListAsync();
 
@@ -163,10 +168,19 @@ namespace Food_Delivery_Api.Repository
                 ivm.ImgId = item.Id;
                 ivm.ProdId = item.ProductId;
                 ivm.ResId = item.Restaurant_DetailId;
+                ivm.ImgLink = item.ImgLink;
 
                 l.Add(ivm);
             }
             return l;
+        }
+
+        public string AddImgLink(string imgName,ProductImageViewModel pvm)
+        {
+            var data = _context.ProductImages.Where(x => x.imgName == imgName).FirstOrDefault();
+            data.ImgLink = pvm.Link;
+            _context.SaveChanges();
+            return "true";
         }
     }
 }

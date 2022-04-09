@@ -17,6 +17,7 @@ using Firebase.Auth;
 using System.Threading;
 using Firebase.Storage;
 using System.Diagnostics;
+using My_Project.Areas.Restaurant.Models;
 
 namespace My_Project.Areas.Restaurant.Controllers
 {
@@ -31,18 +32,19 @@ namespace My_Project.Areas.Restaurant.Controllers
         private static string AuthPassword = "dotnet@123";
 
 
-
+        ImgUpload _Upload;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _config;
         public string AdminApiString;
         public string RestaurantApiString;
-        public RestaurantController(IEmailSender emailSender, IConfiguration config ,IHostingEnvironment env)
+        public RestaurantController(IEmailSender emailSender, IConfiguration config ,IHostingEnvironment env ,ImgUpload upload)
         {
             _emailSender = emailSender;
             _config = config;
             AdminApiString = _config.GetValue<string>("APISTRING");
             RestaurantApiString = _config.GetValue<string>("RESTAURANTAPISTRING");
-            _env = env;
+            _Upload = upload;
+           _env = env;
         }
         public IActionResult Index()
         {
@@ -226,9 +228,6 @@ namespace My_Project.Areas.Restaurant.Controllers
                 subCategory = JsonConvert.DeserializeObject<List<SubCategoyViewModel>>(result1);
                 vm.FoodType = subEnums;
                 ViewBag.subCategory = subCategory;
-
-
-
                 ViewBag.categories = vm;
 
                 //getting current product Id
@@ -242,8 +241,10 @@ namespace My_Project.Areas.Restaurant.Controllers
                     prodid = httpResponse4.Content.ReadAsStringAsync().Result;
                 }
 
+
                 foreach (var item in pvm.images)
                 {
+                    // var str =  _Upload.ImgUpd(pvm.images, sess, prodid);
                     ProductImageViewModel pivm = new ProductImageViewModel();
                     var file = item;
                     FileStream fs = null;
@@ -290,9 +291,20 @@ namespace My_Project.Areas.Restaurant.Controllers
                         }).Child("assets").Child(sess)
                         .Child($"{uniqueName}")
                         .PutAsync(fs, canceation.Token);
-
+                        //upload.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
+                        //var downloadUrl = await upload;
                         try
                         {
+                            var link = await upload;
+                            pivm.link = link;
+                            HttpClient client5 = new HttpClient();
+                            client5.BaseAddress = new Uri(RestaurantApiString);
+                            HttpResponseMessage httpResponse6 = await client5.PutAsJsonAsync($"imgLink/{uniqueName}",pivm);
+                            if (httpResponse.IsSuccessStatusCode)
+                            {
+                                var result11 = httpResponse6.Content.ReadAsStringAsync().Result;
+                               
+                            }
                             ViewBag.link = await upload;
                         }
                         catch (Exception ex)

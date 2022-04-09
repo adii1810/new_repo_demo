@@ -10,5 +10,6 @@ namespace Food_Delivery_Api.ViewModel
         public int Restaurant_DetailId { get; set; }
         public int ProductId { get; set; }
         public string imgName { get; set; }
+        public string Link { get; set; }
     }
 }
