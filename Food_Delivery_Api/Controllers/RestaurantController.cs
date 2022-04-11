@@ -79,6 +79,13 @@ namespace Food_Delivery_Api.Controllers
             var data = _restaurant.ShowProduct(id);
             return data;
         }
+
+        [HttpGet("DeleteImage/{id}")]
+        public void DeleteImage(string id)
+        {
+             _restaurant.DeleteImage(id);
+           
+        }
         [HttpGet("ChangeStatus/{id}/{status}")]
         public string ChangeStatus(int id,bool status)
         {
@@ -104,6 +111,19 @@ namespace Food_Delivery_Api.Controllers
         {
            var data =  _restaurant.AddImgLink( uniqueName,pvm);
             return "true";
+        }
+
+        [HttpGet("myP")]
+        public IEnumerable<string> myP(string pre)
+        {
+            var data = _restaurant.MyProduct(pre);
+            return data;
+        }
+        [HttpGet("ShowProduct/{mainId}/{name}")]
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name = null)
+        {
+            var data = _restaurant.ShowProduct(mainId, name);
+            return data;
         }
     }    
 }

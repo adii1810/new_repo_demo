@@ -125,7 +125,7 @@ const changeStatus = (data) => {
     }
     else
         Status = true;
-    debugger;
+
     $.ajax({
         url: location2 + "ChangeStatus",
         type: "Post",
@@ -154,3 +154,55 @@ const Update = (Id) => {
 }
 
 
+$("#Name").autocomplete({
+
+    maxShowItems: 3,
+
+    source: function (request, response) {
+        
+        $.ajax({
+            url: location2 + "myProduct",
+            type: "POST",
+            dataType: "json",
+            data: { Prefix: request.term },
+            success: function (data) {
+                var data2 = JSON.parse(data);
+                response($.map(data2, function (item) {
+                    return item;
+                }))
+
+            }
+        })
+
+    },
+    messages: {
+        noResults: "", results: ""
+    }
+});
+
+$("#btnSearch").click(function () {
+
+    $("#pager").show();
+    debugger;
+    var id = document.getElementById("Drop").value;
+    var name = document.getElementById("Name").value;
+    $.ajax({
+        url: location2 + `ShowProduct1`,
+        type: "Post",
+        data: { Drop: id, Name: name },
+        success: function (data) {
+            if (data.length == 0) {
+                $(".customtbl .table tbody").empty();
+            }
+            page1(data);
+        },
+        failure: function (response) {
+            console.log("failure");
+            alert(response.responseText);
+        },
+        error: function (response) {
+            console.log("error");
+            alert(response.responseText);
+        }
+    });
+});

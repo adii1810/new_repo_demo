@@ -182,5 +182,62 @@ namespace Food_Delivery_Api.Repository
             _context.SaveChanges();
             return "true";
         }
+
+        public void DeleteImage(string id)
+        {
+            var Id = Convert.ToInt32(id);
+            var data = _context.ProductImages.Where(x => x.Id == Id).FirstOrDefault();
+            _context.ProductImages.Remove(data);
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<string> MyProduct(string pre)
+        {
+
+            var data = _context.Product.Where(x => x.Product_Name.StartsWith(pre)).Select(x => x.Product_Name).ToList();
+            return data;
+        }
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name)
+        {
+            List<Product> data;
+            if (mainId >= 0 && name.Equals("null"))
+            {
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
+            }
+            else if (mainId < 0 && name != "null")
+            {
+                data = _context.Product.Where(x => x.Product_Name == name).ToList();
+            }
+            else if (mainId >= 0 && name != "null")
+            {
+                data = _context.Product.Include("Sub_Category").Where(x => x.Product_Name == name && (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
+            }
+            else
+            {
+                data = _context.Product.ToList();
+            }
+
+
+            List<ProductRatingViewModel> l = new List<ProductRatingViewModel>();
+            foreach (var item in data)
+            {
+                double rate = 5;
+                int user = 0;
+                if ((user = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count()) > 0)
+                {
+                    rate = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Average(x => x.User_Rating_Star);
+                }
+                ProductRatingViewModel p = new ProductRatingViewModel();
+                p.Product_Id = item.Product_Id;
+                p.Product_Name = item.Product_Name;
+                p.Product_Price = item.Product_Price;
+                p.Product_Status = item.Product_Status;
+                p.rate = rate;
+                p.user = user;
+                l.Add(p);
+            }
+            return l;
+        }
+
     }
 }

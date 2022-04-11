@@ -22,5 +22,10 @@ namespace Food_Delivery_Api.Repository
         public Task<ProductViewModel> GetProductDetail(int ProdId);
         public Task<IEnumerable<ImageViewModel>> UpdateImage(int Prodid);
         public string AddImgLink(string imgName,ProductImageViewModel pvm);
+        public void DeleteImage(string id);
+        public IEnumerable<string> MyProduct(string pre);
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name);
+
+
     }
 }
