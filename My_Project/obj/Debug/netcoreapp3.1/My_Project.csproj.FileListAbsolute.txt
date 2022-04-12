@@ -1649,3 +1649,5 @@ E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\bin\Debug\netcoreapp
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Restaurant\Views\Restaurant\EditProduct.cshtml.g.cs
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Restaurant\Views\Restaurant\UpdateImages.cshtml.g.cs
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Restaurant\Views\Restaurant\AddImage.cshtml.g.cs
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Restaurant\Views\Restaurant\EditRestaurant.cshtml.g.cs
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Restaurant\Views\Restaurant\ChangePassword.cshtml.g.cs

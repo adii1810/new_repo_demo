@@ -24,8 +24,6 @@ showInPopup = (url, title) => {
     })
 }
 
-
-
 //====================Pagination============================================================
 
 
@@ -183,7 +181,7 @@ $("#Name").autocomplete({
 $("#btnSearch").click(function () {
 
     $("#pager").show();
-    debugger;
+   
     var id = document.getElementById("Drop").value;
     var name = document.getElementById("Name").value;
     $.ajax({

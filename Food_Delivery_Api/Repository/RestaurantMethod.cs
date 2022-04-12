@@ -31,14 +31,15 @@ namespace Food_Delivery_Api.Repository
             rd.Restaurant_Detail_State = vm.Restaurant_Detail_State;
             rd.Restaurant_Detail_User_Name = vm.Restaurant_Detail_User_Name;
             rd.Restaurant_Detail_Zipcode = vm.Restaurant_Detail_Zipcode;
+            rd.profileImage = vm.profileImage;
             _context.Restaurant_Detail.Add(rd);
             _context.SaveChanges();
             return "true";
         }
 
-        public int RestaurantLogin(string uname, string pass)
+        public Restaurant_Detail RestaurantLogin(string uname, string pass)
         {
-            var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_User_Name == uname && x.Restaurant_Detail_Password == pass).Select(x => x.Restaurant_Detail_Id).FirstOrDefault();
+            var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_User_Name == uname && x.Restaurant_Detail_Password == pass).FirstOrDefault();
             return data;
         }
 
@@ -197,24 +198,24 @@ namespace Food_Delivery_Api.Repository
             var data = _context.Product.Where(x => x.Product_Name.StartsWith(pre)).Select(x => x.Product_Name).ToList();
             return data;
         }
-        public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name)
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name,int resId)
         {
             List<Product> data;
             if (mainId >= 0 && name.Equals("null"))
             {
-                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == mainId && x.Restaurant_DetailId == resId).ToList();
             }
             else if (mainId < 0 && name != "null")
             {
-                data = _context.Product.Where(x => x.Product_Name == name).ToList();
+                data = _context.Product.Where(x => x.Product_Name == name && x.Restaurant_DetailId == resId).ToList();
             }
             else if (mainId >= 0 && name != "null")
             {
-                data = _context.Product.Include("Sub_Category").Where(x => x.Product_Name == name && (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
+                data = _context.Product.Include("Sub_Category").Where(x => x.Product_Name == name && (int)x.Sub_Category.Main_Category_Id == mainId && x.Restaurant_DetailId == resId).ToList();
             }
             else
             {
-                data = _context.Product.ToList();
+                data = _context.Product.Where(x=>x.Restaurant_DetailId == resId).ToList();
             }
 
 
@@ -238,6 +239,40 @@ namespace Food_Delivery_Api.Repository
             }
             return l;
         }
+        public string EditProduct(int id,ProductViewModel p)
+        {
+            var data = _context.Product.Where(x => x.Product_Id == id).FirstOrDefault();
+            data.Description = p.Description;
+            data.Product_Name = p.Product_Name;
+            data.Product_Price = p.Product_Price;
+            _context.Product.Update(data);
+            _context.SaveChanges();
+            return "true";
+        }
 
+        public Restaurant_Detail GetRestaurantDetail(int id)
+        {
+            var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Id == id).FirstOrDefault();
+            return data;
+        }
+        public void EditRestaurant(Restaurant_Detail rd)
+        {
+            var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Id == rd.Restaurant_Detail_Id).FirstOrDefault();
+            data.profileImage = rd.profileImage;
+            data.Restaurant_Detail_Address = rd.Restaurant_Detail_Address;
+            data.Restaurant_Detail_City = rd.Restaurant_Detail_City;
+            data.Restaurant_Detail_Email = rd.Restaurant_Detail_Email;
+            data.Restaurant_Detail_Name = rd.Restaurant_Detail_Name;
+            data.Restaurant_Detail_PhoneNo = rd.Restaurant_Detail_PhoneNo;
+            data.Restaurant_Detail_State = rd.Restaurant_Detail_State;
+            data.Restaurant_Detail_Zipcode = rd.Restaurant_Detail_Zipcode;
+            _context.Restaurant_Detail.Update(data);
+            _context.SaveChanges();
+        }
+        public int RestaurantConfirmPassword(string username,string password)
+        {
+            var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_User_Name == username && x.Restaurant_Detail_Password == password).Count();
+            return data;
+        }
     }
 }

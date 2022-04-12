@@ -19,6 +19,7 @@ namespace DataAccessLayer
         public string Restaurant_Detail_City { get; set; }
         public string Restaurant_Detail_State { get; set; }
         public string Restaurant_Detail_Zipcode { get; set; }
+        public string profileImage { get; set; }
 
         [DefaultValue(false)]
         public bool status_by_Admin { get; set; }

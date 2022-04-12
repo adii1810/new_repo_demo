@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -29,5 +30,8 @@ namespace My_Project.Areas.Client.ViewModels
         public string Restaurant_Detail_State { get; set; }
         [Required]
         public string Restaurant_Detail_Zipcode { get; set; }
+        public string profileImage { get; set; }
+        public IFormFile img { get; set; }
+
     }
 }

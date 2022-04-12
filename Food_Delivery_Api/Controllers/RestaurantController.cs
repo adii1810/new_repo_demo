@@ -28,7 +28,7 @@ namespace Food_Delivery_Api.Controllers
         }
 
         [HttpGet("RestaurantLogin/{uname?}/{pass?}")]
-        public int RestaurantLogin(string uname, string pass)
+        public Restaurant_Detail RestaurantLogin(string uname, string pass)
         {
             var data = _restaurant.RestaurantLogin(uname, pass);
             return data;
@@ -41,6 +41,12 @@ namespace Food_Delivery_Api.Controllers
             _restaurant.AddRestaurant(vm);
             return "true";
         }
+        [HttpGet("GetRestaurantDetails/{id}")]
+        public Restaurant_Detail GetRestaurantDetails(int id)
+        {
+            var data = _restaurant.GetRestaurantDetail(id);
+            return data;
+        }
         [HttpPost("AddProduct")]
         public string AddProduct(ProductViewModel vm)
         {
@@ -51,7 +57,7 @@ namespace Food_Delivery_Api.Controllers
         [HttpPost("StoringImage")]
         public async Task<int> StoringImage(ProductImageViewModel vm)
         {
-           var data = await _restaurant.StoringImages(vm);
+            var data = await _restaurant.StoringImages(vm);
             return data;
         }
         [HttpGet("FoodType")]
@@ -83,13 +89,13 @@ namespace Food_Delivery_Api.Controllers
         [HttpGet("DeleteImage/{id}")]
         public void DeleteImage(string id)
         {
-             _restaurant.DeleteImage(id);
-           
+            _restaurant.DeleteImage(id);
+
         }
         [HttpGet("ChangeStatus/{id}/{status}")]
-        public string ChangeStatus(int id,bool status)
+        public string ChangeStatus(int id, bool status)
         {
-            var data = _restaurant.updateStatus(id,status) ;
+            var data = _restaurant.updateStatus(id, status);
             return data;
         }
         [HttpGet("GetProductDetail/{id}")]
@@ -106,10 +112,17 @@ namespace Food_Delivery_Api.Controllers
             return data;
         }
 
-        [HttpPut("imgLink/{uniqueName}")]
-        public string imgLink(string uniqueName,ProductImageViewModel pvm)
+        [HttpGet("RestaurantConfirmPass/{username}/{password}")]
+        public async Task<int> RestaurantConfirmPass(string username,string password)
         {
-           var data =  _restaurant.AddImgLink( uniqueName,pvm);
+            var data =  _restaurant.RestaurantConfirmPassword(username, password);
+            return data;
+        }
+
+        [HttpPut("imgLink/{uniqueName}")]
+        public string imgLink(string uniqueName, ProductImageViewModel pvm)
+        {
+            var data = _restaurant.AddImgLink(uniqueName, pvm);
             return "true";
         }
 
@@ -119,11 +132,22 @@ namespace Food_Delivery_Api.Controllers
             var data = _restaurant.MyProduct(pre);
             return data;
         }
-        [HttpGet("ShowProduct/{mainId}/{name}")]
-        public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name = null)
+        [HttpGet("ShowProduct/{mainId}/{name}/{resId}")]
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, int resId, string name = null)
         {
-            var data = _restaurant.ShowProduct(mainId, name);
+            var data = _restaurant.ShowProduct(mainId, name, resId);
             return data;
+        }
+        [HttpPut("EditProduct/{id}")]
+        public string EditProduct(int id,ProductViewModel pvm)
+        {
+            var result = _restaurant.EditProduct(id, pvm);
+            return "true";
+        }
+        [HttpPost("EditRestaurantDetails")]
+        public void EditRestaurantDetails(Restaurant_Detail rd)
+        {
+            _restaurant.EditRestaurant(rd);
         }
     }    
 }

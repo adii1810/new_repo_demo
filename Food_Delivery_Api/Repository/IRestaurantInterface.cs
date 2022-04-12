@@ -11,7 +11,7 @@ namespace Food_Delivery_Api.Repository
     public interface IRestaurantInterface
     {
         public string AddRestaurant(RestaurantDetails vm);
-        public int RestaurantLogin(string uname, string pass);
+        public Restaurant_Detail RestaurantLogin(string uname, string pass);
         public IList<SelectListItem> AutocompleteFoodType();
         public IList<SubViewModel> AutocompleteSubCategory();
         public string AddProduct(ProductViewModel vm);
@@ -24,8 +24,11 @@ namespace Food_Delivery_Api.Repository
         public string AddImgLink(string imgName,ProductImageViewModel pvm);
         public void DeleteImage(string id);
         public IEnumerable<string> MyProduct(string pre);
-        public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name);
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name,int resId);
 
-
+        public string EditProduct(int id, ProductViewModel pvm);
+        public Restaurant_Detail GetRestaurantDetail(int id);
+        public void EditRestaurant(Restaurant_Detail rd);
+        public int RestaurantConfirmPassword(string username, string password);
     }
 }

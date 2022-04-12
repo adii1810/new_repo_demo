@@ -39,6 +39,7 @@ namespace My_Project
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.AddHttpContextAccessor();
             services.AddSession(options =>
             {
                 options.Cookie.HttpOnly = true;
