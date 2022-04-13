@@ -30,5 +30,6 @@ namespace Food_Delivery_Api.Repository
         public Restaurant_Detail GetRestaurantDetail(int id);
         public void EditRestaurant(Restaurant_Detail rd);
         public int RestaurantConfirmPassword(string username, string password);
+        public string ChangePassword(string username, string password);
     }
 }

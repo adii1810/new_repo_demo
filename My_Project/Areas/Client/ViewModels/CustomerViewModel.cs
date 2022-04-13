@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace DataAccessLayer
+namespace My_Project.Areas.Client.ViewModels
 {
-    public class User_Data
+    public class CustomerViewModel
     {
-        [Key]
-        public int User_Id { get; set; }
         public string User_FirstName { get; set; }
         public string User_LastName { get; set; }
         public string User_UserName { get; set; }
@@ -19,10 +17,5 @@ namespace DataAccessLayer
         public string User_City { get; set; }
         public string User_State { get; set; }
         public int User_ZipCode { get; set; }
-        public ICollection<Order> Orders { get; set; } = new HashSet<Order>();
-        public ICollection<User_Rating> User_Ratings { get; set; } = new HashSet<User_Rating>();
-        public ICollection<User_Review> User_Reviews { get; set; } = new HashSet<User_Review>();
-
-
     }
 }

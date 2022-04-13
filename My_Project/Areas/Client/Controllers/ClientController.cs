@@ -48,6 +48,14 @@ namespace My_Project.Controllers
         {
             return View();
         }
+        public IActionResult CustomerReg()
+        {
+            return View();
+        }
+        public IActionResult CustomerLogin()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> VendorReg(RestaurantDetailViewModel vm)
@@ -99,7 +107,6 @@ namespace My_Project.Controllers
                 Debug.WriteLine($"***************{ex}*************");
                 throw;
             }
-        
 
         HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(RestaurantApiString);

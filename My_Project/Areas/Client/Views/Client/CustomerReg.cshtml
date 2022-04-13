@@ -1,0 +1,202 @@
+﻿@model My_Project.Areas.Client.ViewModels.CustomerViewModel
+
+@{
+    ViewData["Title"] = "CustomerReg";
+    Layout = null;
+}
+
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+
+
+<form asp-action="CustomerReg" asp-area="Client" asp-controller="Client" enctype="multipart/form-data">
+
+    <div class="row">
+        <div class="col-6">
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                    </div>
+                    <input asp-for="User_FirstName" tabindex="1" class="form-control" placeholder="Enter Restaurant Name" />
+                    <span asp-validation-for="User_FirstName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                    </div>
+                    <input asp-for="User_UserName" tabindex="3" class="form-control" placeholder="Enter Password" id="pass1" />
+                    <span asp-validation-for="User_UserName" class="text-danger" id="Error1"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-at"></i>
+                        </div>
+                    </div>
+                    <input asp-for="User_Address" tabindex="5" class="form-control" placeholder="Enter Email" />
+                    <span asp-validation-for="User_Address" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-map"></i>
+                        </div>
+                    </div>
+                    <input asp-for="User_Email" tabindex="7" class="form-control" placeholder="Enter Restaurant Address" />
+                    <span asp-validation-for="User_Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            
+        </div>
+        <div class="col-6">
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                    </div>
+                    <input asp-for="User_LastName" tabindex="2" class="form-control" placeholder="Enter Username" />
+                    <span asp-validation-for="User_LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-check-double"></i>
+                        </div>
+                    </div>
+                    <input type="password" asp-for="User_Password" class="form-control" tabindex="4" placeholder="Password" id="pass2" />
+                    <span asp-validation-for="User_Password" class="text-danger" id="Error"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                    </div>
+                    <input asp-for="User_PhoneNo" tabindex="6" class="form-control" placeholder="Enter Contact No" />
+                    <span asp-validation-for="User_PhoneNo" class="text-danger"></span>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-city"></i>
+                        </div>
+                    </div>
+                    <input asp-for="User_City" tabindex="8" class="form-control" placeholder="Enter City" />
+                    <span asp-validation-for="User_City" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-location-pin"></i>
+                        </div>
+                    </div>
+                    <input asp-for="User_ZipCode" tabindex="10" class="form-control" placeholder="Enter Zipcode" />
+                    <span asp-validation-for="User_ZipCode" class="text-danger"></span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <input type="submit" value="Register" class="btn btn-success btn-block " disabled id="btnsubmit" />
+
+</form>
+
+
+
+
+@*<div class="row">
+        <div class="col-md-4">
+            <form asp-action="CustomerReg">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="User_FirstName" class="control-label"></label>
+                    <input asp-for="User_FirstName" class="form-control" />
+                    <span asp-validation-for="User_FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User_LastName" class="control-label"></label>
+                    <input asp-for="User_LastName" class="form-control" />
+                    <span asp-validation-for="User_LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User_UserName" class="control-label"></label>
+                    <input asp-for="User_UserName" class="form-control" />
+                    <span asp-validation-for="User_UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User_Password" class="control-label"></label>
+                    <input asp-for="User_Password" class="form-control" />
+                    <span asp-validation-for="User_Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User_Address" class="control-label"></label>
+                    <input asp-for="User_Address" class="form-control" />
+                    <span asp-validation-for="User_Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User_PhoneNo" class="control-label"></label>
+                    <input asp-for="User_PhoneNo" class="form-control" />
+                    <span asp-validation-for="User_PhoneNo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User_Email" class="control-label"></label>
+                    <input asp-for="User_Email" class="form-control" />
+                    <span asp-validation-for="User_Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User_City" class="control-label"></label>
+                    <input asp-for="User_City" class="form-control" />
+                    <span asp-validation-for="User_City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User_State" class="control-label"></label>
+                    <input asp-for="User_State" class="form-control" />
+                    <span asp-validation-for="User_State" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+

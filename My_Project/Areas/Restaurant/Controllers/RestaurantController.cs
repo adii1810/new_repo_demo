@@ -206,7 +206,15 @@ namespace My_Project.Areas.Restaurant.Controllers
 
         public IActionResult ChangePassword()
         {
-            return View();
+            var sess = HttpContext.Session.GetString("ResId");
+            if (sess != "" && sess != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         [HttpGet]
         public IActionResult Logout()
@@ -244,17 +252,24 @@ namespace My_Project.Areas.Restaurant.Controllers
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
-                RestaurantDetailViewModel uv = new RestaurantDetailViewModel();
-                uv = JsonConvert.DeserializeObject<RestaurantDetailViewModel>(result);
-                if (uv.Restaurant_Detail_Id > 0)
+                if (result != "")
                 {
-                    HttpContext.Session.SetString("ResId",uv.Restaurant_Detail_Id.ToString());
-                    HttpContext.Session.SetString("ResName",uv.Restaurant_Detail_Name);
-                    HttpContext.Session.SetString("ResUserName",uv.Restaurant_Detail_User_Name);
-                    HttpContext.Session.SetString("ResImgLink",uv.profileImage);                    
-                    HttpContext.Session.SetString("ResEmail",uv.Restaurant_Detail_Email);                    
-                    var data = HttpContext.Session.GetString("ResId");
-                    return RedirectToAction("Index");
+                    RestaurantDetailViewModel uv = new RestaurantDetailViewModel();
+                    uv = JsonConvert.DeserializeObject<RestaurantDetailViewModel>(result);
+                    if (uv.Restaurant_Detail_Id > 0)
+                    {
+                        HttpContext.Session.SetString("ResId", uv.Restaurant_Detail_Id.ToString());
+                        HttpContext.Session.SetString("ResName", uv.Restaurant_Detail_Name);
+                        HttpContext.Session.SetString("ResUserName", uv.Restaurant_Detail_User_Name);
+                        HttpContext.Session.SetString("ResImgLink", uv.profileImage);
+                        HttpContext.Session.SetString("ResEmail", uv.Restaurant_Detail_Email);
+                        var data = HttpContext.Session.GetString("ResId");
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Login");
                 }
             }
             return View();
@@ -639,6 +654,18 @@ namespace My_Project.Areas.Restaurant.Controllers
 
         }
 
-        public async Task<>
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string pass)
+        {
+            var userName = HttpContext.Session.GetString("ResUserName").ToString();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(RestaurantApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"ChangePassword/{userName}/{pass}");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
     }
 }

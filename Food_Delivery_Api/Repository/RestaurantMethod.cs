@@ -274,5 +274,13 @@ namespace Food_Delivery_Api.Repository
             var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_User_Name == username && x.Restaurant_Detail_Password == password).Count();
             return data;
         }
+        public string ChangePassword(string username, string password)
+        {
+            var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_User_Name == username).FirstOrDefault();
+            data.Restaurant_Detail_Password = password;
+            _context.Restaurant_Detail.Update(data);
+            _context.SaveChanges();
+            return "true";
+        }
     }
 }

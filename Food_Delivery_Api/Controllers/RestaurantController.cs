@@ -112,6 +112,13 @@ namespace Food_Delivery_Api.Controllers
             return data;
         }
 
+        [HttpGet("ChangePassword/{uname}/{pass}")]
+        public string ChangePassword(string uname,string pass)
+        {
+            var data = _restaurant.ChangePassword(uname,pass);
+            return data;
+        }
+
         [HttpGet("RestaurantConfirmPass/{username}/{password}")]
         public async Task<int> RestaurantConfirmPass(string username,string password)
         {
