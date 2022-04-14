@@ -10,6 +10,7 @@ var pagination = $('#pagination'),
 
 
 var location2 = "https://localhost:44397/Restaurant/Restaurant/";
+var location3 = "https://localhost:44397/Client/Client/";
 
 showInPopup = (url, title) => {
    
@@ -207,3 +208,34 @@ $("#btnSearch").click(function () {
         }
     });
 });
+
+/*======================================================Customer========================================================================================================== */
+
+$("#tab1").click(() => {
+    if (window.location == location3 + "CustomerIndex") {
+        $.ajax({
+            url: location3 + "ShowProduct",
+            type: "Get",
+            data: { Tab: "tab1" },
+            success: (response) => {
+
+                console.log(response)
+            }
+        })
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*======================================================Customer========================================================================================================== */

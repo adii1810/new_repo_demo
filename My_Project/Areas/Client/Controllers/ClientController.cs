@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using My_Project.Areas.Client.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,11 +31,13 @@ namespace My_Project.Controllers
         private readonly IHostingEnvironment _env;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _config;
+        public string CustomerApiString;
         public string RestaurantApiString;
         public ClientController(IEmailSender emailSender, IConfiguration config, IHostingEnvironment env)
         {
             _emailSender = emailSender;
             _config = config;
+            CustomerApiString = _config.GetValue<string>("CUSTOMERAPISTRING");
             RestaurantApiString = _config.GetValue<string>("RESTAURANTAPISTRING");
             _env = env;
         }
@@ -55,6 +58,27 @@ namespace My_Project.Controllers
         public IActionResult CustomerLogin()
         {
             return View();
+        }
+        public async Task<IActionResult> CustomerIndex()
+        {
+            return View();
+        }
+        public async Task<IEnumerable<ShowProductViewModel>> ShowProduct(string Tab)
+        {
+            if (Tab == "tab1")
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(CustomerApiString);
+                HttpResponseMessage response = await client.GetAsync("ShowProduct");
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    List<ShowProductViewModel> vm = new List<ShowProductViewModel>();
+                    vm = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result);
+                    return vm;
+                }
+            }
+            return null;
         }
 
         [HttpPost]
@@ -116,6 +140,37 @@ namespace My_Project.Controllers
                 return LocalRedirect("~/Restaurant/Restaurant/Index");
             }
             return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public async Task<ActionResult> CustomerReg(CustomerViewModel cvm)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.PostAsJsonAsync("AddCustomer", cvm);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public async Task<JsonResult> CustomerLogin(string Uname,string Pass)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"LoginCustomer/{Uname}/{Pass}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                CustomerViewModel cm = new CustomerViewModel();
+                cm = JsonConvert.DeserializeObject<CustomerViewModel>(result);
+                if (result != "")
+                    return Json(result); 
+                else
+                    return Json(result);
+
+            }
+            return Json("");
         }
     }
 }

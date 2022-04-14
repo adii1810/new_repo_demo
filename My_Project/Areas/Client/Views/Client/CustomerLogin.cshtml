@@ -4,8 +4,6 @@
     Layout = null;
 }
 
-
-
 <style>
     html,
     body {
@@ -47,6 +45,7 @@
         padding: 20px 0 0;
     }
 
+    
     .alert {
         margin-bottom: -30px;
         font-size: 13px;
@@ -74,22 +73,22 @@
             <div class="card-text">
                 <!--
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">Incorrect username or password.</div> -->
-                <form>
+                <form method="post">
                     <!-- to error: add class "has-danger" -->
                     <div class="form-group">
                         <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <input type="text" name="Uname" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>
                         <a href="#" style="float:right;font-size:12px;">Forgot password?</a>
-                        <input type="password" class="form-control form-control-sm" id="exampleInputPassword1">
+                        <input type="password" name="Pass" class="form-control form-control-sm" id="exampleInputPassword1">
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                    <button class="btn btn-primary btn-block" id="btnLogin">Sign in</button>
                     <button class="btn btn-dark btn-block text-white" id="btnclose">Close </button>
 
                     <div class="sign-up">
-                        Don't have an account? <a onclick="showInPopup('@Url.Action("VendorReg","Client",null,Context.Request.Scheme)','Vendor Registration')">Create One</a>
+                        Don't have an account? <a onclick="showInPopup('@Url.Action("CustomerReg","Client",null,Context.Request.Scheme)','Customer Registration')" class="text-primary">Create One</a>
                     </div>
                 </form>
             </div>
@@ -99,5 +98,33 @@
 <script>
     $("#btnclose").click(() => {
         $("#form-modal").hide();
+    })
+
+    $('#btnLogin').click(() => {
+        var formData = $('form').serializeArray();
+        event.preventDefault();
+        $.ajax({
+            url:location3 + "CustomerLogin",
+            type: "Post",
+            data: formData,
+            success: function (response) {
+                console.log("response");
+                if (response != "")
+                {
+                    alert("Success");
+                    window.location.href = location3 + "CustomerIndex";
+                }
+               else
+                   showInPopup('@Url.Action("CustomerLogin","Client",null,Context.Request.Scheme)','Customer Login')
+            },
+             failure: function (response) {
+                console.log("failure");
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert("error");
+                alert(response.responseText);
+            }
+        })
     })
 </script>
