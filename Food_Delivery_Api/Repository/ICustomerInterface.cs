@@ -11,6 +11,6 @@ namespace Food_Delivery_Api.Repository
     {
         public string AddCustomer(User_Data ud);
         public Task<User_Data> LoginCustomer(string uname, string pass);
-        public Task<IEnumerable<ProductforCustomerViewModel>> ShowProduct();
+        public Task<IEnumerable<ProductforCustomerViewModel>> ShowProduct(string tab);
     }
 }

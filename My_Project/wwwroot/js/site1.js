@@ -211,21 +211,175 @@ $("#btnSearch").click(function () {
 
 /*======================================================Customer========================================================================================================== */
 
+
+/*======================================================Pagination=========================================================================================================*/
+var state = {
+    'querySet': null,
+    'page': 1,
+    'rows': 10,
+    'window': 5
+}
+
+function Custpagination(querySet, page, rows) {
+    var trimStart = (page - 1) * rows;
+    var trimEnd = trimStart + rows;
+    var trimmedData = querySet.slice(trimStart, trimEnd);
+    var pages = Math.ceil(querySet.length / rows);
+    return {
+        'querySet': trimmedData,
+        'pages': pages
+    }
+
+}
+
+function pageButton(pages) {
+    var wrapper = document.getElementById('pagination-wrapper');
+    wrapper.innerHTML = ""
+    var maxLeft = (state.page - Math.floor(state.window / 2));
+    var maxRight = (state.page - Math.floor(state.window / 2));
+    if (maxLeft < 1) {
+        maxLeft = 1;
+        maxRight = state.window;
+    }
+    if (maxRight > pages) {
+        maxLeft = pages - (state.window - 1);
+        maxRight = pages;
+        if (maxLeft < 1) {
+            maxLeft = 1;
+        }
+    }
+    for (var page = maxLeft; page <= maxRight; page++) {
+        wrapper.innerHTML += `<button value=${page} class="page btn btn-sm btn-warning text-white">${page}</button>`
+    }
+    if (state.page != 1) {
+        wrapper.innerHTML = `<button value="${state}" class="page btn btn-sm btn-warning text-white">&#171; First</button>` + wrapper.innerHTML;
+    }
+    if (state.page != pages) {
+        wrapper.innerHTML += `<button value="${pages}" class="page btn btn-sm btn-warning text-white"> Last &#187;</button>`;
+    }
+
+    $('.page').click(function () {
+
+        state.page = $(this).val();
+        buildTable();
+    })
+}
+function buildTable() {
+    var data = Custpagination(state.querySet, state.page, state.rows);
+    console.log(data);
+    var myData = data.querySet
+    $("#tab-2 #product").empty();
+    for (var i = 0; i < myData.length; i++) {
+        $("#tab-2 #product").append(` <div class="col-lg-6" onclick="getProductId(${myData[i].product_Id})" >
+                            <div class="d-flex align-items-center">
+                                <img class="flex-shrink-0 img-fluid rounded" src="${myData[i].imgLink}" style="max-width: 3.5rem;" >
+                                <div class="w-100 d-flex flex-column text-start ps-4">
+                                    <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                        <span>${myData[i].product_Name}</span>
+                                        <span class="text-primary">${myData[i].product_Price}</span>
+                                    </h5>
+                                    <small class="fst-italic d-flex justify-content-between">${myData[i].description}
+                                    <span class="text-primary"><button class="btn btn-warning text-white">Add</button></span></small>
+                                </div>
+                            </div>
+                        </div>`);
+    }
+    pageButton(data.pages);
+}
+
+
+/*======================================================Pagination=========================================================================================================*/
+
 $("#tab1").click(() => {
     if (window.location == location3 + "CustomerIndex") {
+        $("#tab1").addClass("active")
+        $("#tab2").removeClass("active")
+        $("#tab3").removeClass("active")
+        $("#tab-1").addClass("active")
+        $("#tab-2").removeClass("active")
+        $("#tab-3").removeClass("active")
         $.ajax({
             url: location3 + "ShowProduct",
             type: "Get",
             data: { Tab: "tab1" },
             success: (response) => {
+                var state = {
+                    'querySet': response,
+                    'page': 1,
+                    'rows':5
+                }
+                buildTable()
 
+                function pagination(querySet, page, rows) {
+                    var trimStart = (page-1)*rows ;
+                    var trimEnd = trimStart + rows;
+                    var trimmedData = querySet.slice(trimStart, trimEnd);
+                    var pages = Math.ceil(querySet.length / rows);
+                    return {
+                        'querySet': trimmedData,
+                        'pages':pages
+                    }
+                }
+
+                function buildTable() {
+                    var data = pagination(state.querySet, state.page, state.rows);
+                    console.log(data);
+                    $("#tab-1 #product").empty();
+                    for (var i = 0; i < response.length; i++) {
+                        $("#tab-1 #product").append("<p>aditya</p>");
+                    }
+                    console.log(response.length);
+                }
+            }
+        })
+    }
+})
+$("#tab2").click(() => {
+    if (window.location == location3 + "CustomerIndex") {
+        $("#tab2").addClass("active")
+        $("#tab1").removeClass("active")
+        $("#tab3").removeClass("active")
+        $("#tab-2").addClass("active")
+        $("#tab-1").removeClass("active")
+        $("#tab-3").removeClass("active")
+        $.ajax({
+            url: location3 + "ShowProduct",
+            type: "Get",
+            data: { Tab: "tab2" },
+            success: (response) => {
+                state.querySet = response;
+                buildTable()
                 console.log(response)
+            }                
+        })
+    }
+})
+$("#tab3").click(() => {
+    if (window.location == location3 + "CustomerIndex") {
+        $("#tab3").addClass("active")
+        $("#tab1").removeClass("active")
+        $("#tab2").removeClass("active")
+        $("#tab-3").addClass("active")
+        $("#tab-1").removeClass("active")
+        $("#tab-2").removeClass("active")
+        $.ajax({
+            url: location3 + "ShowProduct",
+            type: "Get",
+            data: { Tab: "tab3" },
+            success: (response) => {
+                $("#tab-3 #product").empty();
+                for (var i = 0; i < response.length; i++) {
+                    $("#tab-3 #product").append("<p>aditya</p>");
+                }                
+                console.log(response.length);
             }
         })
     }
 })
 
-
+function getProductId(id) {
+    alert(id);
+}
 
 
 

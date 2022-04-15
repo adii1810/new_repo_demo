@@ -65,11 +65,10 @@ namespace My_Project.Controllers
         }
         public async Task<IEnumerable<ShowProductViewModel>> ShowProduct(string Tab)
         {
-            if (Tab == "tab1")
-            {
+           
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(CustomerApiString);
-                HttpResponseMessage response = await client.GetAsync("ShowProduct");
+                HttpResponseMessage response = await client.GetAsync($"ShowProduct/{Tab}");
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
@@ -77,7 +76,7 @@ namespace My_Project.Controllers
                     vm = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result);
                     return vm;
                 }
-            }
+            
             return null;
         }
 

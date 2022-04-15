@@ -33,10 +33,10 @@ namespace Food_Delivery_Api.Controllers
             var data = await _Customer.LoginCustomer(Uname,Pass);
             return data;
         }
-        [HttpGet("ShowProduct")]
-        public async Task<IEnumerable<ProductforCustomerViewModel>> ShowProduct()
+        [HttpGet("ShowProduct/{tab}")]
+        public async Task<IEnumerable<ProductforCustomerViewModel>> ShowProduct(string tab)
         {
-            var data = await _Customer.ShowProduct();
+            var data = await _Customer.ShowProduct(tab);
             return data;
         }
     }

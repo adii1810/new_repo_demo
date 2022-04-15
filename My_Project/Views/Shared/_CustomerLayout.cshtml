@@ -34,6 +34,43 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />*@
     <!-- Template Stylesheet -->
     <link href="~/css/style.css" rel="stylesheet" />
+    
+    
+  
+    <style>
+        .simple-pagination ul {
+            margin: 0 0 20px;
+            padding: 0;
+            list-style: none;
+            text-align: center;
+        }
+
+        .simple-pagination li {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+            .simple-pagination li a,
+            .simple-pagination li span {
+                color: #666;
+                padding: 5px 10px;
+                text-decoration: none;
+                border: 1px solid #EEE;
+                background-color: #FFF;
+                box-shadow: 0px 0px 10px 0px #EEE;
+            }
+
+        .simple-pagination .current {
+            color: #FFF;
+            background-color: #FF7182;
+            border-color: #FF7182;
+        }
+
+        .simple-pagination .prev.current,
+        .simple-pagination .next.current {
+            background: #e04e60;
+        }
+    </style>
 </head>
 
 <body>
@@ -93,6 +130,9 @@
         @RenderBody()
 
         <!-- Menu End -->
+        <div class="container">
+            <div id="pagination-wrapper" class=" d-flex justify-content-center"></div>
+        </div>
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
             <div class="container py-5">
@@ -134,6 +174,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="container">
                 <div class="copyright">
                     <div class="row">
@@ -161,6 +202,7 @@
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+   
     <!-- JavaScript Libraries -->
     <script src="~/js/jquery.autocomplete.js"></script>
     <script src="~/js/site1.js"></script>
