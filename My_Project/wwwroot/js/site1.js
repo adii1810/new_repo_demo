@@ -13,7 +13,7 @@ var location2 = "https://localhost:44397/Restaurant/Restaurant/";
 var location3 = "https://localhost:44397/Client/Client/";
 
 showInPopup = (url, title) => {
-   
+
     $.ajax({
         type: 'GET',
         url: url,
@@ -25,8 +25,8 @@ showInPopup = (url, title) => {
     })
 }
 
-$('.close').click(()=>{
-    $('#form-modal').hide();    
+$('.close').click(() => {
+    $('#form-modal').hide();
 })
 //====================Pagination============================================================
 
@@ -56,10 +56,10 @@ function generate_table() {
 
         for (var i = 0; i < response.length; i++) {
             if (response[i].product_Status === true) {
-                var data = "<label class='btn btn-success text - white' id='status_" + response[i].product_Id +"' onClick='changeStatus("+ response[i].product_Id +")' >Active</label>"
+                var data = "<label class='btn btn-success text - white' id='status_" + response[i].product_Id + "' onClick='changeStatus(" + response[i].product_Id + ")' >Active</label>"
             }
             else {
-            data = "<label class='btn btn-danger text-white' id='status_" + response[i].product_Id + "' onClick='changeStatus(" + response[i].product_Id +")'>InActive</label>"
+                data = "<label class='btn btn-danger text-white' id='status_" + response[i].product_Id + "' onClick='changeStatus(" + response[i].product_Id + ")'>InActive</label>"
             }
             $('.customtbl .table tbody').append(`<tr ><td data-label="Sr.No" class="col-2">${i + 1}</td><td data-label="Product Name">${response[i].product_Name}</td>
                     <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td><td><button class="btn btn-primary"  onClick="Update(${response[i].product_Id})"><i class="fa-solid fa-file-pen"></i></button><button class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button></td></tr>`);
@@ -106,8 +106,8 @@ $(document).ready(function () {
 $(document).ready(() => {
 
     if (window.location == location2 + "ShowProduct") {
-       
-        
+
+
         $("#pager").show();
         $.ajax({
             url: location2 + `ShowProduct1`,
@@ -132,14 +132,14 @@ const changeStatus = (data) => {
         url: location2 + "ChangeStatus",
         type: "Post",
         data: { ProdId: data, status: Status },
-        success: function(response){
+        success: function (response) {
             if (response == "true") {
                 if (Status == false) {
                     $("#status_" + data).html("InActive");
                     $("#status_" + data).removeClass("btn btn-success text-white");
                     $("#status_" + data).addClass("btn btn-danger text-white");
                 }
-                else if(Status == true) {
+                else if (Status == true) {
                     $("#status_" + data).html("Active");
                     $("#status_" + data).removeClass("btn btn-danger text-white");
                     $("#status_" + data).addClass("btn btn-success text-white");
@@ -151,8 +151,8 @@ const changeStatus = (data) => {
 }
 
 const Update = (Id) => {
-  
-   window.location.href = location2+`EditProduct/${Id}`
+
+    window.location.href = location2 + `EditProduct/${Id}`
 }
 
 
@@ -161,7 +161,7 @@ $("#Name").autocomplete({
     maxShowItems: 3,
 
     source: function (request, response) {
-        
+
         $.ajax({
             url: location2 + "myProduct",
             type: "POST",
@@ -185,7 +185,7 @@ $("#Name").autocomplete({
 $("#btnSearch").click(function () {
 
     $("#pager").show();
-   
+
     var id = document.getElementById("Drop").value;
     var name = document.getElementById("Name").value;
     $.ajax({
@@ -279,7 +279,7 @@ function buildTable() {
                                         <span class="text-primary">${myData[i].product_Price}</span>
                                     </h5>
                                     <small class="fst-italic d-flex justify-content-between">${myData[i].description}
-                                    <span class="text-primary"><button class="btn btn-warning text-white">Add</button></span></small>
+                                    <span class="text-primary" id="btnchange_${myData[i].product_Id}"><button class="btn btn-warning text-white" onclick="AddProduct(${myData[i].product_Id})" id="btn_${myData[i].product_Id}">Add</button></span></small>
                                 </div>
                             </div>
                         </div>`);
@@ -306,18 +306,18 @@ $("#tab1").click(() => {
                 var state = {
                     'querySet': response,
                     'page': 1,
-                    'rows':5
+                    'rows': 5
                 }
                 buildTable()
 
                 function pagination(querySet, page, rows) {
-                    var trimStart = (page-1)*rows ;
+                    var trimStart = (page - 1) * rows;
                     var trimEnd = trimStart + rows;
                     var trimmedData = querySet.slice(trimStart, trimEnd);
                     var pages = Math.ceil(querySet.length / rows);
                     return {
                         'querySet': trimmedData,
-                        'pages':pages
+                        'pages': pages
                     }
                 }
 
@@ -350,7 +350,7 @@ $("#tab2").click(() => {
                 state.querySet = response;
                 buildTable()
                 console.log(response)
-            }                
+            }
         })
     }
 })
@@ -370,7 +370,7 @@ $("#tab3").click(() => {
                 $("#tab-3 #product").empty();
                 for (var i = 0; i < response.length; i++) {
                     $("#tab-3 #product").append("<p>aditya</p>");
-                }                
+                }
                 console.log(response.length);
             }
         })
@@ -378,17 +378,36 @@ $("#tab3").click(() => {
 })
 
 function getProductId(id) {
-    alert(id);
+    //alert(id);
+}
+const AddProduct = (id) => {
+    $("#btn_" + id).remove();
+    $("#btnchange_" + id).append(`<div id="btnSegment"><button class='btn btn-warning btn-sm' onclick="funcDec(${id})" > <i class='bi bi-dash'></i></button ><input type='text' disabled id="txt_${id}" value=1  maxlength='1' size='1' /><button class='btn btn-warning btn-sm' onclick="funcInc(${id})"><i class='bi bi-plus'></i></button></div>`);
 }
 
+const funcInc = (id) => {
+    var data = document.getElementById("txt_" + id).value;
+    var num = Number(data);
+        num += 1;
+        document.getElementById("txt_" + id).value = num;
+}
+const funcDec = (id) => {
+    var data = document.getElementById("txt_" + id).value;
+    var num = Number(data);
+    num -= 1;
+    document.getElementById("txt_" + id).value = num;
+    if (num === 0) {
+        $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="AddProduct(${id})" id="btn_${id}">Add</button>`);
+        $("#btnSegment").remove();
+    }
+    
+}
+    //$('button').click(function (event) {
+    //    console.log(event)
+    //    alert(event.target.id);
+    //});
 
-
-
-
-
-
-
-
+//<button class= 'btn btn-warning btn-sm' > <i class='bi bi-dash'></i></button ><input type='text'  maxlength='1' size='1' /><button class='btn btn-warning btn-sm'><i class='bi bi-plus'></i></button>");
 
 
 
