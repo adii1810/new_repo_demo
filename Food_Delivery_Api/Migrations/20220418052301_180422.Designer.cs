@@ -4,14 +4,16 @@ using Food_Delivery_Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Food_Delivery_Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220418052301_180422")]
+    partial class _180422
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +37,7 @@ namespace Food_Delivery_Api.Migrations
                     b.Property<int>("User_DataId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ValetId")
+                    b.Property<int>("ValetId")
                         .HasColumnType("int");
 
                     b.HasKey("Order_Id");
@@ -353,7 +355,7 @@ namespace Food_Delivery_Api.Migrations
                     b.Property<int>("User_DataId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ValetId")
+                    b.Property<int>("ValetId")
                         .HasColumnType("int");
 
                     b.HasKey("Order_Id");
@@ -400,7 +402,9 @@ namespace Food_Delivery_Api.Migrations
 
                     b.HasOne("DataAccessLayer.Valet", "Valet")
                         .WithMany("Orders")
-                        .HasForeignKey("ValetId");
+                        .HasForeignKey("ValetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DataAccessLayer.Order_Detail", b =>
@@ -469,7 +473,9 @@ namespace Food_Delivery_Api.Migrations
 
                     b.HasOne("DataAccessLayer.Valet", "Valet")
                         .WithMany()
-                        .HasForeignKey("ValetId");
+                        .HasForeignKey("ValetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DataAccessLayer.tempOrderDetails", b =>

@@ -1,0 +1,221 @@
+﻿@model IEnumerable<My_Project.Areas.Client.ViewModels.CartProductViewModel>
+
+@{
+    ViewData["Title"] = "Cart";
+
+}
+
+<head>
+
+    <style>
+        .modal.fade {
+            opacity: 1;
+        }
+        .table-image thead td,
+        .table-image thead th {
+            border: 0;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .table-image td,
+        .table-image th {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+            .table-image td.qty,
+            .table-image th.qty {
+                max-width: 2rem;
+            }
+
+        .price {
+            margin-left: 1rem;
+        }
+
+        .modal-footer {
+            padding-top: 0rem;
+        }
+
+        .quantity {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .quantity__minus,
+        .quantity__plus {
+            display: block;
+            width: 25px;
+            height: 25px;
+            margin: 0;
+            background: #FF8C00;
+            text-decoration: none;
+            text-align: center;
+            line-height: 23px;
+        }
+
+            .quantity__minus:hover,
+            .quantity__plus:hover {
+                background: #575b71;
+                color: #fff;
+            }
+
+        .quantity__minus {
+            border-radius: 3px 0 0 3px;
+        }
+
+        .quantity__plus {
+            border-radius: 0 3px 3px 0;
+        }
+
+        .quantity__input {
+            width: 32px;
+            height: 19px;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            border-top: 2px solid #dee0ee;
+            border-bottom: 2px solid #dee0ee;
+            border-left: 1px solid #dee0ee;
+            border-right: 2px solid #dee0ee;
+            background: #fff;
+            color: #8184a1;
+        }
+
+        .quantity__minus:link,
+        .quantity__plus:link {
+            color: #8184a1;
+        }
+
+        .quantity__minus:visited,
+        .quantity__plus:visited {
+            color: #fff;
+        }
+
+    </style>
+</head>
+
+<table class="table table-image">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="w-25">
+                <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/vans.png" class="img-fluid img-thumbnail" alt="Sheep">
+            </td>
+            <td>Vans Sk8-Hi MTE Shoes</td>
+            <td>89$</td>
+            <td class="qty">
+            <div class="quantity">
+                <a class="quantity__minus"><span>-</span></a>
+                <input name="quantity" type="text" disabled class="quantity__input" value="1">
+                <a class="quantity__plus"><span>+</span></a>
+            </div></td>
+            <td>178$</td>
+            <td>
+                <a href="#" class="btn btn-danger btn-sm">
+                    <i class="fa fa-times"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="d-flex justify-content-end">
+    <h5>Total: <span class="price text-success">89$</span></h5>
+</div>
+<script>
+    $('#form-modal').ready(() => {
+        $('#close').click(() => {
+            $('#form-modal').hide();
+        })
+    })
+
+    $('.quantity__minus').click(() => {
+        var data = Number($('.quantity__input').val());
+        if (data > 1) {
+            data -= 1;
+            $('.quantity__input').val(data);
+        }
+    })
+    $('.quantity__plus').click(() => {
+        var data = Number($('.quantity__input').val());
+        data +=1 ;
+        $('.quantity__input').val(data);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order_Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User_DataId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Order_Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User_DataId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>*@
+

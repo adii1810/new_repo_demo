@@ -24,43 +24,85 @@ namespace Food_Delivery_Api.Repository
             _context.SaveChanges();
             return "true";
         }
-        public async Task<User_Data> LoginCustomer(string uname,string pass)
+        public async Task<User_Data> LoginCustomer(string uname, string pass)
         {
             var data = await _context.User_Data.Where(x => x.User_UserName == uname && x.User_Password == pass).FirstOrDefaultAsync();
             return data;
         }
         public async Task<IEnumerable<ProductforCustomerViewModel>> ShowProduct(string tab)
         {
-            List<Product> data=null;
+            List<Product> data = null;
             List<ProductforCustomerViewModel> lvm = new List<ProductforCustomerViewModel>();
             if (tab == "tab1")
             {
-                  data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 1).ToList();
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 1).ToList();
             }
             else if (tab == "tab2")
             {
-                 data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 0).ToList();
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 0).ToList();
             }
             else if (tab == "tab3")
             {
-                 data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 2).ToList();
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 2).ToList();
             }
             else
             {
                 data = _context.Product.Include("Sub_Category").ToList();
             }
             foreach (var item in data)
-                {
-                    ProductforCustomerViewModel p = new ProductforCustomerViewModel();
-                    p.Description = item.Description;
-                    p.Product_Id = item.Product_Id;
-                    p.Product_Name = item.Product_Name;
-                    p.Product_Price = item.Product_Price;
-                    p.Product_Status = item.Product_Status;
-                    var link = await _context.ProductImages.Where(x => x.ProductId == item.Product_Id).Take(1).Select(x => x.ImgLink).FirstOrDefaultAsync();
-                    p.ImgLink = link;
-                    lvm.Add(p);
-                }
+            {
+                ProductforCustomerViewModel p = new ProductforCustomerViewModel();
+                p.Description = item.Description;
+                p.Product_Id = item.Product_Id;
+                p.Product_Name = item.Product_Name;
+                p.Product_Price = item.Product_Price;
+                p.Product_Status = item.Product_Status;
+                var link = await _context.ProductImages.Where(x => x.ProductId == item.Product_Id).Take(1).Select(x => x.ImgLink).FirstOrDefaultAsync();
+                p.ImgLink = link;
+                lvm.Add(p);
+            }
+            return lvm;
+        }
+
+        //Addin product to temp order
+        public string AddProductCart(CartProductViewModel vm)
+        {
+            /* Adding procduct to tempOrder*/
+            tempOrder TO = new tempOrder();
+            TO.Order_Date = vm.Order_Date;
+            TO.User_DataId = vm.User_DataId;
+            _context.tempOrder.Add(TO);
+            _context.SaveChanges();
+
+            /* fetching current orderId*/
+            var orderId = _context.tempOrder.OrderByDescending(x => x.Order_Id).Take(1).Select(x => x.Order_Id).FirstOrDefault();
+
+            /* Adding procduct to tempOrderDetail*/
+            tempOrderDetails TOD = new tempOrderDetails();
+            TOD.OrderId = orderId;
+            TOD.ProductId = vm.ProductId;
+            TOD.Quantity = vm.Quantity;
+            _context.tempOrder_Detail.Add(TOD);
+            _context.SaveChanges();
+            return "true";
+        }
+
+        public IEnumerable<CartProductViewModel> ViewProductCart(int userId)
+        {
+            var data = _context.tempOrder.Where(x => x.User_DataId == userId).ToList();
+            List<CartProductViewModel> lvm = new List<CartProductViewModel>();
+            foreach (var item in data)
+            {
+                CartProductViewModel cvm = new CartProductViewModel();
+                cvm.Order_Date = item.Order_Date;
+                var orderDetail = _context.tempOrder_Detail.Where(x => x.OrderId == item.Order_Id).FirstOrDefault();
+                var productDetails = _context.Product.Where(x => x.Product_Id == orderDetail.ProductId).FirstOrDefault();
+                cvm.ProductId = orderDetail.ProductId;
+                cvm.Quantity = orderDetail.Quantity;
+                cvm.ProductName = productDetails.Product_Name;
+                cvm.Price = productDetails.Product_Price;
+                lvm.Add(cvm);               
+            }
             return lvm;
         }
     }

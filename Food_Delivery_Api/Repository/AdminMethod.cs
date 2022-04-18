@@ -95,7 +95,7 @@ namespace Food_Delivery_Api.Repository
                 OrderViewModel vm = new OrderViewModel();
                 vm.Order_Id = item.Order_Id;
                 vm.Order_Date = item.Order_Date.ToString("d");
-                vm.Valet_id = item.ValetId;
+               // vm.Valet_id = item.ValetId;
                 var data2 = _context.Order_Detail.Where(x => x.OrderId == item.Order_Id).ToList();
                 int sum = 0;
                 foreach (var item2 in data2)

@@ -1,5 +1,6 @@
 ﻿
 
+
 var pagination = $('#pagination'),
     totalRecords = 0,
     records = [],
@@ -381,27 +382,25 @@ function getProductId(id) {
     //alert(id);
 }
 const AddProduct = (id) => {
+    alert(id)
     $("#btn_" + id).remove();
-    $("#btnchange_" + id).append(`<div id="btnSegment"><button class='btn btn-warning btn-sm' onclick="funcDec(${id})" > <i class='bi bi-dash'></i></button ><input type='text' disabled id="txt_${id}" value=1  maxlength='1' size='1' /><button class='btn btn-warning btn-sm' onclick="funcInc(${id})"><i class='bi bi-plus'></i></button></div>`);
+    //Add product to cart
+    $.ajax({
+        url: location3 + "AddProductCart",
+        type: "Post",
+        data: { prodId: id },
+        success: (response) => {
+            if (response == "true") {
+                $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="funcCheckout(${id})" id="btn_${id}">Checkout</button>`);
+            }
+            else {
+                $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="AddProduct(${id})" id="btn_${id}">Add</button>`);
+            }
+        }
+    })
 }
 
-const funcInc = (id) => {
-    var data = document.getElementById("txt_" + id).value;
-    var num = Number(data);
-        num += 1;
-        document.getElementById("txt_" + id).value = num;
-}
-const funcDec = (id) => {
-    var data = document.getElementById("txt_" + id).value;
-    var num = Number(data);
-    num -= 1;
-    document.getElementById("txt_" + id).value = num;
-    if (num === 0) {
-        $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="AddProduct(${id})" id="btn_${id}">Add</button>`);
-        $("#btnSegment").remove();
-    }
-    
-}
+
     //$('button').click(function (event) {
     //    console.log(event)
     //    alert(event.target.id);

@@ -26,6 +26,8 @@ namespace Food_Delivery_Api.Data
         public DbSet<User_Review> User_Review { get; set; }
         public DbSet<Valet> Valet { get; set; }
         public DbSet<ProductImages> ProductImages { get; set; }
+        public DbSet<tempOrder> tempOrder { get; set; }
+        public DbSet<tempOrderDetails> tempOrder_Detail { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

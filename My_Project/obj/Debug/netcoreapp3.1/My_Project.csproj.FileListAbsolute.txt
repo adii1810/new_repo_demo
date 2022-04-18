@@ -1655,3 +1655,4 @@ E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Client\Views\Client\CustomerReg.cshtml.g.cs
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_CustomerLayout.cshtml.g.cs
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Client\Views\Client\CustomerIndex.cshtml.g.cs
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Client\Views\Client\Cart.cshtml.g.cs

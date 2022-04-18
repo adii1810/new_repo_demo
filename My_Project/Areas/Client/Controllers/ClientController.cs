@@ -2,6 +2,7 @@
 using Firebase.Auth;
 using Firebase.Storage;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using My_Project.Areas.Client.ViewModels;
@@ -63,9 +64,49 @@ namespace My_Project.Controllers
         {
             return View();
         }
+        //For showing cart data
+        [HttpGet]
+        public async Task<IActionResult> Cart()
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"ViewProductCart/{Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString())}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (result != "" && result != null)
+                {
+                    List<CartProductViewModel> vm = new List<CartProductViewModel>();
+                    vm = JsonConvert.DeserializeObject<List<CartProductViewModel>>(result);
+                    return PartialView(vm);
+                }
+            }
+
+            return View();
+        }
+        //Adding products to cart
+        public async Task<JsonResult> AddProductCart(int prodId)
+        {
+            CartProductViewModel vm = new CartProductViewModel();
+            vm.Order_Date = DateTime.Now.Date;
+            vm.ProductId = prodId;
+            vm.Quantity = 1;
+            vm.User_DataId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
+            
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.PostAsJsonAsync("AddProductCart", vm);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                if(result != "" && result != null)
+                    return Json("true");
+            }
+
+            return Json("false");
+        }
         public async Task<IEnumerable<ShowProductViewModel>> ShowProduct(string Tab)
         {
-           
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(CustomerApiString);
                 HttpResponseMessage response = await client.GetAsync($"ShowProduct/{Tab}");
@@ -75,8 +116,7 @@ namespace My_Project.Controllers
                     List<ShowProductViewModel> vm = new List<ShowProductViewModel>();
                     vm = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result);
                     return vm;
-                }
-            
+                }   
             return null;
         }
 
@@ -163,6 +203,11 @@ namespace My_Project.Controllers
                 var result = response.Content.ReadAsStringAsync().Result;
                 CustomerViewModel cm = new CustomerViewModel();
                 cm = JsonConvert.DeserializeObject<CustomerViewModel>(result);
+                HttpContext.Session.SetString("UserId", cm.User_Id.ToString());
+                HttpContext.Session.SetString("UserName", cm.User_FirstName);
+                //HttpContext.Session.SetString("ResUserName", uv.Restaurant_Detail_User_Name);
+                //HttpContext.Session.SetString("ResImgLink", uv.profileImage);
+                //HttpContext.Session.SetString("ResEmail", uv.Restaurant_Detail_Email);
                 if (result != "")
                     return Json(result); 
                 else
@@ -170,6 +215,32 @@ namespace My_Project.Controllers
 
             }
             return Json("");
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> IncrementDecrement(string status,int prodId)
+        {
+
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"IncrementDecrement/{status}/{prodId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                CustomerViewModel cm = new CustomerViewModel();
+                cm = JsonConvert.DeserializeObject<CustomerViewModel>(result);
+                HttpContext.Session.SetString("UserId", cm.User_Id.ToString());
+                HttpContext.Session.SetString("UserName", cm.User_FirstName);
+                //HttpContext.Session.SetString("ResUserName", uv.Restaurant_Detail_User_Name);
+                //HttpContext.Session.SetString("ResImgLink", uv.profileImage);
+                //HttpContext.Session.SetString("ResEmail", uv.Restaurant_Detail_Email);
+                if (result != "")
+                    return Json(result);
+                else
+                    return Json(result);
+
+            }
+            return Json("false");
         }
     }
 }

@@ -39,5 +39,20 @@ namespace Food_Delivery_Api.Controllers
             var data = await _Customer.ShowProduct(tab);
             return data;
         }
+
+        [HttpGet("ViewProductCart/{userId}")]
+        public IEnumerable<CartProductViewModel> ViewProductCart (int userId)
+        {
+            var data =  _Customer.ViewProductCart(userId);
+            return data;
+        }
+
+
+        [HttpPost("AddProductCart")]
+        public string AddProductCart(CartProductViewModel vm)
+        {
+            var data =  _Customer.AddProductCart(vm);
+            return "true";
+        }
     }
 }
