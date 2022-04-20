@@ -47,12 +47,17 @@ namespace Food_Delivery_Api.Controllers
             return data;
         }
 
-
+        [HttpGet("checkProduct/{userId}")]
+        public List<int> checkProduct(int userId)
+        {
+            var data = _Customer.checkProduct(userId);
+            return data;
+        }
         [HttpPost("AddProductCart")]
         public string AddProductCart(CartProductViewModel vm)
         {
             var data =  _Customer.AddProductCart(vm);
-            return "true";
+            return data;
         }
     }
 }

@@ -64,6 +64,23 @@ namespace My_Project.Controllers
         {
             return View();
         }
+        public async Task<List<int>> CheckProduct()
+        {
+            List<int> ids = new List<int>();
+            var userId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"checkProduct/{userId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+
+                ids = JsonConvert.DeserializeObject<List<int>>(result);
+
+            }
+            return ids;
+
+        }
         //For showing cart data
         [HttpGet]
         public async Task<IActionResult> Cart()
@@ -92,14 +109,14 @@ namespace My_Project.Controllers
             vm.ProductId = prodId;
             vm.Quantity = 1;
             vm.User_DataId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
-            
+
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
             HttpResponseMessage response = await client.PostAsJsonAsync("AddProductCart", vm);
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                if(result != "" && result != null)
+                if (result != "" && result != null)
                     return Json("true");
             }
 
@@ -107,16 +124,16 @@ namespace My_Project.Controllers
         }
         public async Task<IEnumerable<ShowProductViewModel>> ShowProduct(string Tab)
         {
-                HttpClient client = new HttpClient();
-                client.BaseAddress = new Uri(CustomerApiString);
-                HttpResponseMessage response = await client.GetAsync($"ShowProduct/{Tab}");
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = response.Content.ReadAsStringAsync().Result;
-                    List<ShowProductViewModel> vm = new List<ShowProductViewModel>();
-                    vm = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result);
-                    return vm;
-                }   
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"ShowProduct/{Tab}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                List<ShowProductViewModel> vm = new List<ShowProductViewModel>();
+                vm = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result);
+                return vm;
+            }
             return null;
         }
 
@@ -159,7 +176,7 @@ namespace My_Project.Controllers
             }).Child("assets").Child(foldername)
             .Child($"{uniqueName}")
             .PutAsync(fs, canceation.Token);
-           
+
             try
             {
                 var link = await upload;
@@ -171,7 +188,7 @@ namespace My_Project.Controllers
                 throw;
             }
 
-        HttpClient client = new HttpClient();
+            HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(RestaurantApiString);
             HttpResponseMessage response = await client.PostAsJsonAsync("AddRestaurant", vm);
             if (response.IsSuccessStatusCode)
@@ -193,7 +210,7 @@ namespace My_Project.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public async Task<JsonResult> CustomerLogin(string Uname,string Pass)
+        public async Task<JsonResult> CustomerLogin(string Uname, string Pass)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
@@ -209,7 +226,7 @@ namespace My_Project.Controllers
                 //HttpContext.Session.SetString("ResImgLink", uv.profileImage);
                 //HttpContext.Session.SetString("ResEmail", uv.Restaurant_Detail_Email);
                 if (result != "")
-                    return Json(result); 
+                    return Json(result);
                 else
                     return Json(result);
 
@@ -218,7 +235,7 @@ namespace My_Project.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> IncrementDecrement(string status,int prodId)
+        public async Task<JsonResult> IncrementDecrement(string status, int prodId)
         {
 
             HttpClient client = new HttpClient();
@@ -239,6 +256,23 @@ namespace My_Project.Controllers
                 else
                     return Json(result);
 
+            }
+            return Json("false");
+        }
+
+        public async Task<JsonResult> deleteProduct(int prodId)
+        {
+            var userId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"deleteProduct/{userId}/{prodId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (result != "")
+                {
+                    return Json("true");
+                }
             }
             return Json("false");
         }

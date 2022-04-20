@@ -15,6 +15,6 @@ namespace DataAccessLayer
         public int? ValetId { get; set; }
         public User_Data User_Data { get; set; }
         public Valet Valet { get; set; }
-        public ICollection<tempOrderDetails> Order_Details { get; set; } = new HashSet<tempOrderDetails>();
+        public ICollection<tempOrderDetails> tempOrder_Details { get; set; } = new HashSet<tempOrderDetails>();
     }
 }

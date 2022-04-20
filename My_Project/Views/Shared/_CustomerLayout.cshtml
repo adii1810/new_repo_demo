@@ -105,16 +105,16 @@
 
 
         <div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header border-bottom-0">
                         <h5 class="modal-title" id="exampleModalLabel">
                             Your Shopping Cart
                         </h5>
-                       
+
                     </div>
                     <div class="modal-body">
-                       
+
                     </div>
                     <div class="modal-footer border-top-0 d-flex justify-content-between">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Close</button>
@@ -126,17 +126,17 @@
 
 
         @*<div class="modal" tabindex="1" role="dialog" id="form-modal">
-            <div class="modal-dialog modal-dialog-scrollable " role="document">
+                <div class="modal-dialog modal-dialog-scrollable " role="document">
 
-                <div class="modal-content ">
+                    <div class="modal-content ">
 
-                    <div class="modal-body">
+                        <div class="modal-body">
+
+                        </div>
 
                     </div>
-
                 </div>
-            </div>
-        </div>*@
+            </div>*@
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
             <div class="container py-5">
@@ -206,7 +206,7 @@
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-   
+
     <!-- JavaScript Libraries -->
     <script src="~/js/jquery.autocomplete.js"></script>
     <script src="~/js/site1.js"></script>
@@ -221,6 +221,7 @@
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
 
+    $('.modal-content').css('height', $(window).height() * 2);
 
 </body>
 
