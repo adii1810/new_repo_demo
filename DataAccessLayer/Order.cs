@@ -20,8 +20,10 @@ namespace DataAccessLayer
 
     public enum OrderStatus
     {
-        Product_Delivered = 0,
-        On_the_way = 1,
-        Delivered_Success = 2
+        Product_Pending = 0,
+        Product_Approved = 1,
+        Product_Taken = 2,
+        On_the_way = 3,
+        Delivered_Success = 4
     }
 }

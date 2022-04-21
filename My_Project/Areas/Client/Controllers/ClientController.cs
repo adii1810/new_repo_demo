@@ -237,41 +237,52 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<JsonResult> IncrementDecrement(string status, int prodId)
         {
-
+            var userId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
-            HttpResponseMessage response = await client.GetAsync($"IncrementDecrement/{status}/{prodId}");
+            HttpResponseMessage response = await client.GetAsync($"IncrementDecrement/{status}/{prodId}/{userId}");
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                CustomerViewModel cm = new CustomerViewModel();
-                cm = JsonConvert.DeserializeObject<CustomerViewModel>(result);
-                HttpContext.Session.SetString("UserId", cm.User_Id.ToString());
-                HttpContext.Session.SetString("UserName", cm.User_FirstName);
-                //HttpContext.Session.SetString("ResUserName", uv.Restaurant_Detail_User_Name);
-                //HttpContext.Session.SetString("ResImgLink", uv.profileImage);
-                //HttpContext.Session.SetString("ResEmail", uv.Restaurant_Detail_Email);
-                if (result != "")
+                if (result == "true")
+                {
                     return Json(result);
-                else
-                    return Json(result);
-
+                }
             }
             return Json("false");
         }
-
-        public async Task<JsonResult> deleteProduct(int prodId)
+        [HttpPost]
+        public async Task<JsonResult> deleteProduct(int ProdId)
         {
             var userId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
-            HttpResponseMessage response = await client.GetAsync($"deleteProduct/{userId}/{prodId}");
+            HttpResponseMessage response = await client.GetAsync($"deleteProduct/{ProdId}/{userId}");
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
                 if (result != "")
                 {
-                    return Json("true");
+                    return Json(result);
+                }
+            }
+            return Json("false");
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> CheckOut()
+        {
+            var userId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"CheckOut/{userId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (result != "")
+                {
+                    return Json(result);
                 }
             }
             return Json("false");

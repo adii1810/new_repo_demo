@@ -47,11 +47,23 @@ namespace Food_Delivery_Api.Controllers
             return data;
         }
 
-        [HttpGet("checkProduct/{userId}")]
-        public List<int> checkProduct(int userId)
+        [HttpGet("deleteProduct/{ProdId}/{userId}")]
+        public string deleteProduct(int ProdId, int userId)
         {
-            var data = _Customer.checkProduct(userId);
-            return data;
+            var result = _Customer.deleteProduct(ProdId, userId);
+            return result;
+        }
+        [HttpGet("IncrementDecrement/{status}/{prodId}/{userId}")]
+        public string IncrementDecrement(string status, int prodId, int userId)
+        {
+            var result = _Customer.IncrementDecrement(status, prodId, userId);
+            return result;
+        }
+        [HttpGet("CheckOut/{userId}")]
+        public string CheckOut(int userId)
+        {
+            var result = _Customer.CheckOut(userId);
+            return result;
         }
         [HttpPost("AddProductCart")]
         public string AddProductCart(CartProductViewModel vm)
@@ -59,5 +71,6 @@ namespace Food_Delivery_Api.Controllers
             var data =  _Customer.AddProductCart(vm);
             return data;
         }
+
     }
 }

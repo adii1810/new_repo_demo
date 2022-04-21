@@ -118,16 +118,59 @@ namespace Food_Delivery_Api.Repository
             }
             return lvm;
         }
-        public List<int> checkProduct(int userId)
+       
+        public string deleteProduct (int ProdId , int userId)
         {
-            //var data = _context.tempOrder.Include("tempOrderDetails").Where(x =>x.Order_Id == x.   x.User_DataId == userId && x.tempOrder_Details.).ToList();
-            List<int> ids = new List<int>();
-            var data = _context.tempOrder_Detail.Where(x => x.OrderId == x.Order.Order_Id && x.Order.User_DataId == userId).Select(x=>x.ProductId).ToList();
-            foreach (var item in data)
+            var data = _context.tempOrder_Detail.Include("Order").Where(x => x.Order.User_DataId == userId && x.OrderId == x.Order.Order_Id && x.ProductId == ProdId).FirstOrDefault();
+            var dataOrder = _context.tempOrder.Where(x => x.Order_Id == data.OrderId).FirstOrDefault();
+            _context.tempOrder_Detail.Remove(data);
+            _context.tempOrder.Remove(dataOrder);
+            _context.SaveChanges();
+            return "true";
+        }
+        public string IncrementDecrement(string status,int prodId,int userId)
+        {
+            var data = _context.tempOrder_Detail.Include("Order").Where(x => x.Order.User_DataId == userId && x.OrderId == x.Order.Order_Id && x.ProductId == prodId).FirstOrDefault();
+            if (status == "plus")
+                data.Quantity = data.Quantity + 1;
+            else if (status == "minus")
+                if(data.Quantity > 1)
+                    data.Quantity = data.Quantity - 1;
+
+                _context.tempOrder_Detail.Update(data);
+                _context.SaveChanges();
+            return "true";
+        }
+        public string CheckOut(int userId)
+        {
+            var tempOrders = _context.tempOrder.Where(x => x.User_DataId == userId).ToList();
+            Order od = new Order();
+            od.Order_Date = DateTime.Now;
+            od.User_DataId = userId;
+            od.Order_Status_Id = 0;
+            _context.Order.Add(od);
+            _context.SaveChanges();
+
+            // Get current Order Id
+            var orderId = _context.Order.OrderByDescending(x => x.Order_Id).Take(1).Select(x => x.Order_Id).FirstOrDefault();
+            //=========================================
+            var detailId = 1;
+            foreach (var item in tempOrders)
             {
-                ids.Add(item);
+                var data = _context.tempOrder_Detail.Where(x => x.OrderId == item.Order_Id).FirstOrDefault();
+                Order_Detail ordDetail = new Order_Detail();
+                ordDetail.OrderId = orderId;
+                ordDetail.Order_Detail_Id = detailId;
+                ordDetail.ProductId = data.ProductId;
+                ordDetail.Quantity = data.Quantity;
+                detailId++;
+
+                _context.Order_Detail.Add(ordDetail);
+                _context.tempOrder_Detail.Remove(data);
+                _context.tempOrder.Remove(item);
+                _context.SaveChanges();
             }
-            return ids;
+            return "true";
         }
     }
 }

@@ -265,13 +265,13 @@ function pageButton(pages) {
         buildTable();
     })
 }
-function buildTable() {
+function buildTable(str) {
     var data = Custpagination(state.querySet, state.page, state.rows);
     console.log(data);
     var myData = data.querySet
-    $("#tab-2 #product").empty();
+    $(`#${str} #product`).empty();
     for (var i = 0; i < myData.length; i++) {
-        $("#tab-2 #product").append(` <div class="col-lg-6" onclick="getProductId(${myData[i].product_Id})" >
+        $(`#${str} #product`).append(` <div class="col-lg-6" onclick="getProductId(${myData[i].product_Id})" >
                             <div class="d-flex align-items-center">
                                 <img class="flex-shrink-0 img-fluid rounded" src="${myData[i].imgLink}" style="max-width: 3.5rem;" >
                                 <div class="w-100 d-flex flex-column text-start ps-4">
@@ -304,33 +304,9 @@ $("#tab1").click(() => {
             type: "Get",
             data: { Tab: "tab1" },
             success: (response) => {
-                var state = {
-                    'querySet': response,
-                    'page': 1,
-                    'rows': 5
-                }
-                buildTable()
-
-                function pagination(querySet, page, rows) {
-                    var trimStart = (page - 1) * rows;
-                    var trimEnd = trimStart + rows;
-                    var trimmedData = querySet.slice(trimStart, trimEnd);
-                    var pages = Math.ceil(querySet.length / rows);
-                    return {
-                        'querySet': trimmedData,
-                        'pages': pages
-                    }
-                }
-
-                function buildTable() {
-                    var data = pagination(state.querySet, state.page, state.rows);
-                    console.log(data);
-                    $("#tab-1 #product").empty();
-                    for (var i = 0; i < response.length; i++) {
-                        $("#tab-1 #product").append("<p>aditya</p>");
-                    }
-                    console.log(response.length);
-                }
+                state.querySet = response;
+                buildTable("tab-1")
+                console.log(response)
             }
         })
     }
@@ -349,7 +325,7 @@ $("#tab2").click(() => {
             data: { Tab: "tab2" },
             success: (response) => {
                 state.querySet = response;
-                buildTable()
+                buildTable("tab-2")
                 console.log(response)
             }
         })
@@ -368,11 +344,9 @@ $("#tab3").click(() => {
             type: "Get",
             data: { Tab: "tab3" },
             success: (response) => {
-                $("#tab-3 #product").empty();
-                for (var i = 0; i < response.length; i++) {
-                    $("#tab-3 #product").append("<p>aditya</p>");
-                }
-                console.log(response.length);
+                state.querySet = response;
+                buildTable("tab-3")
+                console.log(response)
             }
         })
     }

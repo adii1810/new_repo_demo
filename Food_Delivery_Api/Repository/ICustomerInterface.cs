@@ -14,6 +14,8 @@ namespace Food_Delivery_Api.Repository
         public Task<IEnumerable<ProductforCustomerViewModel>> ShowProduct(string tab);
         public string AddProductCart(CartProductViewModel vm);
         public IEnumerable<CartProductViewModel> ViewProductCart(int userId);
-        public List<int> checkProduct(int userId);
+        public string deleteProduct(int ProdId, int userId);
+        public string IncrementDecrement(string status, int prodId, int userId);
+        public string CheckOut(int userId);
     }
 }

@@ -158,7 +158,17 @@
             if (data > 1) {
                 data--;
                 $(`#quantity__input_${id}`).val(data);
+        }
+         $.ajax({
+            url: location3 + "IncrementDecrement",
+            type: "Post",
+            data: {status:"minus",ProdId: id },
+            success: (response)=>{
+                if (response =! "true") {
+                    alert("something went wrong");
+                }
             }
+        })
     }
     const plus = (id) => {
 
@@ -166,7 +176,17 @@
             console.log(data);
             data++;
             console.log("after Increment:" + data);
-            $(`#quantity__input_${id}`).val(data);
+        $(`#quantity__input_${id}`).val(data);
+        $.ajax({
+            url: location3 + "IncrementDecrement",
+            type: "Post",
+            data: { status: "plus", ProdId: id },
+            success: (response) => {
+                if (response = ! "true") {
+                    alert("something went wrong");
+                }
+            }
+        })
     }
     const deleteProduct = (id) => {
         $.ajax({
@@ -183,6 +203,20 @@
             }
         })
     }
+
+    $('#Checkout').click(() => {
+        $.ajax({
+            url: location3 + "CheckOut",
+            type: "Post",
+            success: (response) => {
+                if (response == "true") {
+                    showInPopup('@Url.Action("Cart","Client",null,Context.Request.Scheme)', 'Cart')
+                }
+                else
+                    alert("failure")
+            }
+        })
+    })
 </script>
 
 
