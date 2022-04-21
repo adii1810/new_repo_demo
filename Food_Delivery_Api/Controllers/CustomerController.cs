@@ -65,12 +65,23 @@ namespace Food_Delivery_Api.Controllers
             var result = _Customer.CheckOut(userId);
             return result;
         }
+        [HttpGet("ShowOrder/{userId}")]
+        public IEnumerable<ShowOrderViewModel> ShowOrder(int userId)
+        {
+            var result = _Customer.ShowOrder(userId);
+            return result;
+        }
         [HttpPost("AddProductCart")]
         public string AddProductCart(CartProductViewModel vm)
         {
             var data =  _Customer.AddProductCart(vm);
             return data;
         }
-
+        [HttpGet("ShowOrderDetail/{userId}")]
+        public IEnumerable<CartProductViewModel> ShowOrderDetail(int userId,int ordId)
+        {
+            var data = _Customer.ShowOrderDetail(userId,ordId);
+            return data;
+        }
     }
 }

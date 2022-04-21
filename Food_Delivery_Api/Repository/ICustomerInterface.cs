@@ -17,5 +17,8 @@ namespace Food_Delivery_Api.Repository
         public string deleteProduct(int ProdId, int userId);
         public string IncrementDecrement(string status, int prodId, int userId);
         public string CheckOut(int userId);
+        public IEnumerable<ShowOrderViewModel> ShowOrder(int userId);
+        public IEnumerable<CartProductViewModel> ShowOrderDetail(int userId, int ordId);
+
     }
 }

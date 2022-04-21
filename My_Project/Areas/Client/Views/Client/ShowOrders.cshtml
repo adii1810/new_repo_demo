@@ -1,0 +1,450 @@
+﻿@model IEnumerable<My_Project.Areas.Client.ViewModels.ShowOrderViewModel>
+
+@{
+    ViewData["Title"] = "ShowOrders";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<style>
+    .list-group {
+        border-color: #D0D5DC !important;
+    }
+
+        .list-group .list-group-item {
+            border-color: #D0D5DC !important;
+        }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 500 !important;
+    }
+
+    .text-orange {
+        color: #EC9532 !important;
+    }
+
+    .text-carbon {
+        color: #222C3A !important;
+    }
+
+    .text-pebble {
+        color: #79879A !important;
+    }
+
+    .text-gray {
+        color: #A2ABB9 !important;
+    }
+
+    .text-cloud {
+        color: #D0D5DC !important;
+    }
+
+    .text-blue {
+        color: #49AED0 !important;
+    }
+
+    .text-gray {
+        color: #A2ABB9 !important;
+    }
+
+    .text-pale-sky {
+        color: #A2ABB9 !important;
+    }
+
+    .bg-black {
+        background: #111822 !important;
+    }
+
+    .bg-snow {
+        background: #F9FAFB !important;
+    }
+
+    .bg-fog {
+        background: #F0F2F5 !important;
+    }
+
+    .bb1-cloud {
+        border-bottom: 1px solid #D0D5DC;
+    }
+
+    .fs-14 {
+        font-size: 14px !important;
+    }
+
+    .fs-22 {
+        font-size: 22px !important;
+    }
+
+
+
+    .btn-primary {
+        background: #C62931;
+        border-color: #C62931;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background: #d94950;
+            border-color: #d94950;
+        }
+
+    .btn-secondary {
+        background: #FFFFFF !important;
+        color: #354050 !important;
+        border-color: #D0D5DC !important;
+        cursor: pointer;
+    }
+
+        .btn-secondary:hover {
+            color: #354050 !important;
+            background: #F9FAFB !important;
+        }
+
+        .btn-secondary:active {
+            color: #79879A !important;
+            background: #F0F2F5 !important;
+        }
+
+        .btn-secondary:focus {
+            color: #79879A !important;
+            background: #F0F2F5 !important;
+            outline: 0 !important;
+        }
+
+
+
+    .fs-18 {
+        font-size: 18px !important;
+    }
+
+    .fs-22 {
+        font-size: 22px !important;
+    }
+
+    .bg-snow {
+        background: #F9FAFB !important;
+    }
+
+    .card {
+        border-color: #D0D5DC !important;
+    }
+
+    .text-pebble {
+        color: #79879A !important;
+    }
+
+    .text-charcoal {
+        color: #354050 !important;
+    }
+
+    .bottom-drawer {
+        position: fixed;
+        bottom: 56px;
+        width: 100%;
+        border-top: 1px solid #D0D5DC;
+    }
+
+    .bg-white {
+        background: #FFFFFF !important;
+    }
+
+    .list-group {
+        border-color: #D0D5DC !important;
+    }
+
+    .list-group-item {
+        border-color: #D0D5DC !important;
+    }
+
+    .text-red {
+        color: #C62931 !important;
+    }
+
+    .text-green {
+        color: #00A362 !important;
+    }
+
+    .text-link-blue {
+        color: #3373cc !important;
+    }
+
+    .form-control {
+        background: #F9FAFB;
+        border-color: #D0D5DC !important;
+    }
+
+    .bd-2-cloud {
+        border: 2px dashed #D0D5DC;
+    }
+
+    .b-1-green {
+        border: 2px solid #00A362 !important;
+    }
+
+    .br-8 {
+        border-radius: 5px;
+    }
+
+
+    /*=======================ProgressBar===================================================*/
+
+    @@charset "UTF-8";
+
+    .multi-steps > li.is-active ~ li:before, .multi-steps > li.is-active:before {
+        content: counter(stepNum);
+        font-family: inherit;
+        font-weight: 700;
+    }
+
+    .multi-steps > li.is-active ~ li:after, .multi-steps > li.is-active:after {
+        background-color: #e1e1e1;
+    }
+
+    .multi-steps {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+    }
+
+        .multi-steps > li {
+            counter-increment: stepNum;
+            text-align: center;
+            display: table-cell;
+            position: relative;
+            color: #027f00;
+        }
+
+            .multi-steps > li:before {
+                content: "";
+                content: "✓;";
+                content: "𐀃";
+                content: "𐀄";
+                content: "✓";
+                display: block;
+                margin: 0 auto 4px;
+                background-color: #027f00;
+                width: 36px;
+                height: 36px;
+                line-height: 32px;
+                text-align: center;
+                font-weight: bold;
+                border-width: 2px;
+                border-style: solid;
+                border-color: #027f00;
+                border-radius: 50%;
+                color: white;
+            }
+
+            .multi-steps > li:last-child:after {
+                display: none;
+            }
+
+            .multi-steps > li.is-active:before {
+                background-color: #fff;
+                border-color: #027f00;
+                color: #027f00;
+                animation: pulse 2s infinite;
+            }
+
+            .multi-steps > li.is-active ~ li {
+                color: #808080;
+            }
+
+                .multi-steps > li.is-active ~ li:before {
+                    background-color: #e1e1e1;
+                    border-color: #e1e1e1;
+                    color: #808080;
+                }
+
+    .is-complete {
+        background: linear-gradient(to right, #027f00 50%, #e1e1e1 50%);
+        background-size: 200% 100%;
+        background-position: right bottom;
+        transition: all 0.5s ease-out;
+    }
+
+    @@keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 #027f0070;
+        }
+
+        100% {
+            box-shadow: 0 0 0 10px #027f0000;
+        }
+    }
+
+    @@keyframes nextStep {
+        0% {
+            width: 0%;
+        }
+
+        100% {
+            width: 100%;
+        }
+    }
+
+    .progress-bar {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .progress-bar {
+        background-color: #e1e1e1;
+        height: 7px;
+        overflow: hidden;
+        position: absolute;
+        left: 50%;
+        bottom: calc(50% + 7px);
+        width: 100%;
+        z-index: -1;
+    }
+
+    .progress-bar--success {
+        background-color: #027f00;
+    }
+
+    .progress-bar__bar {
+        background-color: #e1e1e1;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        transition: all 500ms ease-out;
+    }
+
+
+
+    /*=======================ProgressBar===================================================*/
+
+</style>
+
+
+
+
+
+<div class="container mt-3 mt-md-5">
+    <h2 class="text-charcoal hidden-sm-down">Your Orders</h2>
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="list-group mb-5">
+                    <div class="list-group-item p-3 bg-snow" style="position: relative;">
+                        <div class="row w-100 no-gutters">
+                            <div class="col-6 col-md">
+                                <h6 class="text-charcoal mb-0 w-100">Order Number</h6>
+                                <a href="" class="text-pebble mb-0 w-100 mb-2 mb-md-0">@item.OrderId</a>
+                            </div>
+                            <div class="col-6 col-md">
+                                <h6 class="text-charcoal mb-0 w-100">Date</h6>
+                                <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">@item.OrderDate</p>
+                            </div>
+                            <div class="col-6 col-md">
+                                <h6 class="text-charcoal mb-0 w-100">Total</h6>
+                                <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">@item.TotalPrice</p>
+                            </div>
+
+                            <div class="col-12 col-md-3">
+                                <a class="btn btn-primary w-100" href="@Url.Action("ShowOrderDetail","Client",new {ordId =item.OrderId },Context.Request.Scheme)','Cart'">View Order</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="list-group-item p-3 bg-white">
+                        <div class="row w-100 no-gutters">
+                            <div class="col-12 col-md-9 pr-0 pr-md-3">
+                                <div class="alert p-2 alert-success w-100 mb-0 sec_status" id="sectionStatus_@item.OrderId">
+
+
+                                    <ul class="list-unstyled multi-steps">
+                                        <li id="step-1_@item.OrderId" class=" is-active">
+                                            Pending<div class="progress-bar progress-bar--success">
+                                                <div class="progress-bar__bar"></div>
+                                            </div>
+                                        </li>
+                                        <li id="step-2_@item.OrderId">
+                                            Approved<div class="progress-bar progress-bar--success">
+                                                <div class="progress-bar__bar"></div>
+                                            </div>
+                                        </li>
+                                        <li id="step-3_@item.OrderId">
+                                            Order Taken<div class="progress-bar progress-bar--success">
+                                                <div class="progress-bar__bar"></div>
+                                            </div>
+                                        </li>
+                                        <li id="step-4_@item.OrderId">
+                                            Order On the way<div class="progress-bar progress-bar--success">
+                                                <div class="progress-bar__bar"></div>
+                                            </div>
+                                        </li>
+                                        <li id="step-5_@item.OrderId">Delivered</li>
+                                    </ul>
+
+
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <a class="btn btn-secondary w-100 mb-2" onclick="showUp(@item.OrderStatus,@item.OrderId)">Track Shipment</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    }
+</div>
+
+
+@section scripts{
+    <script>
+        $('.display-3').html("Order History");
+        $(document).ready(() => {
+            $('.sec_status').hide();
+        })
+
+        const showUp = (status, ordid) => {
+            $('#sectionStatus_' + ordid).slideToggle('slow');
+            if (status == 0) {
+                $('#step-1_' + ordid).addClass('is-active');
+                $('#step-2_' + ordid).removeClass('is-active');
+                $('#step-3_' + ordid).removeClass('is-active');
+                $('#step-4_' + ordid).removeClass('is-active');
+                $('#step-5_' + ordid).removeClass('is-active');
+            }
+            else if (status == 1) {
+                $('#step-2_' + ordid).addClass('is-active');
+                $('#step-1_' + ordid).removeClass('is-active');
+                $('#step-3_' + ordid).removeClass('is-active');
+                $('#step-4_' + ordid).removeClass('is-active');
+                $('#step-5_' + ordid).removeClass('is-active');
+            }
+            else if (status == 2) {
+                $('#step-3_' + ordid).addClass('is-active');
+                $('#step-1_' + ordid).removeClass('is-active');
+                $('#step-2_' + ordid).removeClass('is-active');
+                $('#step-4_' + ordid).removeClass('is-active');
+                $('#step-5_' + ordid).removeClass('is-active');
+            }
+            else if (status == 3) {
+                $('#step-4_' + ordid).addClass('is-active');
+                $('#step-1_' + ordid).removeClass('is-active');
+                $('#step-2_' + ordid).removeClass('is-active');
+                $('#step-3_' + ordid).removeClass('is-active');
+                $('#step-5_' + ordid).removeClass('is-active');
+            }
+            else if (status == 4) {
+                $('#step-5_' + ordid).addClass('is-active');
+                $('#step-1_' + ordid).removeClass('is-active');
+                $('#step-2_' + ordid).removeClass('is-active');
+                $('#step-3_' + ordid).removeClass('is-active');
+                $('#step-4_' + ordid).removeClass('is-active');
+            }
+
+        }
+
+        
+    </script>
+}

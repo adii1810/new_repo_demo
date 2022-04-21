@@ -108,18 +108,18 @@ namespace Food_Delivery_Api.Repository
                 cvm.Order_Date = item.Order_Date;
                 var orderDetail = _context.tempOrder_Detail.Where(x => x.OrderId == item.Order_Id).FirstOrDefault();
                 var productDetails = _context.Product.Where(x => x.Product_Id == orderDetail.ProductId).FirstOrDefault();
-                var ImgLink = _context.ProductImages.Where(x => x.ProductId == productDetails.Product_Id).Select(x=>x.ImgLink).FirstOrDefault();
+                var ImgLink = _context.ProductImages.Where(x => x.ProductId == productDetails.Product_Id).Select(x => x.ImgLink).FirstOrDefault();
                 cvm.ProductId = orderDetail.ProductId;
                 cvm.Quantity = orderDetail.Quantity;
                 cvm.ProductName = productDetails.Product_Name;
                 cvm.Price = productDetails.Product_Price;
                 cvm.ImgLink = ImgLink;
-                lvm.Add(cvm);               
+                lvm.Add(cvm);
             }
             return lvm;
         }
-       
-        public string deleteProduct (int ProdId , int userId)
+
+        public string deleteProduct(int ProdId, int userId)
         {
             var data = _context.tempOrder_Detail.Include("Order").Where(x => x.Order.User_DataId == userId && x.OrderId == x.Order.Order_Id && x.ProductId == ProdId).FirstOrDefault();
             var dataOrder = _context.tempOrder.Where(x => x.Order_Id == data.OrderId).FirstOrDefault();
@@ -128,17 +128,17 @@ namespace Food_Delivery_Api.Repository
             _context.SaveChanges();
             return "true";
         }
-        public string IncrementDecrement(string status,int prodId,int userId)
+        public string IncrementDecrement(string status, int prodId, int userId)
         {
             var data = _context.tempOrder_Detail.Include("Order").Where(x => x.Order.User_DataId == userId && x.OrderId == x.Order.Order_Id && x.ProductId == prodId).FirstOrDefault();
             if (status == "plus")
                 data.Quantity = data.Quantity + 1;
             else if (status == "minus")
-                if(data.Quantity > 1)
+                if (data.Quantity > 1)
                     data.Quantity = data.Quantity - 1;
 
-                _context.tempOrder_Detail.Update(data);
-                _context.SaveChanges();
+            _context.tempOrder_Detail.Update(data);
+            _context.SaveChanges();
             return "true";
         }
         public string CheckOut(int userId)
@@ -172,5 +172,46 @@ namespace Food_Delivery_Api.Repository
             }
             return "true";
         }
+
+        public IEnumerable<ShowOrderViewModel> ShowOrder(int userId)
+        {
+            List<ShowOrderViewModel> lvm = new List<ShowOrderViewModel>();
+            var data = _context.Order.Where(x=>x.User_DataId == userId).OrderByDescending(x=>x.Order_Date).ToList();
+            foreach (var item in data)
+            {
+                ShowOrderViewModel vm = new ShowOrderViewModel();
+                vm.OrderDate = item.Order_Date.ToString("D");
+                vm.OrderId = item.Order_Id;
+                vm.OrderStatus = (int)item.Order_Status_Id;
+                var amt = _context.Order_Detail.Where(x => x.OrderId == item.Order_Id).Sum(x => x.Product.Product_Price * x.Quantity);
+                vm.TotalPrice = amt;
+                lvm.Add(vm);
+            }
+            return lvm;
+        }
+
+        public IEnumerable<CartProductViewModel> ShowOrderDetail(int userId,int ordId)
+        {
+            var orderData = _context.Order.Where(x => x.User_DataId == userId && x.Order_Id == ordId).FirstOrDefault();
+            List<CartProductViewModel> lvm = new List<CartProductViewModel>();
+            var data = _context.Order_Detail.Where(x => x.OrderId == ordId).ToList();
+            foreach (var item in data)
+            {
+                CartProductViewModel cvm = new CartProductViewModel();
+                cvm.Order_Date = orderData.Order_Date;
+               
+                var productDetails = _context.Product.Where(x => x.Product_Id == item.ProductId).FirstOrDefault();
+                var ImgLink = _context.ProductImages.Where(x => x.ProductId == productDetails.Product_Id).Select(x => x.ImgLink).FirstOrDefault();
+                cvm.ProductId = item.ProductId;
+                cvm.Quantity = item.Quantity;
+                cvm.ProductName = productDetails.Product_Name;
+                cvm.Price = productDetails.Product_Price;
+                cvm.ImgLink = ImgLink;
+                lvm.Add(cvm);
+            }
+            return lvm;
+        }
+
+        
     }
 }

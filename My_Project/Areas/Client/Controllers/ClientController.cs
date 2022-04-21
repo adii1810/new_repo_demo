@@ -64,22 +64,23 @@ namespace My_Project.Controllers
         {
             return View();
         }
-        public async Task<List<int>> CheckProduct()
+        public async Task<IActionResult> ShowOrders()
         {
-            List<int> ids = new List<int>();
             var userId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
-            HttpResponseMessage response = await client.GetAsync($"checkProduct/{userId}");
+            HttpResponseMessage response = await client.GetAsync($"ShowOrder/{userId}");
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-
-                ids = JsonConvert.DeserializeObject<List<int>>(result);
-
+                List<ShowOrderViewModel> lvm = new List<ShowOrderViewModel>();
+                if (result != "" && result != null)
+                {
+                    lvm = JsonConvert.DeserializeObject<List<ShowOrderViewModel>>(result);
+                    return View(lvm);
+                }
             }
-            return ids;
-
+            return View();
         }
         //For showing cart data
         [HttpGet]
@@ -98,7 +99,25 @@ namespace My_Project.Controllers
                     return PartialView(vm);
                 }
             }
+            return View();
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> ShowOrderDetail(int ordId)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"ShowOrderDetail/{Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString())}/{ordId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (result != "" && result != null)
+                {
+                    List<CartProductViewModel> vm = new List<CartProductViewModel>();
+                    vm = JsonConvert.DeserializeObject<List<CartProductViewModel>>(result);
+                    return PartialView(vm);
+                }
+            }
             return View();
         }
         //Adding products to cart
