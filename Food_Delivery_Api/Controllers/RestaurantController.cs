@@ -145,6 +145,27 @@ namespace Food_Delivery_Api.Controllers
             var data = _restaurant.ShowProduct(mainId, name, resId);
             return data;
         }
+
+        [HttpGet("GetUnApprovedOrders/{resId}")]
+        public IEnumerable<ShowOrderViewModel> GetUnApprovedOrders(int resId)
+        {
+            var result = _restaurant.GetUnApprovedOrders(resId);
+            return result;
+        }
+        [HttpGet("UpdateOrderStatus/{OrdId}")]
+        public string UpdateOrderStatus(int OrdId)
+        {
+            var result = _restaurant.UpdateOrderStatus(OrdId);
+            return result;
+        }
+
+        [HttpGet("ShowOrderDetail/{OrderId}")]
+        public async Task<IEnumerable<OrderDetailViewModel>> ShowOrderDetails(int OrderId)
+        {
+            var data = await _restaurant.ShowOrderDetail(OrderId);
+            return data;
+        }
+
         [HttpPut("EditProduct/{id}")]
         public string EditProduct(int id,ProductViewModel pvm)
         {

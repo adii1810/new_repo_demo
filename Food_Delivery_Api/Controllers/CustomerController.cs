@@ -77,7 +77,7 @@ namespace Food_Delivery_Api.Controllers
             var data =  _Customer.AddProductCart(vm);
             return data;
         }
-        [HttpGet("ShowOrderDetail/{userId}")]
+        [HttpGet("ShowOrderDetail/{userId}/{ordId}")]
         public IEnumerable<CartProductViewModel> ShowOrderDetail(int userId,int ordId)
         {
             var data = _Customer.ShowOrderDetail(userId,ordId);

@@ -55,7 +55,6 @@
             <th scope="col">Price</th>
             <th scope="col">Quantity</th>
             <th scope="col">Total</th>
-            <th scope="col">Actions</th>
         </tr>
     </thead>
 
@@ -69,11 +68,7 @@
                 <td>@item.ProductName</td>
                 <td>@item.Price</td>
                 <td class="qty">
-                    <div class="quantity">
-
-                        <input name="quantity" type="text" disabled class="quantity__input" id="quantity__input_@item.ProductId" value="@item.Quantity">
-
-                    </div>
+                    @item.Quantity
                 </td>
                 @{
                     var data = item.Price * item.Quantity;
@@ -82,8 +77,6 @@
                 <td>
                     @data
                 </td>
-
-
             </tr>
 
         }
@@ -98,6 +91,8 @@
         $('#close').click(() => {
             $('#form-modal').hide();
         })
+
+        $('#Checkout').hide();
     })
 </script>
 

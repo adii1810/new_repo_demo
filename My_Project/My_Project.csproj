@@ -20,6 +20,8 @@
     <Folder Include="Areas\Client\Data\" />
     <Folder Include="Areas\Client\Models\" />
     <Folder Include="Areas\Restaurant\Data\" />
+    <Folder Include="Areas\Valet\Data\" />
+    <Folder Include="Areas\Valet\Models\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -358,6 +358,7 @@ function getProductId(id) {
 const AddProduct = (id) => {
     alert(id)
     $("#btn_" + id).remove();
+
     //Add product to cart
     $.ajax({
         url: location3 + "AddProductCart",
@@ -368,6 +369,7 @@ const AddProduct = (id) => {
                 $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="funcCheckout(${id})" id="btn_${id}">Checkout</button>`);
             }
             else {
+                alert("Product From Another Restaurant is already in your cart Please Empty that first");
                 $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="AddProduct(${id})" id="btn_${id}">Add</button>`);
             }
         }

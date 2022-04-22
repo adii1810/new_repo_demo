@@ -243,7 +243,48 @@ namespace My_Project.Areas.Restaurant.Controllers
                 return RedirectToAction("Login");
         }
 
-        [HttpPost]
+        public async Task<IActionResult> ApproveOrder()
+        {
+            var sess = HttpContext.Session.GetString("ResId");
+            if (sess != "" && sess != null)
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(RestaurantApiString);
+                HttpResponseMessage httpResponse = await client.GetAsync($"GetUnApprovedOrders/{Convert.ToInt32(sess)}");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var result = httpResponse.Content.ReadAsStringAsync().Result;
+                    if (result != "")
+                    {
+                        List<ShowOrderViewModel> lvm = new List<ShowOrderViewModel>();
+                        lvm = JsonConvert.DeserializeObject<List<ShowOrderViewModel>>(result);
+                        return View(lvm);
+                    }
+                }
+                return View();
+            }
+            else
+                return RedirectToAction("Login");
+        }
+        public async Task<IActionResult> ShowOrderDetail(int OrdId)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(RestaurantApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"ShowOrderDetail/{OrdId}");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                if (result != "")
+                {
+                    List<OrderDetailViewModel> uv = new List<OrderDetailViewModel>();
+                    uv = JsonConvert.DeserializeObject<List<OrderDetailViewModel>>(result);
+                    return View(uv);
+                }
+            }
+            return View();
+        }
+
+            [HttpPost]
         public async Task<IActionResult> Login(string uname, string pass)
         {
             HttpClient client = new HttpClient();
@@ -666,6 +707,24 @@ namespace My_Project.Areas.Restaurant.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+        [HttpPost]
+        public async Task<JsonResult> ApproveOrder(int OrdId)
+        {
+
+            var userName = HttpContext.Session.GetString("ResUserName").ToString();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(RestaurantApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"UpdateOrderStatus/{OrdId}");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                if(result != "")
+                {
+                    return Json("true");
+                }
+            }
+            return Json("false");
         }
     }
 }

@@ -3,6 +3,7 @@ using Food_Delivery_Api.Data;
 using Food_Delivery_Api.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -282,5 +283,49 @@ namespace Food_Delivery_Api.Repository
             _context.SaveChanges();
             return "true";
         }
+
+        public IEnumerable<ShowOrderViewModel> GetUnApprovedOrders(int ResId)
+        {
+            List<ShowOrderViewModel> lvm = new List<ShowOrderViewModel>();
+
+            var data = _context.Order_Detail.Include("Order").Where(x => x.OrderId == x.Order.Order_Id && x.ProductId == x.Product.Product_Id && x.Product.Restaurant_DetailId == ResId && x.Order.Order_Status_Id == 0).DistinctBy(x=>x.OrderId).ToList();
+            foreach (var item in data)
+            {
+                ShowOrderViewModel vm = new ShowOrderViewModel();
+                vm.OrderDate = item.Order.Order_Date.ToString("D");
+                vm.OrderId = item.Order.Order_Id;
+                vm.OrderStatus = (int)item.Order.Order_Status_Id;
+                var amt = _context.Order_Detail.Where(x => x.OrderId == item.Order.Order_Id).Sum(x => x.Product.Product_Price * x.Quantity);
+                vm.TotalPrice = amt;
+                lvm.Add(vm);
+            }
+            return lvm;
+        }
+        public string UpdateOrderStatus(int OrdId)
+        {
+            var data = _context.Order.Where(x => x.Order_Id == OrdId).FirstOrDefault();
+            data.Order_Status_Id = (OrderStatus)1;
+            _context.Order.Update(data);
+            _context.SaveChanges();
+            return "true";        
+        }
+        public async Task<IEnumerable<OrderDetailViewModel>> ShowOrderDetail(int OrderId)
+        {
+            List<OrderDetailViewModel> ol = new List<OrderDetailViewModel>();
+            var data = await _context.Order_Detail.Where(x => x.OrderId == OrderId).ToListAsync();
+            foreach (var item in data)
+            {
+                OrderDetailViewModel vm = new OrderDetailViewModel();
+                vm.Order_Detail_Id = item.Order_Detail_Id;
+                vm.Quantity = item.Quantity;
+                var data1 = _context.Product.Where(x => x.Product_Id == item.ProductId).FirstOrDefault();
+                vm.Product_name = data1.Product_Name;
+                vm.Price = data1.Product_Price * item.Quantity;
+
+                ol.Add(vm);
+            }
+            return ol;
+        }
     }
+    
 }

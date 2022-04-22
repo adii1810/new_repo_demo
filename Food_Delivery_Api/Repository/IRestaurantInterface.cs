@@ -31,5 +31,8 @@ namespace Food_Delivery_Api.Repository
         public void EditRestaurant(Restaurant_Detail rd);
         public int RestaurantConfirmPassword(string username, string password);
         public string ChangePassword(string username, string password);
+        public IEnumerable<ShowOrderViewModel> GetUnApprovedOrders(int ResId);
+        public string UpdateOrderStatus(int OrdId);
+        public Task<IEnumerable<OrderDetailViewModel>> ShowOrderDetail(int OrderId);
     }
 }

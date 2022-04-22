@@ -103,11 +103,12 @@ namespace My_Project.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ShowOrderDetail(int ordId)
+        public async Task<IActionResult> ShowOrderDetail(int id)
         {
+            var userId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
-            HttpResponseMessage response = await client.GetAsync($"ShowOrderDetail/{Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString())}/{ordId}");
+            HttpResponseMessage response = await client.GetAsync($"ShowOrderDetail/{userId}/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
@@ -136,7 +137,7 @@ namespace My_Project.Controllers
             {
                 var result = response.Content.ReadAsStringAsync().Result;
                 if (result != "" && result != null)
-                    return Json("true");
+                    return Json(result);
             }
 
             return Json("false");

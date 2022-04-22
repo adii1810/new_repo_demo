@@ -345,7 +345,7 @@
                             </div>
 
                             <div class="col-12 col-md-3">
-                                <a class="btn btn-primary w-100" href="@Url.Action("ShowOrderDetail","Client",new {ordId =item.OrderId },Context.Request.Scheme)','Cart'">View Order</a>
+                                <a class="btn btn-primary w-100" onclick="showInPopup('@Url.Action("ShowOrderDetail","Client",new {id = item.OrderId},Context.Request.Scheme)','Order Details')" >View Order</a>
                             </div>
                         </div>
 
