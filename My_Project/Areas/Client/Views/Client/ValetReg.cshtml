@@ -1,7 +1,7 @@
-﻿@model My_Project.Areas.Client.ViewModels.CustomerViewModel
+﻿@model My_Project.Areas.Valet.ViewModels.ValetViewModel
 
 @{
-    ViewData["Title"] = "CustomerReg";
+    ViewData["Title"] = "ValetReg";
     Layout = null;
 }
 
@@ -12,7 +12,7 @@
 </head>
 
 
-<form asp-action="CustomerReg" asp-area="Client" asp-controller="Client" enctype="multipart/form-data">
+<form asp-action="ValetReg" asp-area="Client" asp-controller="Client" enctype="multipart/form-data" method="post">
 
     <div class="row">
         <div class="col-6">
@@ -24,72 +24,8 @@
                             <i class="fa-solid fa-book-open-reader"></i>
                         </div>
                     </div>
-                    <input asp-for="User_FirstName" tabindex="1" class="form-control" placeholder="First Name" />
-                    <span asp-validation-for="User_FirstName" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <i class="fa-solid fa-user-plus"></i>
-                           
-                        </div>
-                    </div>
-                    <input asp-for="User_UserName" tabindex="3" class="form-control" placeholder="Enter Username" />
-                    <span asp-validation-for="User_UserName" class="text-danger" id="Error1"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <i class="fa-solid fa-map"></i>
-                        </div>
-                    </div>
-                    <input asp-for="User_Address" tabindex="5" class="form-control" placeholder="Enter Address" />
-                    <span asp-validation-for="User_Address" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <i class="fa-solid fa-at"></i>
-                            
-                        </div>
-                    </div>
-                    <input asp-for="User_Email" tabindex="7" class="form-control" placeholder="Enter Email" />
-                    <span asp-validation-for="User_Email" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <i class="fa-solid fa-location-pin"></i>
-                        </div>
-                    </div>
-                    <input asp-for="User_State" tabindex="9" class="form-control" placeholder="Enter State" />
-                    <span asp-validation-for="User_State" class="text-danger"></span>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-6">
-
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <i class="fa-solid fa-book-open-reader"></i>
-                        </div>
-                    </div>
-                    <input asp-for="User_LastName" tabindex="2" class="form-control" placeholder="Enter Lastname" />
-                    <span asp-validation-for="User_LastName" class="text-danger"></span>
+                    <input asp-for="Valet_Name" tabindex="1" class="form-control" placeholder="First Name" />
+                    <span asp-validation-for="Valet_Name" class="text-danger"></span>
                 </div>
             </div>
 
@@ -100,8 +36,74 @@
                             <i class="fa-solid fa-key"></i>
                         </div>
                     </div>
-                    <input type="password" asp-for="User_Password" class="form-control" tabindex="4" placeholder="Password" id="pass2" />
-                    <span asp-validation-for="User_Password" class="text-danger" id="Error"></span>
+                    <input type="password" asp-for="Valet_Password" class="form-control" tabindex="3" placeholder="Password" id="pass2" />
+                    <span asp-validation-for="Valet_Password" class="text-danger" id="Error"></span>
+                </div>
+            </div>
+
+           
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-map"></i>
+                        </div>
+                    </div>
+                    <input asp-for="Valet_Address" tabindex="5" class="form-control" placeholder="Enter Address" />
+                    <span asp-validation-for="Valet_Address" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-at"></i>
+
+                        </div>
+                    </div>
+                    <input asp-for="Valet_Email" tabindex="7" class="form-control" placeholder="Enter Email" />
+                    <span asp-validation-for="Valet_Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-location-pin"></i>
+                        </div>
+                    </div>
+                    <input asp-for="Valet_State" tabindex="9" class="form-control" placeholder="Enter State" />
+                    <span asp-validation-for="Valet_State" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-6">
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-user-plus"></i>
+
+                        </div>
+                    </div>
+                    <input asp-for="Valet_UserName" tabindex="2" class="form-control" placeholder="Enter Username" />
+                    <span asp-validation-for="Valet_UserName" class="text-danger" id="Error1"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                    </div>
+                    <input type="password" class="form-control" tabindex="4" placeholder="Re-Password" id="pass2" />
+                    <span asp-validation-for="Valet_Password" class="text-danger" id="Error"></span>
                 </div>
             </div>
 
@@ -112,8 +114,8 @@
                             <i class="fa-solid fa-phone"></i>
                         </div>
                     </div>
-                    <input asp-for="User_PhoneNo" tabindex="6" class="form-control" placeholder="Enter Contact No" />
-                    <span asp-validation-for="User_PhoneNo" class="text-danger"></span>
+                    <input asp-for="Valet_PhoneNo" tabindex="6" class="form-control" placeholder="Enter Contact No" />
+                    <span asp-validation-for="Valet_PhoneNo" class="text-danger"></span>
                 </div>
             </div>
 
@@ -126,8 +128,8 @@
                             <i class="fa-solid fa-city"></i>
                         </div>
                     </div>
-                    <input asp-for="User_City" tabindex="8" class="form-control" placeholder="Enter City" />
-                    <span asp-validation-for="User_City" class="text-danger"></span>
+                    <input asp-for="Valet_City" tabindex="8" class="form-control" placeholder="Enter City" />
+                    <span asp-validation-for="Valet_City" class="text-danger"></span>
                 </div>
             </div>
 
@@ -138,17 +140,12 @@
                             <i class="fa-solid fa-location-pin"></i>
                         </div>
                     </div>
-                    <input asp-for="User_ZipCode" tabindex="10" class="form-control" placeholder="Enter Zipcode" />
-                    <span asp-validation-for="User_ZipCode" class="text-danger"></span>
+                    <input asp-for="Valet_Zipcode" tabindex="10" class="form-control" placeholder="Enter Zipcode" />
+                    <span asp-validation-for="Valet_Zipcode" class="text-danger"></span>
                 </div>
             </div>
-            
+
         </div>
     </div>
-    <input type="submit" value="Register" class="btn btn-success btn-block "  onclick="showInPopup('@Url.Action("CustomerLogin","Client",null,Context.Request.Scheme)','Login')" id="btnsubmit" />
+    <input type="submit" value="Register" class="btn btn-success btn-block " id="btnsubmit" />
 </form>
-
-
-
-
-

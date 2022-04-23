@@ -33,6 +33,7 @@ namespace Food_Delivery_Api
             services.AddTransient<IAdminInterface, AdminMethod>();
             services.AddTransient<IRestaurantInterface, RestaurantMethod>();
             services.AddTransient<ICustomerInterface, CustomerMethod>();
+            services.AddTransient<IValetInterface, ValetMethod>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

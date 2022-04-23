@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using My_Project.Areas.Client.ViewModels;
+using My_Project.Areas.Valet.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -34,12 +35,14 @@ namespace My_Project.Controllers
         private readonly IConfiguration _config;
         public string CustomerApiString;
         public string RestaurantApiString;
+        public string ValetApiString;
         public ClientController(IEmailSender emailSender, IConfiguration config, IHostingEnvironment env)
         {
             _emailSender = emailSender;
             _config = config;
             CustomerApiString = _config.GetValue<string>("CUSTOMERAPISTRING");
             RestaurantApiString = _config.GetValue<string>("RESTAURANTAPISTRING");
+            ValetApiString = _config.GetValue<string>("VALETAPISTRING");
             _env = env;
         }
 
@@ -53,6 +56,10 @@ namespace My_Project.Controllers
             return View();
         }
         public IActionResult CustomerReg()
+        {
+            return View();
+        }
+        public IActionResult ValetReg()
         {
             return View();
         }
@@ -306,6 +313,23 @@ namespace My_Project.Controllers
                 }
             }
             return Json("false");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ValetReg(ValetViewModel vm)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(ValetApiString);
+            HttpResponseMessage response = await client.PostAsJsonAsync("ValetReg", vm);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                if(result != "")
+                {
+                    return LocalRedirect("~/Valet/Valet/Login");
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }
