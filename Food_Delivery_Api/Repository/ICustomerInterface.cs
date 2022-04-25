@@ -19,6 +19,7 @@ namespace Food_Delivery_Api.Repository
         public string CheckOut(int userId);
         public IEnumerable<ShowOrderViewModel> ShowOrder(int userId);
         public IEnumerable<CartProductViewModel> ShowOrderDetail(int userId, int ordId);
+        public IEnumerable<Restaurant_Detail> ShowRestaurant();
 
     }
 }

@@ -12,6 +12,7 @@ var pagination = $('#pagination'),
 
 var location2 = "https://localhost:44397/Restaurant/Restaurant/";
 var location3 = "https://localhost:44397/Client/Client/";
+var location4 = "https://localhost:44397/Valet/Valet/";
 
 showInPopup = (url, title) => {
 
@@ -291,8 +292,48 @@ function buildTable(str) {
 
 /*======================================================Pagination=========================================================================================================*/
 
+$(document).ready(()=>{
+    $("#tab2").addClass("active")
+    $("#tab1").removeClass("active")
+    $("#tab3").removeClass("active")
+    $("#tab-2").addClass("active")
+    $("#tab-1").removeClass("active")
+    $("#tab-3").removeClass("active")
+    $.ajax({
+        url: location3 + "ShowProduct",
+        type: "Get",
+        data: { Tab: "tab2" },
+        success: (response) => {
+            state.querySet = response;
+            buildTable("tab-2")
+            console.log(response)
+        }
+    })
+
+    $.ajax({
+        url: location3 + "ShowRestaurant",
+        type: "Get",
+        success: (response) => {
+            console.log(response);
+            for (var i = 0; i < response.length; i++) {
+                $('#IndexRestaurant').append(` <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.${i+1}1s">
+                        <div class="team-item text-center rounded overflow-hidden">
+                            <div class="rounded-circle overflow-hidden m-4">
+                                <img class="img-fluid" src="${response[i].profileImage}" alt="" />
+                            </div>
+                            <h5 class="mb-3">${response[i].restaurant_Detail_Name}</h5>
+                            <small>${response[i].restaurant_Detail_City}</small>
+                           
+                        </div>
+                    </div>`);
+            }
+        }
+    })
+
+})
+
 $("#tab1").click(() => {
-    if (window.location == location3 + "CustomerIndex") {
+   //if (window.location == location3 + "CustomerIndex") {
         $("#tab1").addClass("active")
         $("#tab2").removeClass("active")
         $("#tab3").removeClass("active")
@@ -309,10 +350,10 @@ $("#tab1").click(() => {
                 console.log(response)
             }
         })
-    }
+   // }
 })
 $("#tab2").click(() => {
-    if (window.location == location3 + "CustomerIndex") {
+   // if (window.location == location3 + "CustomerIndex") {
         $("#tab2").addClass("active")
         $("#tab1").removeClass("active")
         $("#tab3").removeClass("active")
@@ -329,10 +370,10 @@ $("#tab2").click(() => {
                 console.log(response)
             }
         })
-    }
+  //  }
 })
 $("#tab3").click(() => {
-    if (window.location == location3 + "CustomerIndex") {
+   // if (window.location == location3 + "CustomerIndex") {
         $("#tab3").addClass("active")
         $("#tab1").removeClass("active")
         $("#tab2").removeClass("active")
@@ -349,7 +390,7 @@ $("#tab3").click(() => {
                 console.log(response)
             }
         })
-    }
+   // }
 })
 
 function getProductId(id) {
@@ -367,6 +408,10 @@ const AddProduct = (id) => {
         success: (response) => {
             if (response == "true") {
                 $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="funcCheckout(${id})" id="btn_${id}">Checkout</button>`);
+            }
+            else if (response == "Login") {
+                $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="AddProduct(${id})" id="btn_${id}">Add</button>`);
+                showInPopup(location3 + "CustomerLogin", 'Login');
             }
             else {
                 alert("Product From Another Restaurant is already in your cart Please Empty that first");

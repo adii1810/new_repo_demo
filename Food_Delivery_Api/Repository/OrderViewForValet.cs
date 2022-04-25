@@ -11,5 +11,6 @@ namespace Food_Delivery_Api.Repository
         public string OrderDate { get; set; }
         public string RestaurantAddress { get; set; }
         public string UserAddress { get; set;}
+        public int OrderStatus { get; set; }
     }
 }

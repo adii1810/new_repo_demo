@@ -48,7 +48,7 @@ namespace My_Project.Areas.Restaurant.Controllers
         }
         public IActionResult Index()
         {
-            var sess = HttpContext.Session.GetString("ResId");
+            var sess = HttpContext.Session.GetString("ResId")?.ToString()??"";
             if (sess != "" && sess != null)
                 return View();
             else
@@ -57,7 +57,7 @@ namespace My_Project.Areas.Restaurant.Controllers
         }
         public async Task<IActionResult> ShowProduct()
         {
-            var sess = HttpContext.Session.GetString("ResId");
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? ""; 
             if (sess != "" && sess != null)
             {
                 CategoryViewModel vm = new CategoryViewModel();
@@ -119,7 +119,7 @@ namespace My_Project.Areas.Restaurant.Controllers
 
         public async Task<IActionResult> AddOrEditProduct(int id = 0)
         {
-            var sess = HttpContext.Session.GetString("ResId");
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? ""; 
             if (sess != "" && sess != null)
             {
                 CategoryViewModel vm = new CategoryViewModel();
@@ -162,7 +162,7 @@ namespace My_Project.Areas.Restaurant.Controllers
         }
         public async Task<IActionResult> EditProduct(int id = 0)
         {
-            var sess = HttpContext.Session.GetString("ResId");
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? ""; 
             if (sess != "" && sess != null)
             {
                 ProductViewModel pvm = new ProductViewModel();
@@ -182,7 +182,7 @@ namespace My_Project.Areas.Restaurant.Controllers
 
         public async Task<IActionResult> EditRestaurant(int id = 0)
         {
-            var sess = HttpContext.Session.GetString("ResId");
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
             if (sess != "" && sess != null)
             {
                 RestaurantDetailViewModel rvm = new RestaurantDetailViewModel();
@@ -201,12 +201,16 @@ namespace My_Project.Areas.Restaurant.Controllers
         }
         public IActionResult Login()
         {
-            return View();
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
+            if (sess != "" && sess != null)
+                return RedirectToAction("Index");
+            else
+                return View();
         }
 
         public IActionResult ChangePassword()
         {
-            var sess = HttpContext.Session.GetString("ResId");
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
             if (sess != "" && sess != null)
             {
                 return View();
@@ -225,7 +229,7 @@ namespace My_Project.Areas.Restaurant.Controllers
 
         public async Task<IActionResult> UpdateImages(int Prodid)
         {
-            var sess = HttpContext.Session.GetString("ResId");
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
             if (sess != "" && sess != null)
             {
                 List<ImageViewModel> ivm = new List<ImageViewModel>();
@@ -245,7 +249,7 @@ namespace My_Project.Areas.Restaurant.Controllers
 
         public async Task<IActionResult> ApproveOrder()
         {
-            var sess = HttpContext.Session.GetString("ResId");
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
             if (sess != "" && sess != null)
             {
                 HttpClient client = new HttpClient();
@@ -268,23 +272,29 @@ namespace My_Project.Areas.Restaurant.Controllers
         }
         public async Task<IActionResult> ShowOrderDetail(int OrdId)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(RestaurantApiString);
-            HttpResponseMessage httpResponse = await client.GetAsync($"ShowOrderDetail/{OrdId}");
-            if (httpResponse.IsSuccessStatusCode)
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
+            if (sess != "" && sess != null)
             {
-                var result = httpResponse.Content.ReadAsStringAsync().Result;
-                if (result != "")
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(RestaurantApiString);
+                HttpResponseMessage httpResponse = await client.GetAsync($"ShowOrderDetail/{OrdId}");
+                if (httpResponse.IsSuccessStatusCode)
                 {
-                    List<OrderDetailViewModel> uv = new List<OrderDetailViewModel>();
-                    uv = JsonConvert.DeserializeObject<List<OrderDetailViewModel>>(result);
-                    return View(uv);
+                    var result = httpResponse.Content.ReadAsStringAsync().Result;
+                    if (result != "")
+                    {
+                        List<OrderDetailViewModel> uv = new List<OrderDetailViewModel>();
+                        uv = JsonConvert.DeserializeObject<List<OrderDetailViewModel>>(result);
+                        return View(uv);
+                    }
                 }
+                return View();
             }
-            return View();
+            else
+                return RedirectToAction("Login");
         }
 
-            [HttpPost]
+       [HttpPost]
         public async Task<IActionResult> Login(string uname, string pass)
         {
             HttpClient client = new HttpClient();

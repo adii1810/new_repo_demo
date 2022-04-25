@@ -131,23 +131,29 @@ namespace My_Project.Controllers
         //Adding products to cart
         public async Task<JsonResult> AddProductCart(int prodId)
         {
-            CartProductViewModel vm = new CartProductViewModel();
-            vm.Order_Date = DateTime.Now.Date;
-            vm.ProductId = prodId;
-            vm.Quantity = 1;
-            vm.User_DataId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
-
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(CustomerApiString);
-            HttpResponseMessage response = await client.PostAsJsonAsync("AddProductCart", vm);
-            if (response.IsSuccessStatusCode)
+            var userId = HttpContext.Session.GetString("UserId")?.ToString()??"";
+            if (userId != "")
             {
-                var result = response.Content.ReadAsStringAsync().Result;
-                if (result != "" && result != null)
-                    return Json(result);
-            }
+                CartProductViewModel vm = new CartProductViewModel();
+                vm.Order_Date = DateTime.Now.Date;
+                vm.ProductId = prodId;
+                vm.Quantity = 1;
+                vm.User_DataId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
 
-            return Json("false");
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(CustomerApiString);
+                HttpResponseMessage response = await client.PostAsJsonAsync("AddProductCart", vm);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    if (result != "" && result != null)
+                        return Json(result);
+                }
+
+                return Json("false");
+            }
+            else
+                return Json("Login");
         }
         public async Task<IEnumerable<ShowProductViewModel>> ShowProduct(string Tab)
         {
@@ -159,6 +165,20 @@ namespace My_Project.Controllers
                 var result = response.Content.ReadAsStringAsync().Result;
                 List<ShowProductViewModel> vm = new List<ShowProductViewModel>();
                 vm = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result);
+                return vm;
+            }
+            return null;
+        }
+        public async Task<IEnumerable<RestaurantDetailViewModel>> ShowRestaurant()
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"ShowRestaurant");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                List<RestaurantDetailViewModel> vm = new List<RestaurantDetailViewModel>();
+                vm = JsonConvert.DeserializeObject<List<RestaurantDetailViewModel>>(result);
                 return vm;
             }
             return null;
@@ -220,6 +240,8 @@ namespace My_Project.Controllers
             HttpResponseMessage response = await client.PostAsJsonAsync("AddRestaurant", vm);
             if (response.IsSuccessStatusCode)
             {
+                var message = new Message(vm.Restaurant_Detail_Email, "No Reply", "Please wait till Admin Activate Your Account");
+                _emailSender.SendEmail(message);
                 return LocalRedirect("~/Restaurant/Restaurant/Index");
             }
             return RedirectToAction("Index");

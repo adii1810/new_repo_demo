@@ -38,12 +38,12 @@
     <!-- navbar-->
     <header class="header">
         <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
-            <a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i class="fas fa-align-left"></i></a><a href="index.html" class="navbar-brand font-weight-bold text-uppercase text-base">@HttpContextAccessor.HttpContext.Session.GetString("ResName").ToString() Dashboard</a>
+            <a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i class="fas fa-align-left"></i></a><a href="index.html" class="navbar-brand font-weight-bold text-uppercase text-base">@HttpContextAccessor.HttpContext.Session.GetString("ValetName").ToString() Dashboard</a>
             <ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
 
 
                 <li class="nav-item dropdown ml-auto">
-                    <a id="userInfo" asp-area="Restaurant" asp-controller="Restaurant" asp-action="EditRestaurant" asp-route-id="@HttpContextAccessor.HttpContext.Session.GetString("ResId").ToString()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><img src="@HttpContextAccessor.HttpContext.Session.GetString("ResImgLink").ToString()" alt="Jason Doe" style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow"></a>
+                    <a id="userInfo" asp-area="Restaurant" asp-controller="Restaurant" asp-action="EditRestaurant" asp-route-id="@HttpContextAccessor.HttpContext.Session.GetString("ValetId").ToString()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><img src="" alt="Jason Doe" style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow"></a>
                     <div aria-labelledby="userInfo" class="dropdown-menu">
                         <a href="#" class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">Mark Stephen</strong><small>Web Developer</small></a>
                         <div class="dropdown-divider"></div><a href="#" class="dropdown-item">Settings</a><a href="#" class="dropdown-item">Activity log </a>
@@ -57,11 +57,10 @@
         <div id="sidebar" class="sidebar py-3">
             <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">MAIN</div>
             <ul class="sidebar-menu list-unstyled">
-                <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Restaurant" asp-controller="Restaurant" asp-action="AddOrEditProduct"><i class="h3">P&nbsp; </i>  <span> Add Product</span></a></li>
-                <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Restaurant" asp-controller="Restaurant" asp-action="ShowProduct"><i class="h3">S&nbsp;</i><span>Show Product</span></a></li>
-                <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Restaurant" asp-controller="Restaurant" asp-action="ApproveOrder"><i class="h3">A&nbsp;</i><span>Approve Orders</span></a></li>
-                <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Restaurant" asp-controller="Restaurant" asp-action="ChangePassword"><i class="h3">C&nbsp;</i><span>Change Password</span></a></li>
-                <li class="sidebar-list-item"><a asp-area="Restaurant" asp-controller="Restaurant" asp-action="Logout" class="sidebar-link text-muted"><i class="o-exit-1 mr-3 text-gray"></i><span>Logout</span></a></li>
+                <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Valet" asp-controller="Valet" asp-action="Index"><i class="h3">O&nbsp; </i>  <span>Show Orders</span></a></li>
+                <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Valet" asp-controller="Valet" asp-action="ApprovedOrders"><i class="h3">A&nbsp;</i><span>Approve Orders</span></a></li>
+                <li class="sidebar-list-item"><a class="sidebar-link text-muted" asp-area="Valet" asp-controller="Valet" asp-action="ChangePassword"><i class="h3">C&nbsp;</i><span>Change Password</span></a></li>
+                <li class="sidebar-list-item"><a asp-area="Valet" asp-controller="Valet" asp-action="Logout" class="sidebar-link text-muted"><i class="o-exit-1 mr-3 text-gray"></i><span>Logout</span></a></li>
             </ul>
             <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">EXTRAS</div>
 
@@ -69,6 +68,21 @@
         <div class="page-holder w-100 d-flex flex-wrap">
             <div class="container-fluid px-xl-5">
                 @RenderBody()
+            </div>
+
+            <div class="modal" tabindex="1" role="dialog" id="form-modal">
+                <div class="modal-dialog  " role="document">
+
+                    <div class="modal-content ">
+                        <button type="button" class="close d-flex justify-content-end" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="modal-body">
+
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
             <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">

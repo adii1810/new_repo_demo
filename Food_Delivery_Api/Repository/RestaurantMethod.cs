@@ -40,7 +40,7 @@ namespace Food_Delivery_Api.Repository
 
         public Restaurant_Detail RestaurantLogin(string uname, string pass)
         {
-            var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_User_Name == uname && x.Restaurant_Detail_Password == pass).FirstOrDefault();
+            var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_User_Name == uname && x.Restaurant_Detail_Password == pass && x.status_by_Admin == true).FirstOrDefault();
             return data;
         }
 

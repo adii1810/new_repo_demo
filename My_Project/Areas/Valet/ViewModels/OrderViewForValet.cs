@@ -11,5 +11,6 @@ namespace My_Project.Areas.Valet.ViewModels
         public string OrderDate { get; set; }
         public string RestaurantAddress { get; set; }
         public string UserAddress { get; set; }
+        public int OrderStatus { get; set; }
     }
 }

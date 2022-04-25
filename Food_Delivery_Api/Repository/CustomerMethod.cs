@@ -223,6 +223,11 @@ namespace Food_Delivery_Api.Repository
             return lvm;
         }
 
-        
+        public IEnumerable<Restaurant_Detail> ShowRestaurant()
+        {
+            //List<Restaurant_Detail> lvm = new List<ShowOrderViewModel>();
+            var data = _context.Restaurant_Detail.OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
+            return data;
+        }
     }
 }

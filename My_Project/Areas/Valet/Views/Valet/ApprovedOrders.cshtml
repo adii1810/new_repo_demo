@@ -1,0 +1,255 @@
+﻿@model IEnumerable<My_Project.Areas.Valet.ViewModels.OrderViewForValet>
+
+@{
+    ViewData["Title"] = "ApprovedOrders";
+    Layout = "~/Views/Shared/_ValetLayout.cshtml";
+}
+
+<style>
+    table {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+        table caption {
+            font-size: 1.5em;
+            margin: .5em 0 .75em;
+        }
+
+        table tr {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: .35em;
+        }
+
+        table th,
+        table td {
+            padding: .625em;
+            text-align: center;
+        }
+
+        table th {
+            font-size: .85em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+    @@media screen and (max-width: 600px) {
+        table {
+            border: 0;
+        }
+
+            table caption {
+                font-size: 1.3em;
+            }
+
+            table thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+
+            table tr {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+
+            table td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+            }
+
+                table td::before {
+                    /*
+                    * aria-label has no advantage, it won't be read inside a table
+                    content: attr(aria-label);
+                    */
+                    content: attr(data-label);
+                    float: left;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+
+                table td:last-child {
+                    border-bottom: 0;
+                }
+    }
+    /* general styling */
+    body {
+        font-family: "Open Sans", sans-serif;
+        line-height: 1.25;
+    }
+</style>
+
+<div class="py-4">
+    <label class="text-blue"><i class="fa-brands fa-opencart"> approved Orders</i></label>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Order Id
+            </th>
+            <th>
+                Order Date
+            </th>
+            <th>
+                Restaurant Address
+            </th>
+            <th>
+                User Address
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td data-label="Order Id">
+                        @item.OrderId
+                    </td>
+                    <td data-label="Order Date">
+                        @item.OrderDate
+                    </td>
+                    <td data-label="Restaurant Address">
+                        @item.RestaurantAddress
+                    </td>
+                    <td data-label="User Address">
+                        @item.UserAddress
+                    </td>
+                    <td>
+                        <label class="btn btn-danger" onclick="showInPopup('@Url.Action("ShowOrdersDetails","Valet",new { Id = item.OrderId},Context.Request.Scheme)','Order Details')">Show Order Details</label>
+                    </td>
+                    <td>
+                        <label class="btn btn-danger" onclick="ChangeStatus(@item.OrderId,@item.OrderStatus)">Update Status</label>
+                    </td>
+                </tr>
+                <tr id="statusRow_@item.OrderId" class="statusRow">
+                    <td>
+                        <button class="btn btn-danger" id="taken">Order Taken</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-warning" id="onway">On the Way</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" id="delivered">Delivered</button>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(()=>{
+        $('.statusRow').hide();
+    })
+    const ChangeStatus = (id, status) => {
+        $("#statusRow_"+id).toggle("slow");
+        console.log(status)
+        if (status == 2) {
+            $("#taken").attr('disabled', false);
+            $("#onway").attr('disabled', true);
+            $("#delivered").attr('disabled', true);
+
+            
+        }
+        else if (status == 3) {
+            $("#taken").attr('disabled', true);
+            $("#onway").attr('disabled', false);
+            $("#delivered").attr('disabled', true);
+        }
+        else if (status == 4) {
+            $("#taken").attr('disabled', true);
+            $("#onway").attr('disabled', true);
+            $("#delivered").attr('disabled', false);
+        }
+        else if (status == 5) {
+            $("#taken").attr('disabled', true);
+            $("#onway").attr('disabled', true);
+            $("#delivered").attr('disabled', true);
+        }
+        $("#taken").click(() => {
+            $.ajax({
+                url: location4 + "ChangeStatus",
+                type: "Post",
+                data: { OrdId: id, Status: status },
+                success: (response) => {
+                    if (response == "true") {
+                        status++;
+                        $("#taken").attr('disabled', true);
+                        $("#onway").attr('disabled', false);
+                        $("#delivered").attr('disabled', true);
+                    }
+                    else {
+                        alert("Something went wrong");
+                    }
+                }
+            })
+        })
+        $("#onway").click(() => {
+            $.ajax({
+                url: location4 + "ChangeStatus",
+                type: "Post",
+                data: { OrdId: id, Status: status },
+                success: (response) => {
+                    if (response == "true") {
+                        status++;
+                        $("#taken").attr('disabled', true);
+                        $("#onway").attr('disabled', true);
+                        $("#delivered").attr('disabled', false);
+                    }
+                    else {
+                        alert("Something went wrong");
+                    }
+                }
+            })
+            console.log(status);
+        })
+        $("#delivered").click(() => {
+            $.ajax({
+                url: location4 + "ChangeStatus",
+                type: "Post",
+                data: { OrdId: id, Status: status },
+                success: (response) => {
+                    if (response == "true") {
+                        status++;
+                        $("#taken").attr('disabled', true);
+                        $("#onway").attr('disabled', true);
+                        $("#delivered").attr('disabled', true);
+                    }
+                    else {
+                        alert("Something went wrong");
+                    }
+                }
+            })
+            console.log(status);
+        })
+
+    }
+
+
+   
+        //$('#taken').click(() => {
+        //    alert("taken");
+        //    console.log(id);
+        //})
+        //$('#onway').click(() => {
+        //    alert("onway");
+        //})
+        //$('#delivered').click(() => {
+        //    alert("delivered");
+        //})
+    
+</script>

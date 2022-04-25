@@ -83,5 +83,11 @@ namespace Food_Delivery_Api.Controllers
             var data = _Customer.ShowOrderDetail(userId,ordId);
             return data;
         }
+        [HttpGet("ShowRestaurant")]
+        public IEnumerable<Restaurant_Detail> ShowRestaurant()
+        {
+            var result = _Customer.ShowRestaurant();
+            return result;
+        }
     }
 }

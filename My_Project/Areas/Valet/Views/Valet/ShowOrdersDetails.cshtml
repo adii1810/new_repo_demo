@@ -1,8 +1,8 @@
-﻿@model IEnumerable<My_Project.Areas.Admin.ViewModels.OrderViewModel>
+﻿@model IEnumerable<My_Project.Areas.Valet.ViewModels.OrderDetailForValet>
 
 @{
-    ViewData["Title"] = "ShowOrders";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "ShowOrdersDetails";
+    Layout = null;
 }
 
 <style>
@@ -91,16 +91,12 @@
         font-family: "Open Sans", sans-serif;
         line-height: 1.25;
     }
-
 </style>
 
 <div class="py-4">
-    <label class="text-blue"><i class="fa-brands fa-opencart"> User Details</i></label>
+    <label class="text-blue"><i class="fa-brands fa-opencart">Order Details</i></label>
 </div>
 
-
-
-<div class="customtbl">
 <table class="table">
     <thead>
         <tr>
@@ -108,39 +104,43 @@
                 Sr.No
             </th>
             <th>
-                Order Date
+                Product_name
             </th>
             <th>
-                Valet Id
+                Quantity
             </th>
             <th>
-                Total
+                Price
             </th>
-            <th></th>
+
         </tr>
     </thead>
     <tbody>
-        @{
-            var i = 1;
-            }
+        @{ var total = 0;}
         @foreach (var item in Model)
         {
-            
-           <tr>
-               <td data-label="Sr.No">@i</td>
-            <td data-label="Order Date">@item.Order_Date</td>
-            <td data-label="Valet Id">@item.Valet_id</td>
-            <td data-label="Total">@item.Total</td>
-             <td>
-                    <a class="text-blue" asp-controller="Admin" asp-action="ShowOrdersDetails" asp-route-Id= "@item.Order_Id" asp-route-total ="@item.Total"> <i class=" fa-solid fa-cart-arrow-down"></i> Show Orders</a>
+            <tr>
+                <td data-label="Sr.No">
+                    @item.Order_Detail_Id
                 </td>
-                    @{
-                        i++;
-                    }
-        </tr>
-                
-            }
-        
+                <td data-label="Product Name">
+                    @item.Product_name
+                </td>
+                <td data-label="Quantity">
+                    @item.Quantity
+                </td>
+                <td data-label="Price">
+                    @item.Price
+                </td>
+                @{total += item.Price * item.Quantity;}
+            </tr>
+            
+        }
+
     </tbody>
 </table>
+<hr />
+<div>
+    <label class="font-weight-bold">Total</label>
+    <label>@total</label>
 </div>

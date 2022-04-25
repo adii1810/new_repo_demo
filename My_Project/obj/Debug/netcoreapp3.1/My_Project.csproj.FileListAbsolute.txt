@@ -1665,3 +1665,6 @@ E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Valet\Views\Valet\Login.cshtml.g.cs
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Client\Views\Client\ValetReg.cshtml.g.cs
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Valet\Views\Valet\Index.cshtml.g.cs
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Valet\Views\Valet\ApprovedOrders.cshtml.g.cs
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Valet\Views\Valet\ShowOrdersDetails.cshtml.g.cs
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Valet\Views\Valet\ChangePassword.cshtml.g.cs
