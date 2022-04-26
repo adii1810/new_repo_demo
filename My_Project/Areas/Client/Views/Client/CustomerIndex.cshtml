@@ -3,10 +3,13 @@
 @{
     ViewData["Title"] = "CustomerIndex";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+
 }
 
 
+
 <div class="container-xxl py-5">
+ 
     <div class="container">
         <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
             <h5 class="section-title ff-secondary text-center text-primary fw-normal">Food Menu</h5>
@@ -64,9 +67,10 @@
     </div>
 </div>
 
-<script>
+@*<script>
+
     const funcCheckout = (id) => {
 
-    showInPopup('@Url.Action("Cart","Client",null,Context.Request.Scheme)','Cart')
+        showInPopup('@Url.Action("Cart","Client",null,Context.Request.Scheme)','Cart')
 }
-</script>
+</script>*@

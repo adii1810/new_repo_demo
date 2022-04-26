@@ -35,15 +35,15 @@ namespace Food_Delivery_Api.Repository
             List<ProductforCustomerViewModel> lvm = new List<ProductforCustomerViewModel>();
             if (tab == "tab1")
             {
-                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 1).ToList();
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 1 && x.Product_Status == true).ToList();
             }
             else if (tab == "tab2")
             {
-                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 0).ToList();
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 0 && x.Product_Status == true).ToList();
             }
             else if (tab == "tab3")
             {
-                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 2).ToList();
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 2 && x.Product_Status == true).ToList();
             }
             else
             {

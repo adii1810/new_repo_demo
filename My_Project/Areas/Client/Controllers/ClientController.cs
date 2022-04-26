@@ -69,7 +69,10 @@ namespace My_Project.Controllers
         }
         public async Task<IActionResult> CustomerIndex()
         {
-            return View();
+            var userId = HttpContext.Session.GetString("UserId")?.ToString()??"";
+            if (userId != "")
+                return View();
+            return RedirectToAction("Index");
         }
         public async Task<IActionResult> ShowOrders()
         {
@@ -127,6 +130,14 @@ namespace My_Project.Controllers
                 }
             }
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.SetString("UserId","");
+            HttpContext.Session.SetString("UserName","");
+            return RedirectToAction("Index");
         }
         //Adding products to cart
         public async Task<JsonResult> AddProductCart(int prodId)

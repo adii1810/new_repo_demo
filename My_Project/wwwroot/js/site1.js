@@ -26,10 +26,11 @@ showInPopup = (url, title) => {
         }
     })
 }
-
-$('.close').click(() => {
+$(".close").click(()=>{
     $('#form-modal').hide();
 })
+
+
 //====================Pagination============================================================
 
 
@@ -329,11 +330,9 @@ $(document).ready(()=>{
             }
         }
     })
+    $("#tab1").click(() => {
 
-})
-
-$("#tab1").click(() => {
-   //if (window.location == location3 + "CustomerIndex") {
+        alert("click");
         $("#tab1").addClass("active")
         $("#tab2").removeClass("active")
         $("#tab3").removeClass("active")
@@ -350,47 +349,49 @@ $("#tab1").click(() => {
                 console.log(response)
             }
         })
-   // }
-})
-$("#tab2").click(() => {
-   // if (window.location == location3 + "CustomerIndex") {
-        $("#tab2").addClass("active")
-        $("#tab1").removeClass("active")
-        $("#tab3").removeClass("active")
-        $("#tab-2").addClass("active")
-        $("#tab-1").removeClass("active")
-        $("#tab-3").removeClass("active")
-        $.ajax({
-            url: location3 + "ShowProduct",
-            type: "Get",
-            data: { Tab: "tab2" },
-            success: (response) => {
-                state.querySet = response;
-                buildTable("tab-2")
-                console.log(response)
-            }
-        })
-  //  }
-})
-$("#tab3").click(() => {
-   // if (window.location == location3 + "CustomerIndex") {
-        $("#tab3").addClass("active")
-        $("#tab1").removeClass("active")
-        $("#tab2").removeClass("active")
-        $("#tab-3").addClass("active")
-        $("#tab-1").removeClass("active")
-        $("#tab-2").removeClass("active")
-        $.ajax({
-            url: location3 + "ShowProduct",
-            type: "Get",
-            data: { Tab: "tab3" },
-            success: (response) => {
-                state.querySet = response;
-                buildTable("tab-3")
-                console.log(response)
-            }
-        })
-   // }
+
+    })
+
+    $("#tab2").click(() => {
+            $("#tab2").addClass("active")
+            $("#tab1").removeClass("active")
+            $("#tab3").removeClass("active")
+            $("#tab-2").addClass("active")
+            $("#tab-1").removeClass("active")
+            $("#tab-3").removeClass("active")
+            $.ajax({
+                url: location3 + "ShowProduct",
+                type: "Get",
+                data: { Tab: "tab2" },
+                success: (response) => {
+                    state.querySet = response;
+                    buildTable("tab-2")
+                    console.log(response)
+                }
+            })
+    })
+
+
+    $("#tab3").click(() => {
+        
+            $("#tab3").addClass("active")
+            $("#tab1").removeClass("active")
+            $("#tab2").removeClass("active")
+            $("#tab-3").addClass("active")
+            $("#tab-1").removeClass("active")
+            $("#tab-2").removeClass("active")
+            $.ajax({
+                url: location3 + "ShowProduct",
+                type: "Get",
+                data: { Tab: "tab3" },
+                success: (response) => {
+                    state.querySet = response;
+                    buildTable("tab-3")
+                    console.log(response)
+                }
+            })
+    })
+
 })
 
 function getProductId(id) {
@@ -414,14 +415,73 @@ const AddProduct = (id) => {
                 showInPopup(location3 + "CustomerLogin", 'Login');
             }
             else {
-                alert("Product From Another Restaurant is already in your cart Please Empty that first");
+                $('.container-xxl .position-relative .p-0').append(`
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Holy guacamole!</strong> Product From Another Restaurant is already in your cart Please Empty that first.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+`);
                 $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="AddProduct(${id})" id="btn_${id}">Add</button>`);
             }
         }
     })
 }
 
+$('#form-modal').ready(() => {
+    $('#close').click(() => {
+        $('#form-modal').hide();
+    })
+})
 
+const minus = (id, price) => {
+    var total = Number($('#total').text());
+    var data = Number($(`#quantity__input_${id}`).val());
+    if (data > 1) {
+        data--;
+        $(`#quantity__input_${id}`).val(data);
+        $(`#total_${id}`).text(data * price);
+        $('#total').text(total - price);
+
+    }
+    $.ajax({
+        url: location3 + "IncrementDecrement",
+        type: "Post",
+        data: { status: "minus", ProdId: id },
+        success: (response) => {
+            if (response =! "true") {
+                alert("something went wrong");
+            }
+        }
+    })
+}
+const plus = (id, price) => {
+    var total = Number($('#total').text());
+    var data = Number($(`#quantity__input_${id}`).val());
+    console.log(data);
+    data++;
+    console.log("after Increment:" + data);
+    $(`#quantity__input_${id}`).val(data);
+    $.ajax({
+        url: location3 + "IncrementDecrement",
+        type: "Post",
+        data: { status: "plus", ProdId: id },
+        success: (response) => {
+            if (response =! "true") {
+                alert("something went wrong");
+            }
+            else {
+                $(`#total_${id}`).text(data * price);
+                $('#total').text(total + price);
+            }
+        }
+    })
+}
+
+const funcCheckout = (id) => {
+    showInPopup(location3 + 'Cart', 'Cart');
+}
     //$('button').click(function (event) {
     //    console.log(event)
     //    alert(event.target.id);

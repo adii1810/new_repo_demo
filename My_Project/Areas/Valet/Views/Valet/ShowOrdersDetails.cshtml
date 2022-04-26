@@ -129,8 +129,11 @@
                 <td data-label="Quantity">
                     @item.Quantity
                 </td>
+                @{
+                    var data = item.Price * item.Quantity;
+                }
                 <td data-label="Price">
-                    @item.Price
+                    @data
                 </td>
                 @{total += item.Price * item.Quantity;}
             </tr>

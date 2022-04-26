@@ -120,16 +120,16 @@
             <td>@item.Price</td>
             <td class="qty">
                 <div class="quantity">
-                    <a class="quantity__minus" id="minus_@item.ProductId" onclick="minus(@item.ProductId)"><span>-</span></a>
+                    <a class="quantity__minus" id="minus_@item.ProductId" onclick="minus(@item.ProductId,@item.Price)"><span>-</span></a>
                     <input name="quantity" type="text" disabled class="quantity__input" id="quantity__input_@item.ProductId" value="@item.Quantity">
-                    <a class="quantity__plus" id="plus_@item.ProductId" onclick="plus(@item.ProductId)"><span>+</span></a>
+                    <a class="quantity__plus" id="plus_@item.ProductId" onclick="plus(@item.ProductId,@item.Price)"><span>+</span></a>
                 </div>
             </td>
             @{
                 var data = item.Price * item.Quantity;
                 total = total + data;
             }
-                <td>
+                <td id="total_@item.ProductId">
                     @data
                 </td>
                 <td>
@@ -144,79 +144,41 @@
     </tbody>
 </table>
 <div class="d-flex justify-content-end">
-    <h5>Total: <span class="price text-success">@total</span></h5>
+    <h5>Total: <span class="price text-success" id="total">@total</span></h5>
 </div>
 <script>
-    $('#form-modal').ready(() => {
-        $('#close').click(() => {
-            $('#form-modal').hide();
-        })
-    })
-
-    const minus = (id) => {
-            var data = Number($(`#quantity__input_${id}`).val());
-            if (data > 1) {
-                data--;
-                $(`#quantity__input_${id}`).val(data);
+   const deleteProduct = (id) => {
+    $.ajax({
+        url: location3 + "deleteProduct",
+        type: "Post",
+        data: { ProdId: id },
+        success: (response) => {
+            if (response == "true") {
+                showInPopup('@Url.Action("Cart","Client",null,Context.Request.Scheme)', 'Cart')
+            }
+            else {
+                alert("something went wrong");
+            }
         }
-         $.ajax({
-            url: location3 + "IncrementDecrement",
-            type: "Post",
-            data: {status:"minus",ProdId: id },
-            success: (response)=>{
-                if (response =! "true") {
-                    alert("something went wrong");
-                }
-            }
-        })
-    }
-    const plus = (id) => {
-
-            var data = Number($(`#quantity__input_${id}`).val());
-            console.log(data);
-            data++;
-            console.log("after Increment:" + data);
-        $(`#quantity__input_${id}`).val(data);
-        $.ajax({
-            url: location3 + "IncrementDecrement",
-            type: "Post",
-            data: { status: "plus", ProdId: id },
-            success: (response) => {
-                if (response = ! "true") {
-                    alert("something went wrong");
-                }
-            }
-        })
-    }
-    const deleteProduct = (id) => {
-        $.ajax({
-            url: location3 + "deleteProduct",
-            type: "Post",
-            data: { ProdId: id },
-            success: (response)=>{
-                if (response == "true") {
-                    showInPopup('@Url.Action("Cart","Client",null,Context.Request.Scheme)', 'Cart')
-                }
-                else {
-                    alert("something went wrong");
-                }
-            }
-        })
-    }
-
-    $('#Checkout').click(() => {
-        $.ajax({
-            url: location3 + "CheckOut",
-            type: "Post",
-            success: (response) => {
-                if (response == "true") {
-                    showInPopup('@Url.Action("Cart","Client",null,Context.Request.Scheme)', 'Cart')
-                }
-                else
-                    alert("failure")
-            }
-        })
     })
+}
+
+$('#Checkout').click(() => {
+    $.ajax({
+        url: location3 + "CheckOut",
+        type: "Post",
+        success: (response) => {
+            if (response == "true") {
+                showInPopup('@Url.Action("Cart","Client",null,Context.Request.Scheme)', 'Cart')
+            }
+            else
+                alert("failure")
+        }
+    })
+})
+
+    
+    //$('button').click(function (ev
 </script>
 
 
