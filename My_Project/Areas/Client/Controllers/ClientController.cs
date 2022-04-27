@@ -92,6 +92,12 @@ namespace My_Project.Controllers
             }
             return View();
         }
+
+        public async Task<IActionResult> Categories()
+        {
+
+            return View();
+        }
         //For showing cart data
         [HttpGet]
         public async Task<IActionResult> Cart()

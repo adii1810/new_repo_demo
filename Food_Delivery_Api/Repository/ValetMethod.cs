@@ -59,7 +59,7 @@ namespace Food_Delivery_Api.Repository
         }
         public IEnumerable<OrderViewForValet> ApprovedOrders(int valId)
         {
-            var data = _context.Order.Where(x => x.Order_Status_Id != (OrderStatus)1 && x.Order_Status_Id != 0 && x.ValetId == valId).OrderByDescending(x => x.Order_Id).ToList();
+            var data = _context.Order.Where(x => x.Order_Status_Id != OrderStatus.Order_Pending && x.Order_Status_Id != OrderStatus.Order_Registered && x.ValetId == valId).OrderByDescending(x => x.Order_Id).ToList();
             List<OrderViewForValet> lvm = new List<OrderViewForValet>();
             foreach (var item in data)
             {

@@ -24,7 +24,7 @@
                             <i class="fa-solid fa-book-open-reader"></i>
                         </div>
                     </div>
-                    <input asp-for="User_FirstName" tabindex="1" class="form-control" placeholder="First Name" />
+                    <input asp-for="User_FirstName" tabindex="1" class="form-control" placeholder="First Name" required />
                     <span asp-validation-for="User_FirstName" class="text-danger"></span>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                            
                         </div>
                     </div>
-                    <input asp-for="User_UserName" tabindex="3" class="form-control" placeholder="Enter Username" />
+                    <input asp-for="User_UserName" tabindex="3" class="form-control" placeholder="Enter Username" required/>
                     <span asp-validation-for="User_UserName" class="text-danger" id="UserError2"></span>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                             <i class="fa-solid fa-map"></i>
                         </div>
                     </div>
-                    <input asp-for="User_Address" tabindex="5" class="form-control" placeholder="Enter Address" />
+                    <input asp-for="User_Address" tabindex="5" class="form-control" placeholder="Enter Address" required/>
                     <span asp-validation-for="User_Address" class="text-danger"></span>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                             
                         </div>
                     </div>
-                    <input asp-for="User_Email" tabindex="7" class="form-control" placeholder="Enter Email" />
+                    <input asp-for="User_Email" tabindex="7" class="form-control" placeholder="Enter Email" required/>
                     <span asp-validation-for="User_Email" class="text-danger"></span>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                             <i class="fa-solid fa-location-pin"></i>
                         </div>
                     </div>
-                    <input asp-for="User_State" tabindex="9" class="form-control" placeholder="Enter State" />
+                    <input asp-for="User_State" tabindex="9" class="form-control" placeholder="Enter State" required/>
                     <span asp-validation-for="User_State" class="text-danger"></span>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                             <i class="fa-solid fa-book-open-reader"></i>
                         </div>
                     </div>
-                    <input asp-for="User_LastName" tabindex="2" class="form-control" placeholder="Enter Lastname" />
+                    <input asp-for="User_LastName" tabindex="2" class="form-control" placeholder="Enter Lastname" required/>
                     <span asp-validation-for="User_LastName" class="text-danger"></span>
                 </div>
             </div>
@@ -100,7 +100,7 @@
                             <i class="fa-solid fa-key"></i>
                         </div>
                     </div>
-                    <input type="password" asp-for="User_Password" class="form-control" tabindex="4" placeholder="Password" id="pass2" />
+                    <input type="password" asp-for="User_Password" class="form-control" tabindex="4" placeholder="Password" id="pass2" required/>
                     <span asp-validation-for="User_Password" class="text-danger" id="UserError1"></span>
                 </div>
             </div>
@@ -112,7 +112,7 @@
                             <i class="fa-solid fa-phone"></i>
                         </div>
                     </div>
-                    <input asp-for="User_PhoneNo" tabindex="6" class="form-control" placeholder="Enter Contact No" />
+                    <input asp-for="User_PhoneNo" tabindex="6" class="form-control" placeholder="Enter Contact No" required/>
                     <span asp-validation-for="User_PhoneNo" class="text-danger"></span>
                 </div>
             </div>
@@ -126,7 +126,7 @@
                             <i class="fa-solid fa-city"></i>
                         </div>
                     </div>
-                    <input asp-for="User_City" tabindex="8" class="form-control" placeholder="Enter City" />
+                    <input asp-for="User_City" tabindex="8" class="form-control" placeholder="Enter City" required />
                     <span asp-validation-for="User_City" class="text-danger"></span>
                 </div>
             </div>
@@ -138,7 +138,7 @@
                             <i class="fa-solid fa-location-pin"></i>
                         </div>
                     </div>
-                    <input asp-for="User_ZipCode" tabindex="10" class="form-control" placeholder="Enter Zipcode" />
+                    <input asp-for="User_ZipCode" tabindex="10" class="form-control" placeholder="Enter Zipcode" required />
                     <span asp-validation-for="User_ZipCode" class="text-danger"></span>
                 </div>
             </div>

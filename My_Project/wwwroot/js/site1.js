@@ -415,14 +415,7 @@ const AddProduct = (id) => {
                 showInPopup(location3 + "CustomerLogin", 'Login');
             }
             else {
-                $('.container-xxl .position-relative .p-0').append(`
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>Holy guacamole!</strong> Product From Another Restaurant is already in your cart Please Empty that first.
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-`);
+                alert("Product from another Restaurant is in your cart please remove that first");
                 $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="AddProduct(${id})" id="btn_${id}">Add</button>`);
             }
         }
@@ -450,7 +443,7 @@ const minus = (id, price) => {
         type: "Post",
         data: { status: "minus", ProdId: id },
         success: (response) => {
-            if (response =! "true") {
+            if (response != "true") {
                 alert("something went wrong");
             }
         }

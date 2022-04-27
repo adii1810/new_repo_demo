@@ -133,7 +133,7 @@
                     @data
                 </td>
                 <td>
-                    <a class="btn btn-danger btn-sm" onclick="deleteProduct(@item.ProductId)">
+                    <a class="btn btn-danger btn-sm" onclick="deleteProduct1(@item.ProductId)">
                         <i class="fa fa-times"></i>
                     </a>
                 </td>
@@ -146,8 +146,10 @@
 <div class="d-flex justify-content-end">
     <h5>Total: <span class="price text-success" id="total">@total</span></h5>
 </div>
+
+
 <script>
-   const deleteProduct = (id) => {
+   const deleteProduct1 = (id) => {
     $.ajax({
         url: location3 + "deleteProduct",
         type: "Post",
@@ -162,14 +164,14 @@
         }
     })
 }
-
-$('#Checkout').click(() => {
+   
+    $('#Checkout').click(() => {
     $.ajax({
         url: location3 + "CheckOut",
         type: "Post",
         success: (response) => {
             if (response == "true") {
-                showInPopup('@Url.Action("Cart","Client",null,Context.Request.Scheme)', 'Cart')
+                window.location = location3 + "ShowOrders";
             }
             else
                 alert("failure")
@@ -177,8 +179,6 @@ $('#Checkout').click(() => {
     })
 })
 
-    
-    //$('button').click(function (ev
 </script>
 
 
