@@ -71,6 +71,14 @@ namespace Food_Delivery_Api.Controllers
             var result = _Customer.ShowOrder(userId);
             return result;
         }
+
+        [HttpGet("myR")]
+        public IEnumerable<string> myR(string pre)
+        {
+            var data = _Customer.MyRestaurant(pre);
+            return data;
+        }
+
         [HttpPost("AddProductCart")]
         public string AddProductCart(CartProductViewModel vm)
         {
@@ -87,6 +95,12 @@ namespace Food_Delivery_Api.Controllers
         public IEnumerable<Restaurant_Detail> ShowRestaurant()
         {
             var result = _Customer.ShowRestaurant();
+            return result;
+        }
+        [HttpGet("ShowRestaurantProducts/{ResName}")]
+        public IEnumerable<ProductforCustomerViewModel> ShowRestaurantProducts(string ResName)
+        {
+            var result = _Customer.ShowRestaurantProduct(ResName);
             return result;
         }
     }

@@ -1,0 +1,67 @@
+﻿@model IEnumerable<My_Project.Areas.Client.ViewModels.ShowProductViewModel>
+
+@{
+    ViewData["Title"] = "ShowRestaurantProduct";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div>
+    <table class="table">
+        <tr class="row border-0">
+            <td class="col-1 border-0"></td>
+            <td class="col-8 border-0">
+                <input type="text" value="" name="restaurant_Name" class="form-control" id="Name" placeholder="Restaurant" />
+            </td>
+            <td class="col-2 border-0">
+                <button class="btn btn-warning text-dark" id="SearchRes" style="width:100%"><i class="fa-solid fa-magnifying-glass"></i></button>
+                @*<input type="button" class="btn btn-warning text-dark form-control" id="btnSearchRestaurant" style="width:100%" value="Search" />*@
+            </td>
+            <td class="col-1 border-0"></td>
+        </tr>
+    </table>
+</div>
+
+<table class="table">
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div onclick="getProductId(@item.Product_Id)">
+                        <div class="d-flex align-items-center">
+                            <img class="flex-shrink-0 img-fluid rounded" src="@item.ImgLink" style="max-width: 7rem;">
+                            <div class="w-100 d-flex flex-column text-start ps-4">
+                                <div>
+                                    @*<h5 class="d-flex justify-content-between border-bottom pb-2">
+                                            <span>@item.Product_Name</span>
+                                            <span class="text-primary">@item.Product_Price</span>
+                                        </h5>*@
+                                    <div class="d-flex pb-2">
+                                        <div class="col-6 text-left" style="font-size:larger; color:black;font-weight:600">
+                                            <span>@item.Product_Name</span>
+                                            
+                                            <span class="border border-1" style="font-size:15px; color:white; background-color:green; border-radius:5px">&nbsp;&nbsp;@item.Rate&nbsp;&starf;&nbsp;&nbsp;</span>
+                                            
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <span class="text-primary" style="font-size:larger; color:orange;font-weight:600">@item.Product_Price</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div>
+                                    <small class="fst-italic d-flex justify-content-between">
+                                        @item.Description
+                                        <span class="text-primary" id="btnchange_@item.Product_Id"><button class="btn btn-warning text-white" onclick="AddProduct(@item.Product_Id)" id="btn_@item.Product_Id">Add</button></span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

@@ -161,7 +161,7 @@ const Update = (Id) => {
 
 $("#Name").autocomplete({
 
-    maxShowItems: 3,
+    maxShowItems: 5,
 
     source: function (request, response) {
 
@@ -461,7 +461,7 @@ const plus = (id, price) => {
         type: "Post",
         data: { status: "plus", ProdId: id },
         success: (response) => {
-            if (response =! "true") {
+            if (response != "true") {
                 alert("something went wrong");
             }
             else {
@@ -481,6 +481,86 @@ const funcCheckout = (id) => {
     //});
 
 //<button class= 'btn btn-warning btn-sm' > <i class='bi bi-dash'></i></button ><input type='text'  maxlength='1' size='1' /><button class='btn btn-warning btn-sm'><i class='bi bi-plus'></i></button>");
+
+$("#Name").autocomplete({
+
+    maxShowItems: 3,
+
+    source: function (request, response) {
+        $.ajax({
+            url: location3 + "myResturant",
+            type: "POST",
+            data: { Prefix: request.term },
+            success: function (data) {
+                var data2 = JSON.parse(data);
+                response($.map(data2, function (item) {
+                    return item;
+                }))
+
+            }
+        })
+
+    },
+    messages: {
+        noResults: "", results: ""
+    }
+});
+
+
+const deleteProduct1 = (id) => {
+    $.ajax({
+        url: location3 + "deleteProduct",
+        type: "Post",
+        data: { ProdId: id },
+        success: (response) => {
+            if (response == "true") {
+                showInPopup(location3+"Cart", 'Cart')
+            }
+            else {
+                alert("something went wrong");
+            }
+        }
+    })
+}
+
+$('#Checkout').click(() => {
+    $.ajax({
+        url: location3 + "CheckOut",
+        type: "Post",
+        success: (response) => {
+            if (response == "true") {
+                window.location = location3 + "ShowOrders";
+            }
+            else
+                alert("failure")
+        }
+    })
+})
+
+$('#SearchRes').click(() => {
+
+    var data = document.getElementById("Name").value;
+    window.location = location3 + "ShowRestaurantProduct?resName=" + data;
+})
+
+
+/* Script for Categories page*/
+/*=============================================================================================================================================*/
+
+
+   
+        
+   
+
+
+
+
+
+
+/*=============================================================================================================================================*/
+
+
+
 
 
 

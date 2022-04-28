@@ -16,5 +16,6 @@ namespace Food_Delivery_Api.ViewModel
        
         public bool Product_Status { get; set; }
         public string ImgLink { get; set; }
+        public double Rate { get; set; }
     }
 }

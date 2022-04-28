@@ -149,35 +149,7 @@
 
 
 <script>
-   const deleteProduct1 = (id) => {
-    $.ajax({
-        url: location3 + "deleteProduct",
-        type: "Post",
-        data: { ProdId: id },
-        success: (response) => {
-            if (response == "true") {
-                showInPopup('@Url.Action("Cart","Client",null,Context.Request.Scheme)', 'Cart')
-            }
-            else {
-                alert("something went wrong");
-            }
-        }
-    })
-}
-   
-    $('#Checkout').click(() => {
-    $.ajax({
-        url: location3 + "CheckOut",
-        type: "Post",
-        success: (response) => {
-            if (response == "true") {
-                window.location = location3 + "ShowOrders";
-            }
-            else
-                alert("failure")
-        }
-    })
-})
+  
 
 </script>
 

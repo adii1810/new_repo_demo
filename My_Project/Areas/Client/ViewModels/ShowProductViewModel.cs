@@ -15,5 +15,6 @@ namespace My_Project.Areas.Client.ViewModels
         public string Description { get; set; }
         public bool Product_Status { get; set; }
         public string ImgLink { get; set; }
+        public double Rate { get; set; }
     }
 }

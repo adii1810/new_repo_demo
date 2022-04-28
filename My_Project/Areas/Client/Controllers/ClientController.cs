@@ -200,6 +200,20 @@ namespace My_Project.Controllers
             }
             return null;
         }
+        public async Task<ActionResult> ShowRestaurantProduct(string ResName)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"ShowRestaurantProducts/{ResName}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                List<ShowProductViewModel> vm = new List<ShowProductViewModel>();
+                vm = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result);
+                return View(vm);
+            }
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> VendorReg(RestaurantDetailViewModel vm)
@@ -369,6 +383,19 @@ namespace My_Project.Controllers
                 }
             }
             return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public async Task<JsonResult> myResturant(string Prefix)
+        {
+            HttpClient client1 = new HttpClient();
+            client1.BaseAddress = new Uri(CustomerApiString);
+            var httpResponse1 = await client1.GetAsync($"MyR?pre={Prefix}");
+            if (httpResponse1.IsSuccessStatusCode)
+            {
+                var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
+                return Json(result1);
+            }
+            return null;
         }
     }
 }

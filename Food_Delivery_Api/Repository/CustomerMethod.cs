@@ -33,7 +33,7 @@ namespace Food_Delivery_Api.Repository
         {
             List<Product> data = null;
             List<ProductforCustomerViewModel> lvm = new List<ProductforCustomerViewModel>();
-            if (tab == "tab1")
+            if (tab == "tab1" )
             {
                 data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 1 && x.Product_Status == true).ToList();
             }
@@ -227,6 +227,41 @@ namespace Food_Delivery_Api.Repository
         {
             //List<Restaurant_Detail> lvm = new List<ShowOrderViewModel>();
             var data = _context.Restaurant_Detail.OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
+            return data;
+        }
+        public IEnumerable<ProductforCustomerViewModel> ShowRestaurantProduct(string resName)
+        {
+
+            //List<Restaurant_Detail> lvm = new List<ShowOrderViewModel>();
+            List<Product> data = null;
+            List<ProductforCustomerViewModel> lvm = new List<ProductforCustomerViewModel>();
+            var result = _context.Product.Where(x => x.Restaurant_DetailId == x.Restaurant_Detail.Restaurant_Detail_Id && resName == x.Restaurant_Detail.Restaurant_Detail_Name).OrderByDescending(x => x.Product_Id).ToList();
+
+            foreach (var item in result)
+            {
+                double rate = 0;
+                int user = 0;
+                if ((user = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count()) > 0)
+                {
+                    rate = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Average(x => x.User_Rating_Star);
+                }
+                ProductforCustomerViewModel p = new ProductforCustomerViewModel();
+                p.Description = item.Description;
+                p.Product_Id = item.Product_Id;
+                p.Product_Name = item.Product_Name;
+                p.Product_Price = item.Product_Price;
+                p.Product_Status = item.Product_Status;
+                var link = _context.ProductImages.Where(x => x.ProductId == item.Product_Id).Take(1).Select(x => x.ImgLink).FirstOrDefault();
+                p.ImgLink = link;
+                p.Rate = rate;
+                lvm.Add(p);
+            }
+            return lvm;
+        }
+        public IEnumerable<string> MyRestaurant(string pre)
+        {
+
+            var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Name.Contains(pre)).Select(x => x.Restaurant_Detail_Name).ToList();
             return data;
         }
     }
