@@ -89,8 +89,6 @@ namespace Food_Delivery_Api.Repository
             return "true";
         }
 
-
-
         public async Task<int> StoringImages(ProductImageViewModel pmvm)
         {
             ProductImages pm = new ProductImages();

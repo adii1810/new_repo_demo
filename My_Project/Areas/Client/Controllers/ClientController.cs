@@ -215,6 +215,49 @@ namespace My_Project.Controllers
             return View();
         }
 
+        public async Task<ActionResult> Rating(int ProdId)
+        {
+            var userId = HttpContext.Session.GetString("UserId")?.ToString() ?? "";
+           
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"ViewRating/{Convert.ToInt32(userId)}/{ProdId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                ViewBag.ProdId = ProdId;
+                ViewBag.Rate = Convert.ToInt32(result);
+            }
+            return View();
+        }
+
+        public async Task<ActionResult> UpdateCustomer()
+        {
+            var userId = HttpContext.Session.GetString("UserId")?.ToString() ?? "";
+
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"GetUser/{Convert.ToInt32(userId)}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                CustomerViewModel cvm = new CustomerViewModel();
+                cvm = JsonConvert.DeserializeObject<CustomerViewModel>(result);
+                return View(cvm);
+            }
+            return View();
+        }
+        public async Task<ActionResult> ChangePassword()
+        {
+            var userId = HttpContext.Session.GetString("UserId")?.ToString() ?? "";
+            if(userId != "")
+            {
+                return View();
+            }
+            return RedirectToAction("Index");
+          
+           
+        }
         [HttpPost]
         public async Task<IActionResult> VendorReg(RestaurantDetailViewModel vm)
         {
@@ -298,15 +341,18 @@ namespace My_Project.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                CustomerViewModel cm = new CustomerViewModel();
-                cm = JsonConvert.DeserializeObject<CustomerViewModel>(result);
-                HttpContext.Session.SetString("UserId", cm.User_Id.ToString());
-                HttpContext.Session.SetString("UserName", cm.User_FirstName);
-                //HttpContext.Session.SetString("ResUserName", uv.Restaurant_Detail_User_Name);
-                //HttpContext.Session.SetString("ResImgLink", uv.profileImage);
-                //HttpContext.Session.SetString("ResEmail", uv.Restaurant_Detail_Email);
                 if (result != "")
+                {
+                    CustomerViewModel cm = new CustomerViewModel();
+                    cm = JsonConvert.DeserializeObject<CustomerViewModel>(result);
+                    HttpContext.Session.SetString("UserId", cm.User_Id.ToString());
+                    HttpContext.Session.SetString("UserName", cm.User_UserName);
+                    HttpContext.Session.SetString("UserEmail", cm.User_Email);
+                    //HttpContext.Session.SetString("ResImgLink", uv.profileImage);
+                    //HttpContext.Session.SetString("ResEmail", uv.Restaurant_Detail_Email);
+
                     return Json(result);
+                }
                 else
                     return Json(result);
 
@@ -396,6 +442,80 @@ namespace My_Project.Controllers
                 return Json(result1);
             }
             return null;
+        }
+        [HttpPost]
+        public async Task<JsonResult> Rating(int ProdId,int rate)
+        {
+            var userId = HttpContext.Session.GetString("UserId")?.ToString() ?? "";
+
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.GetAsync($"AddRating/{Convert.ToInt32(userId)}/{ProdId}/{rate}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                ViewBag.ProdId = ProdId;
+                ViewBag.Rate = rate;
+                return Json(result);
+            }
+            return Json("false");
+        }
+        [HttpPost]
+        public async Task<ActionResult> UpdateCustomer(CustomerViewModel cvm)
+        {
+            var userId = HttpContext.Session.GetString("UserId")?.ToString() ?? "";
+
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage response = await client.PutAsJsonAsync($"UpdateUser",cvm);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                if(result == "true")
+                {
+                    return RedirectToAction("CustomerIndex");
+                }
+            }
+            return RedirectToAction("CustomerIndex");
+        }
+        [HttpPost]
+        public async Task<JsonResult> code(string prepass)
+        {
+            var userName = HttpContext.Session.GetString("UserName").ToString();
+            var email = HttpContext.Session.GetString("UserEmail").ToString();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"UserConfirmPass/{userName}/{prepass}");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                if (Convert.ToInt32(result) > 0)
+                {
+                    Random r = new Random();
+                    int randNum = r.Next(1000000);
+                    string sixDigitNumber = randNum.ToString("D6");
+                    var MsgBody = sixDigitNumber;
+                    var message = new Message(email, "Security Code For Changing Password", MsgBody);
+                    _emailSender.SendEmail(message);
+                    return Json(sixDigitNumber);
+
+                }
+            }
+            return Json("false");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string pass)
+        {
+            var userName = HttpContext.Session.GetString("UserName").ToString();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"ChangePassword/{userName}/{pass}");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return RedirectToAction("CustomerIndex");
+            }
+            return RedirectToAction("CustomerIndex");
         }
     }
 }

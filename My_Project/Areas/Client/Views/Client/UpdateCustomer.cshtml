@@ -1,22 +1,14 @@
 ﻿@model My_Project.Areas.Client.ViewModels.CustomerViewModel
 
 @{
-    ViewData["Title"] = "CustomerReg";
+    ViewData["Title"] = "UpdateCustomer";
     Layout = null;
 }
-
-
-<head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-</head>
-
-
-<form asp-action="CustomerReg" asp-area="Client" asp-controller="Client" enctype="multipart/form-data">
+<form asp-action="UpdateCustomer" asp-area="Client" asp-controller="Client" enctype="multipart/form-data">
 
     <div class="row">
         <div class="col-6">
-
+            <input type="hidden" asp-for="User_Id" />
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -25,22 +17,13 @@
                         </div>
                     </div>
                     <input asp-for="User_FirstName" tabindex="41" class="form-control" placeholder="First Name" required />
-                    <span asp-validation-for="User_FirstName" class="text-danger" id="errorFirstName"></span>
+                    <span asp-validation-for="User_FirstName" class="text-danger"></span>
                 </div>
             </div>
 
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <i class="fa-solid fa-user-plus"></i>
-                           
-                        </div>
-                    </div>
-                    <input asp-for="User_UserName" tabindex="43" class="form-control" placeholder="Enter Username" required/>
-                    <span asp-validation-for="User_UserName" class="text-danger" id="errorUserName"></span>
-                </div>
-            </div>
+            <input type="hidden" asp-for="User_UserName" />
+            <span asp-validation-for="User_UserName" class="text-danger" id="UserError2"></span>
+
 
             <div class="form-group">
                 <div class="input-group">
@@ -49,8 +32,8 @@
                             <i class="fa-solid fa-map"></i>
                         </div>
                     </div>
-                    <input asp-for="User_Address" tabindex="45" class="form-control" placeholder="Enter Address" required/>
-                    <span asp-validation-for="User_Address" class="text-danger" id="errorAddress"></span>
+                    <input asp-for="User_Address" tabindex="45" class="form-control" placeholder="Enter Address" required />
+                    <span asp-validation-for="User_Address" class="text-danger"></span>
                 </div>
             </div>
 
@@ -59,11 +42,11 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <i class="fa-solid fa-at"></i>
-                            
+
                         </div>
                     </div>
-                    <input type="email" asp-for="User_Email" tabindex="47" class="form-control" placeholder="Enter Email" required/>
-                    <span asp-validation-for="User_Email" class="text-danger" id="errorEmail"></span>
+                    <input asp-for="User_Email" tabindex="47" class="form-control" placeholder="Enter Email" required />
+                    <span asp-validation-for="User_Email" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
@@ -73,8 +56,8 @@
                             <i class="fa-solid fa-location-pin"></i>
                         </div>
                     </div>
-                    <input asp-for="User_State" tabindex="49" class="form-control" placeholder="Enter State" required/>
-                    <span asp-validation-for="User_State" class="text-danger" id="errorState"></span>
+                    <input asp-for="User_State" tabindex="49" class="form-control" placeholder="Enter State" required />
+                    <span asp-validation-for="User_State" class="text-danger"></span>
                 </div>
             </div>
 
@@ -88,22 +71,14 @@
                             <i class="fa-solid fa-book-open-reader"></i>
                         </div>
                     </div>
-                    <input asp-for="User_LastName" tabindex="42" class="form-control" placeholder="Enter Lastname" required/>
-                    <span asp-validation-for="User_LastName" class="text-danger" id="errorLastName"></span>
+                    <input asp-for="User_LastName" tabindex="42" class="form-control" placeholder="Enter Lastname" required />
+                    <span asp-validation-for="User_LastName" class="text-danger"></span>
                 </div>
             </div>
 
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <i class="fa-solid fa-key"></i>
-                        </div>
-                    </div>
-                    <input type="password" asp-for="User_Password" class="form-control" tabindex="44" placeholder="Password" id="pass2" required/>
-                    <span asp-validation-for="User_Password" class="text-danger" id="Password"></span>
-                </div>
-            </div>
+
+            <input type="hidden" asp-for="User_Password" class="form-control" tabindex="44" placeholder="Password" id="pass2" required />
+
 
             <div class="form-group">
                 <div class="input-group">
@@ -112,10 +87,13 @@
                             <i class="fa-solid fa-phone"></i>
                         </div>
                     </div>
-                    <input asp-for="User_PhoneNo" tabindex="46" class="form-control" placeholder="Enter Contact No"  minlength="10" maxlength="10" required/>
-                    <span asp-validation-for="User_PhoneNo" class="text-danger" id="errorPhoneNo"></span>
+                    <input asp-for="User_PhoneNo" tabindex="46" class="form-control" placeholder="Enter Contact No" required />
+                    <span asp-validation-for="User_PhoneNo" class="text-danger"></span>
                 </div>
             </div>
+
+
+
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -124,7 +102,7 @@
                         </div>
                     </div>
                     <input asp-for="User_City" tabindex="48" class="form-control" placeholder="Enter City" required />
-                    <span asp-validation-for="User_City" class="text-danger" id="errorCity"></span>
+                    <span asp-validation-for="User_City" class="text-danger"></span>
                 </div>
             </div>
 
@@ -136,18 +114,22 @@
                         </div>
                     </div>
                     <input asp-for="User_ZipCode" tabindex="50" class="form-control" placeholder="Enter Zipcode" required />
-                    <span asp-validation-for="User_ZipCode" class="text-danger" id="errorZipCode"></span>
+                    <span asp-validation-for="User_ZipCode" class="text-danger"></span>
                 </div>
             </div>
-            
+
         </div>
     </div>
-    <input type="submit" value="Register" class="btn btn-success btn-block" id="btnsubmit" />
+    <input type="submit" value="Update Changes" class="btn btn-success btn-block " id="btnsubmit" />
 </form>
+
+<div class="py-3">
+    <button type="submit" value="Register" class="btn btn-dark btn-block " id="btnclose">Close</button>
+</div>
 <script>
-
+    $('#Checkout').hide();
+    $('#close').hide();
+    $('#btnclose').click(() => {
+        $('#form-modal').hide();
+    })
 </script>
-
-
-
-

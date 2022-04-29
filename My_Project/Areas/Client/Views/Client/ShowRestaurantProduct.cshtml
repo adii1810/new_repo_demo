@@ -28,15 +28,11 @@
         {
             <tr>
                 <td>
-                    <div onclick="getProductId(@item.Product_Id)">
+                    <div>
                         <div class="d-flex align-items-center">
-                            <img class="flex-shrink-0 img-fluid rounded" src="@item.ImgLink" style="max-width: 7rem;">
+                            <img class="flex-shrink-0 img-fluid rounded" src="@item.ImgLink" style="max-width: 7rem;"  onclick="getProductId(@item.Product_Id)">
                             <div class="w-100 d-flex flex-column text-start ps-4">
                                 <div>
-                                    @*<h5 class="d-flex justify-content-between border-bottom pb-2">
-                                            <span>@item.Product_Name</span>
-                                            <span class="text-primary">@item.Product_Price</span>
-                                        </h5>*@
                                     <div class="d-flex pb-2">
                                         <div class="col-6 text-left" style="font-size:larger; color:black;font-weight:600">
                                             <span>@item.Product_Name</span>
@@ -45,7 +41,7 @@
                                             
                                         </div>
                                         <div class="col-6 text-right">
-                                            <span class="text-primary" style="font-size:larger; color:orange;font-weight:600">@item.Product_Price</span>
+                                            <span class="text-primary" style="font-size:larger; color:orange;font-weight:600"><i class="fa-solid fa-indian-rupee-sign"> @item.Product_Price</i></span>
                                         </div>
                                     </div>
 
@@ -65,3 +61,15 @@
         }
     </tbody>
 </table>
+<script>
+    function getProductId(id) {
+        $.ajax({
+            //url: location3 + "Rating",
+            type: "Get",
+            data: { prodId: id },
+            success: (response) => {
+                showInPopup(location3 + 'Rating?Prodid=' + id, 'Rating');
+            }
+        })
+    }
+</script>

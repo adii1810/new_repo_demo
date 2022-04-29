@@ -103,5 +103,46 @@ namespace Food_Delivery_Api.Controllers
             var result = _Customer.ShowRestaurantProduct(ResName);
             return result;
         }
+        [HttpGet("ViewRating/{userId}/{ProdId}")]
+        public int ViewRating(int userId,int ProdId)
+        {
+            var result = _Customer.ViewRating(userId,ProdId);
+            return result;
+        }
+        [HttpGet("AddRating/{userId}/{ProdId}/{rate}")]
+        public string AddRating(int userId, int ProdId,int rate)
+        {
+            var result = _Customer.AddRating(userId, ProdId,rate);
+            return result;
+        }
+        [HttpGet("GetUser/{userId}")]
+        public User_Data GetUser(int userId)
+        {
+            var result = _Customer.GetUser(userId);
+            return result;
+        }
+
+        [HttpGet("ChangePassword/{uname}/{pass}")]
+        public string ChangePassword(string uname, string pass)
+        {
+            var data = _Customer.ChangePassword(uname, pass);
+            return data;
+        }
+
+        [HttpGet("UserConfirmPass/{username}/{password}")]
+        public async Task<int> UserConfirmPass(string username, string password)
+        {
+            var data = _Customer.UserConfirmPassword(username, password);
+            return data;
+        }
+
+
+        [HttpPut("UpdateUser")]
+        public string UpdateUser(User_Data vm)
+        {
+            var result = _Customer.UpdateUser(vm);
+            return result;
+        }
+
     }
 }

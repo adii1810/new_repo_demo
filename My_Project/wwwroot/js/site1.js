@@ -26,7 +26,7 @@ showInPopup = (url, title) => {
         }
     })
 }
-$(".close").click(()=>{
+$(".close").click(() => {
     $('#form-modal').hide();
 })
 
@@ -125,7 +125,6 @@ $(document).ready(() => {
 const changeStatus = (data) => {
     var Status;
     if ($("#status_" + data).html() == "Active") {
-        alert("true");
         Status = false;
     }
     else
@@ -293,7 +292,7 @@ function buildTable(str) {
 
 /*======================================================Pagination=========================================================================================================*/
 
-$(document).ready(()=>{
+$(document).ready(() => {
     $("#tab2").addClass("active")
     $("#tab1").removeClass("active")
     $("#tab3").removeClass("active")
@@ -317,7 +316,7 @@ $(document).ready(()=>{
         success: (response) => {
             console.log(response);
             for (var i = 0; i < response.length; i++) {
-                $('#IndexRestaurant').append(` <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.${i+1}1s">
+                $('#IndexRestaurant').append(` <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.${i + 1}1s">
                         <div class="team-item text-center rounded overflow-hidden">
                             <div class="rounded-circle overflow-hidden m-4">
                                 <img class="img-fluid" src="${response[i].profileImage}" alt="" />
@@ -331,8 +330,6 @@ $(document).ready(()=>{
         }
     })
     $("#tab1").click(() => {
-
-        alert("click");
         $("#tab1").addClass("active")
         $("#tab2").removeClass("active")
         $("#tab3").removeClass("active")
@@ -353,52 +350,49 @@ $(document).ready(()=>{
     })
 
     $("#tab2").click(() => {
-            $("#tab2").addClass("active")
-            $("#tab1").removeClass("active")
-            $("#tab3").removeClass("active")
-            $("#tab-2").addClass("active")
-            $("#tab-1").removeClass("active")
-            $("#tab-3").removeClass("active")
-            $.ajax({
-                url: location3 + "ShowProduct",
-                type: "Get",
-                data: { Tab: "tab2" },
-                success: (response) => {
-                    state.querySet = response;
-                    buildTable("tab-2")
-                    console.log(response)
-                }
-            })
+        $("#tab2").addClass("active")
+        $("#tab1").removeClass("active")
+        $("#tab3").removeClass("active")
+        $("#tab-2").addClass("active")
+        $("#tab-1").removeClass("active")
+        $("#tab-3").removeClass("active")
+        $.ajax({
+            url: location3 + "ShowProduct",
+            type: "Get",
+            data: { Tab: "tab2" },
+            success: (response) => {
+                state.querySet = response;
+                buildTable("tab-2")
+                console.log(response)
+            }
+        })
     })
 
 
     $("#tab3").click(() => {
-        
-            $("#tab3").addClass("active")
-            $("#tab1").removeClass("active")
-            $("#tab2").removeClass("active")
-            $("#tab-3").addClass("active")
-            $("#tab-1").removeClass("active")
-            $("#tab-2").removeClass("active")
-            $.ajax({
-                url: location3 + "ShowProduct",
-                type: "Get",
-                data: { Tab: "tab3" },
-                success: (response) => {
-                    state.querySet = response;
-                    buildTable("tab-3")
-                    console.log(response)
-                }
-            })
+
+        $("#tab3").addClass("active")
+        $("#tab1").removeClass("active")
+        $("#tab2").removeClass("active")
+        $("#tab-3").addClass("active")
+        $("#tab-1").removeClass("active")
+        $("#tab-2").removeClass("active")
+        $.ajax({
+            url: location3 + "ShowProduct",
+            type: "Get",
+            data: { Tab: "tab3" },
+            success: (response) => {
+                state.querySet = response;
+                buildTable("tab-3")
+                console.log(response)
+            }
+        })
     })
 
 })
 
-function getProductId(id) {
-    //alert(id);
-}
+
 const AddProduct = (id) => {
-    alert(id)
     $("#btn_" + id).remove();
 
     //Add product to cart
@@ -415,7 +409,10 @@ const AddProduct = (id) => {
                 showInPopup(location3 + "CustomerLogin", 'Login');
             }
             else {
-                alert("Product from another Restaurant is in your cart please remove that first");
+                toastMixin.fire({
+                title: "Products from another Restaurant is there in your cart please remove them first",
+                icon: "error"
+            });
                 $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="AddProduct(${id})" id="btn_${id}">Add</button>`);
             }
         }
@@ -434,8 +431,8 @@ const minus = (id, price) => {
     if (data > 1) {
         data--;
         $(`#quantity__input_${id}`).val(data);
-        $(`#total_${id}`).text(data * price);
-        $('#total').text(total - price);
+        $(`#total_${id}`).html(` <i class="fa-solid fa-indian-rupee-sign"> ${data * price} </i>`);
+        $('#total').html(`<i class="fa-solid fa-indian-rupee-sign"> ${total - price}</i>`);
 
     }
     $.ajax({
@@ -465,8 +462,8 @@ const plus = (id, price) => {
                 alert("something went wrong");
             }
             else {
-                $(`#total_${id}`).text(data * price);
-                $('#total').text(total + price);
+                $(`#total_${id}`).html(`<i class="fa-solid fa-indian-rupee-sign"> ${data * price}</i>`);
+                $('#total').html(`<i class="fa-solid fa-indian-rupee-sign"> ${total + price}</i>`);
             }
         }
     })
@@ -475,12 +472,7 @@ const plus = (id, price) => {
 const funcCheckout = (id) => {
     showInPopup(location3 + 'Cart', 'Cart');
 }
-    //$('button').click(function (event) {
-    //    console.log(event)
-    //    alert(event.target.id);
-    //});
 
-//<button class= 'btn btn-warning btn-sm' > <i class='bi bi-dash'></i></button ><input type='text'  maxlength='1' size='1' /><button class='btn btn-warning btn-sm'><i class='bi bi-plus'></i></button>");
 
 $("#Name").autocomplete({
 
@@ -514,7 +506,7 @@ const deleteProduct1 = (id) => {
         data: { ProdId: id },
         success: (response) => {
             if (response == "true") {
-                showInPopup(location3+"Cart", 'Cart')
+                showInPopup(location3 + "Cart", 'Cart');
             }
             else {
                 alert("something went wrong");
@@ -544,13 +536,105 @@ $('#SearchRes').click(() => {
 })
 
 
+
+/*=================================Rating========================================*/
+function select(smiley, rate, id) {
+    if (smiley.classList.contains("active")) {
+        smiley.classList.remove("active");
+        return;
+    }
+    const active = document.querySelector(".smiley.active");
+    if (active) {
+        active.classList.remove("active");
+    }
+    smiley.classList.add("active");
+
+    $.ajax({
+        url: location3 + "Rating",
+        type: "Post",
+        data: {
+            ProdId: id, Rate: rate
+        },
+        success: (response) => {
+            if (response == "RatingAdded") {
+                toastMixin.fire({
+                    animation: true,
+                    title: "Successfully Rated"
+                });
+            }
+            else if (response == "RatingUpdated") {
+                toastMixin.fire({
+                    animation: true,
+                    title: "Successfully Updated Rating"
+                });
+            }
+            else
+                alert("failure");
+        }
+    })
+
+}
+
+var toastMixin = Swal.mixin({
+    toast: true,
+    icon: "success",
+    title: "General Title",
+    animation: false,
+    position: "top-right",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+    }
+});
+
+//document.querySelector(".first").addEventListener("click", function () {
+//    Swal.fire({
+//        toast: true,
+//        icon: "success",
+//        title: "Posted successfully",
+//        animation: false,
+//        position: "bottom",
+//        showConfirmButton: false,
+//        timer: 3000,
+//        timerProgressBar: true,
+//        didOpen: (toast) => {
+//            toast.addEventListener("mouseenter", Swal.stopTimer);
+//            toast.addEventListener("mouseleave", Swal.resumeTimer);
+//        }
+//    });
+//});
+
+//document.querySelector(".second").addEventListener("click", function () {
+//    toastMixin.fire({
+//        animation: true,
+//        title: "Signed in Successfully"
+//    });
+//});
+
+//document.querySelector(".third").addEventListener("click", function () {
+//    toastMixin.fire({
+//        title: "Wrong Password",
+//        icon: "error"
+//    });
+//});
+
+/*=================================Rating========================================*/
+
+
+
+
+
+
 /* Script for Categories page*/
 /*=============================================================================================================================================*/
 
 
-   
-        
-   
+
+
+
 
 
 

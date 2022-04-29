@@ -22,6 +22,12 @@ namespace Food_Delivery_Api.Repository
         public IEnumerable<Restaurant_Detail> ShowRestaurant();
         public IEnumerable<string> MyRestaurant(string pre);
         public IEnumerable<ProductforCustomerViewModel> ShowRestaurantProduct(string resName);
+        public int ViewRating(int userId, int ProdId);
+        public string AddRating(int userId, int ProdId,int rate);
+        public User_Data GetUser(int userId);
+        public string UpdateUser(User_Data vm);
+        public int UserConfirmPassword(string username, string password);
+        public string ChangePassword(string username, string password);
 
     }
 }

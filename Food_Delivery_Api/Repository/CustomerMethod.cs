@@ -33,7 +33,7 @@ namespace Food_Delivery_Api.Repository
         {
             List<Product> data = null;
             List<ProductforCustomerViewModel> lvm = new List<ProductforCustomerViewModel>();
-            if (tab == "tab1" )
+            if (tab == "tab1")
             {
                 data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 1 && x.Product_Status == true).ToList();
             }
@@ -187,7 +187,7 @@ namespace Food_Delivery_Api.Repository
         public IEnumerable<ShowOrderViewModel> ShowOrder(int userId)
         {
             List<ShowOrderViewModel> lvm = new List<ShowOrderViewModel>();
-            var data = _context.Order.Where(x=>x.User_DataId == userId).OrderByDescending(x=>x.Order_Date).ToList();
+            var data = _context.Order.Where(x => x.User_DataId == userId).OrderByDescending(x => x.Order_Date).ToList();
             foreach (var item in data)
             {
                 ShowOrderViewModel vm = new ShowOrderViewModel();
@@ -201,7 +201,7 @@ namespace Food_Delivery_Api.Repository
             return lvm;
         }
 
-        public IEnumerable<CartProductViewModel> ShowOrderDetail(int userId,int ordId)
+        public IEnumerable<CartProductViewModel> ShowOrderDetail(int userId, int ordId)
         {
             var orderData = _context.Order.Where(x => x.User_DataId == userId && x.Order_Id == ordId).FirstOrDefault();
             List<CartProductViewModel> lvm = new List<CartProductViewModel>();
@@ -210,7 +210,7 @@ namespace Food_Delivery_Api.Repository
             {
                 CartProductViewModel cvm = new CartProductViewModel();
                 cvm.Order_Date = orderData.Order_Date;
-               
+
                 var productDetails = _context.Product.Where(x => x.Product_Id == item.ProductId).FirstOrDefault();
                 var ImgLink = _context.ProductImages.Where(x => x.ProductId == productDetails.Product_Id).Select(x => x.ImgLink).FirstOrDefault();
                 cvm.ProductId = item.ProductId;
@@ -263,6 +263,61 @@ namespace Food_Delivery_Api.Repository
 
             var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Name.Contains(pre)).Select(x => x.Restaurant_Detail_Name).ToList();
             return data;
+        }
+        public int ViewRating(int userId, int ProdId)
+        {
+            var data = _context.User_Rating.Where(x => x.User_DataId == userId && x.ProductId == ProdId).Select(x => x.User_Rating_Star).FirstOrDefault();
+            return data;
+        }
+        public string AddRating(int userId, int ProdId, int rate)
+        {
+            var data = _context.User_Rating.Where(x => x.User_DataId == userId && x.ProductId == ProdId).FirstOrDefault();
+            if (data == null)
+            {
+                User_Rating RatingData = new User_Rating();
+                RatingData.ProductId = ProdId;
+                RatingData.User_DataId = userId;
+                RatingData.User_Rating_Star = rate;
+                _context.User_Rating.Add(RatingData);
+                _context.SaveChanges();
+                return "RatingAdded";
+            }
+            else
+            {
+                data.User_Rating_Star = rate;
+                _context.User_Rating.Update(data);
+                _context.SaveChanges();
+                return "RatingUpdated";
+            }
+
+        }
+        public User_Data GetUser(int userId)
+        {
+            var data = _context.User_Data.Where(x => x.User_Id == userId).FirstOrDefault();
+            return data;
+        }
+        public string UpdateUser(User_Data vm)
+        {
+            if(vm != null)
+            {
+                _context.User_Data.Update(vm);
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
+        }
+        public int UserConfirmPassword(string username, string password)
+        {
+            var data = _context.User_Data.Where(x => x.User_UserName == username && x.User_Password == password).Count();
+            return data;
+        }
+        public string ChangePassword(string username, string password)
+        {
+            var data = _context.User_Data.Where(x => x.User_UserName == username).FirstOrDefault();
+            data.User_Password = password;
+            _context.User_Data.Update(data);
+            _context.SaveChanges();
+            return "true";
         }
     }
 }

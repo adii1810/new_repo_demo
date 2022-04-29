@@ -64,6 +64,33 @@
         -moz-transform: translate(0);
         transform: translate(0);
     }
+    .feedback {
+        position: absolute;
+        bottom: -70px;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        background: #2ecc71;
+        padding: 10px 0;
+        font-size: 12px;
+        display: none;
+        opacity: 0;
+    }
+
+        .feedback:before {
+            bottom: 100%;
+            left: 50%;
+            border: solid transparent;
+            content: "";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-color: rgba(46, 204, 113, 0);
+            border-bottom-color: #2ecc71;
+            border-width: 10px;
+            margin-left: -10px;
+        }
 </style>
 
 <div class="global-container">
@@ -72,7 +99,7 @@
             <h3 class="card-title text-center">Log in to Foodz</h3>
             <div class="card-text">
                 <!--
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">Incorrect username or password.</div> -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">Incorrect username or password.</div> -->
                 <form method="post">
                     <!-- to error: add class "has-danger" -->
                     <div class="form-group">
@@ -91,6 +118,10 @@
                         Don't have an account? <a onclick="showInPopup('@Url.Action("CustomerReg","Client",null,Context.Request.Scheme)','Customer Registration')" class="text-primary">Create One</a>
                     </div>
                 </form>
+                <div class="feedback">
+                    Please wait <br />
+                    while redirecting...
+                </div>
             </div>
         </div>
     </div>
@@ -105,6 +136,7 @@
 
     $('#btnLogin').click(() => {
         var formData = $('form').serializeArray();
+        $(".feedback").show().animate({ opacity: "1", bottom: "-80px" }, 400);
         event.preventDefault();
         $.ajax({
             url:location3 + "CustomerLogin",
@@ -112,13 +144,13 @@
             data: formData,
             success: function (response) {
                 console.log("response");
-                if (response != "")
-                {
-                    alert("Success");
+                if (response != "") {
                     window.location.href = location3 + "CustomerIndex";
                 }
-               else
-                   showInPopup('@Url.Action("CustomerLogin","Client",null,Context.Request.Scheme)','Customer Login')
+                else {
+                    $(".feedback").hide();
+                    showInPopup('@Url.Action("CustomerLogin","Client",null,Context.Request.Scheme)', 'Customer Login')
+                }
             },
              failure: function (response) {
                 console.log("failure");
