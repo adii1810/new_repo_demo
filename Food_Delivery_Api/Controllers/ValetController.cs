@@ -102,5 +102,17 @@ namespace Food_Delivery_Api.Controllers
             var data = _valet.ValetConfirmPassword(username, password);
             return data;
         }
+        [HttpGet("GetValet/{ValId}")]
+        public Valet GetUser(int ValId)
+        {
+            var result = _valet.GetValet(ValId);
+            return result;
+        }
+        [HttpPut("UpdateValet")]
+        public string UpdateValet(Valet vm)
+        {
+            var result = _valet.UpdateValet(vm);
+            return result;
+        }
     }
 }

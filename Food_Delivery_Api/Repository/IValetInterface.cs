@@ -18,6 +18,9 @@ namespace Food_Delivery_Api.Repository
         public string ChangeStatus(int OrdId, int status);
         public int ValetConfirmPassword(string username, string password);
         public string ChangePassword(string username, string password);
+        public Valet GetValet(int ValId);
+        public string UpdateValet(Valet vm);
+
 
     }
 }

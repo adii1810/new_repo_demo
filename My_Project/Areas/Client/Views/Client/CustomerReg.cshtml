@@ -112,7 +112,7 @@
                             <i class="fa-solid fa-phone"></i>
                         </div>
                     </div>
-                    <input asp-for="User_PhoneNo" tabindex="46" class="form-control" placeholder="Enter Contact No"  minlength="10" maxlength="10" required/>
+                    <input asp-for="User_PhoneNo" tabindex="46" class="form-control" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" placeholder="Enter Contact No"  minlength="10" maxlength="10" required/>
                     <span asp-validation-for="User_PhoneNo" class="text-danger" id="errorPhoneNo"></span>
                 </div>
             </div>
@@ -144,9 +144,6 @@
     </div>
     <input type="submit" value="Register" class="btn btn-success btn-block" id="btnsubmit" />
 </form>
-<script>
-
-</script>
 
 
 

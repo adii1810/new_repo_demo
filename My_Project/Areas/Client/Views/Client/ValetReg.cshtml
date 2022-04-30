@@ -114,7 +114,7 @@
                             <i class="fa-solid fa-phone"></i>
                         </div>
                     </div>
-                    <input asp-for="Valet_PhoneNo" tabindex="36" class="form-control" placeholder="Enter Contact No" minlength="10" maxlength="10"  required />
+                    <input asp-for="Valet_PhoneNo" tabindex="36" class="form-control" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" placeholder="Enter Contact No" minlength="10" maxlength="10"  required />
                     <span asp-validation-for="Valet_PhoneNo" class="text-danger"></span>
                 </div>
             </div>

@@ -38,12 +38,12 @@
     <!-- navbar-->
     <header class="header">
         <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
-            <a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i class="fas fa-align-left"></i></a><a href="index.html" class="navbar-brand font-weight-bold text-uppercase text-base">@HttpContextAccessor.HttpContext.Session.GetString("ValetName").ToString() Dashboard</a>
+            <a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i class="fas fa-align-left"></i></a><a class="navbar-brand font-weight-bold text-uppercase text-base">@HttpContextAccessor.HttpContext.Session.GetString("ValetName").ToString() Dashboard</a>
             <ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
 
 
                 <li class="nav-item dropdown ml-auto">
-                    <a id="userInfo" asp-area="Restaurant" asp-controller="Restaurant" asp-action="EditRestaurant" asp-route-id="@HttpContextAccessor.HttpContext.Session.GetString("ValetId").ToString()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><img src="~/images/avatar-6.jpg" alt="Jason Doe" style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow"></a>
+                    <a id="userInfo" asp-area="Valet" asp-controller="Valet" asp-action="UpdateValet" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><img src="~/images/avatar-6.jpg" alt="Jason Doe" style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow"></a>
                     <div aria-labelledby="userInfo" class="dropdown-menu">
                         <a href="#" class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">Mark Stephen</strong><small>Web Developer</small></a>
                         <div class="dropdown-divider"></div><a href="#" class="dropdown-item">Settings</a><a href="#" class="dropdown-item">Activity log </a>

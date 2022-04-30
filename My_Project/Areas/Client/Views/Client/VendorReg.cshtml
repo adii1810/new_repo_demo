@@ -5,6 +5,8 @@
     Layout = null;
 }
 <head>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
 </head>
@@ -34,7 +36,7 @@
                             <i class="fa-solid fa-key"></i>
                         </div>
                     </div>
-                    <input asp-for="Restaurant_Detail_Password" tabindex="13" class="form-control" placeholder="Enter Password" id="pass1" required/>
+                    <input type="password" asp-for="Restaurant_Detail_Password" tabindex="13" class="form-control" placeholder="Enter Password" id="pass1" required/>
                     <span asp-validation-for="Restaurant_Detail_Password" class="text-danger" id="Error2"></span>
                 </div>
             </div>
@@ -84,7 +86,7 @@
                             <i class="fa-solid fa-user-plus"></i>
                         </div>
                     </div>
-                    <input asp-for="Restaurant_Detail_User_Name" tabindex="12" class="form-control" placeholder="Enter Username" required/>
+                    <input asp-for="Restaurant_Detail_User_Name" tabindex="12" class="form-control" placeholder="Enter Username" maxlength="20" required/>
                     <span asp-validation-for="Restaurant_Detail_User_Name" class="text-danger"></span>
                 </div>
             </div>
@@ -96,7 +98,7 @@
                             <i class="fa-solid fa-check-double"></i>
                         </div>
                     </div>
-                    <input type="password" class="form-control" tabindex="14" placeholder="Re-Enter Password" id="pass2" required/>
+                    <input type="password" class="form-control" tabindex="14" placeholder="Re-Enter Password" id="pass22" required/>
                     <span asp-validation-for="Restaurant_Detail_Password" class="text-danger" id="Error1"></span>
                 </div>
             </div>
@@ -108,13 +110,10 @@
                             <i class="fa-solid fa-phone"></i>
                         </div>
                     </div>
-                    <input asp-for="Restaurant_Detail_PhoneNo" tabindex="16" class="form-control" placeholder="Enter Contact No" minlength="10" maxlength="10"  required/>
+                    <input asp-for="Restaurant_Detail_PhoneNo" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" tabindex="16" class="form-control" placeholder="Enter Contact No" minlength="10" maxlength="10"  required/>
                     <span asp-validation-for="Restaurant_Detail_PhoneNo" class="text-danger"></span>
                 </div>
             </div>
-
-
-
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -151,15 +150,20 @@
    
 </form>
 
-
 <script>
-    $("#pass2").keyup(() => {
+
+    $(document).ready(function () {
+        console.log("ready");
+    });
+    $("#pass22").keyup(() => {
+
+        console.log('changed');
        
         var data = document.getElementById("pass1").value;
         var data2 = document.getElementById("pass2").value;
         console.log(data);
-        if (data == data2) {
-            $('#btnsubmit').removeAttr('disabled');
+        if (data != data2) {
+            $('#Error1').in("Password is not same");
         }
     })
 </script>

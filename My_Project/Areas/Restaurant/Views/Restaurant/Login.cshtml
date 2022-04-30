@@ -1,6 +1,7 @@
 ﻿
 @{
     Layout = null;
+    var data = ViewBag.status;
 }
 
 <!DOCTYPE html>
@@ -86,6 +87,12 @@
                 <span><i class="fa-solid fa-lock"></i></span>
                 <input type="text" placeholder="email" name="uname" required />
                 <input type="password" placeholder="password" name="pass" required />
+                
+                    @if (data != "")
+                    {
+                        <span style="font-size:12px; color:red" id="UserError2">@data</span>
+                    }
+                
                 <button type="submit">login</button>
             </form>
         </div>

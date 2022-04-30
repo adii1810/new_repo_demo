@@ -5,11 +5,7 @@
 }
 
 <style>
-    html,
-    body {
-        height: 100%;
-    }
-
+    
     .global-container {
         height: 100%;
         display: flex;
@@ -30,10 +26,6 @@
         font-weight: 300;
     }
 
-    .btn {
-        font-size: 14px;
-        margin-top: 20px;
-    }
 
     .login-form {
         width: 330px;
@@ -103,16 +95,19 @@
                 <form method="post">
                     <!-- to error: add class "has-danger" -->
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
+                        <label for="exampleInputEmail1">Username</label>
                         <input type="text" name="Uname" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>
-                        <a href="#" style="float:right;font-size:12px;">Forgot password?</a>
+                        @*<a href="#" style="float:right;font-size:12px;">Forgot password?</a>*@
                         <input type="password" name="Pass" class="form-control form-control-sm" id="exampleInputPassword1">
                     </div>
+                    <div>
+                        <span class="text-danger" id="errorlog"></span>
+                    </div>
                     <button class="btn btn-primary btn-block" id="btnLogin">Sign in</button>
-                    <button class="btn btn-dark btn-block text-white" id="btnclose">Close </button>
+                    <button type="button" class="btn btn-dark btn-block text-white" id="btnclose">Close </button>
 
                     <div class="sign-up">
                         Don't have an account? <a onclick="showInPopup('@Url.Action("CustomerReg","Client",null,Context.Request.Scheme)','Customer Registration')" class="text-primary">Create One</a>
@@ -128,10 +123,7 @@
 </div>
 <script>
     $("#btnclose").click(() => {
-        window.location = location3 + "Index";
         $("#form-modal").hide();
-
-
     })
 
     $('#btnLogin').click(() => {
@@ -149,7 +141,7 @@
                 }
                 else {
                     $(".feedback").hide();
-                    showInPopup('@Url.Action("CustomerLogin","Client",null,Context.Request.Scheme)', 'Customer Login')
+                    document.getElementById("errorlog").innerHTML = "Username or Password is incorrect ";
                 }
             },
              failure: function (response) {

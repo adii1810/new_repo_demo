@@ -29,6 +29,8 @@ namespace My_Project.Controllers
 
         public async Task<ActionResult> AdminLogin()
         {
+            ViewBag.status = "";
+
             return View();
         }
         public IActionResult Index()
@@ -81,7 +83,7 @@ namespace My_Project.Controllers
                                 var principal = new ClaimsPrincipal(identity);
 
                                 var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
+                                ViewBag.status = "";
                                 return LocalRedirect("~/Admin/Admin/ShowUser");
                             }
                             //HttpContext.Session.SetString("Admin", User);
@@ -90,7 +92,8 @@ namespace My_Project.Controllers
                     }
                 }
             }
-            return RedirectToAction("AdminLogin");
+            ViewBag.status = "Username or Password is incorrect";
+            return View();
         }
     }
 }

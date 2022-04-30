@@ -127,9 +127,32 @@ namespace My_Project.Areas.Valet.Controllers
                 return RedirectToAction("Index");
             }
             else
+            {
+                ViewBag.status = "";
                 return View();
+            }
         }
-        
+        public async Task<IActionResult> UpdateValet()
+        {
+            var valetId = HttpContext.Session.GetString("ValetId")?.ToString() ?? "";
+            if (valetId != "" && valetId != null)
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(ValetApiString);
+                HttpResponseMessage response = await client.GetAsync($"GetValet/{Convert.ToInt32(valetId)}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    ValetViewModel cvm = new ValetViewModel();
+                    cvm = JsonConvert.DeserializeObject<ValetViewModel>(result);
+                    return View(cvm);
+                }
+                return View();
+            }
+            else
+                return RedirectToAction("Login");
+        }
+
         public IActionResult Logout()
         {
             HttpContext.Session.SetString("ValetId", "");
@@ -156,7 +179,10 @@ namespace My_Project.Areas.Valet.Controllers
                     return RedirectToAction("Index");
                 }
                 else
+                {
+                    ViewBag.status = "Username or Password is incorrect";
                     return View();
+                }
 
             }
             return View();
@@ -217,6 +243,25 @@ namespace My_Project.Areas.Valet.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateValet(ValetViewModel cvm)
+        {
+            var userId = HttpContext.Session.GetString("ValetId")?.ToString() ?? "";
+
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(ValetApiString);
+            HttpResponseMessage response = await client.PutAsJsonAsync($"UpdateValet", cvm);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (result == "true")
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return RedirectToAction("UpdateValet");
         }
     }
 }

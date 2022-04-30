@@ -1,5 +1,7 @@
 ﻿
-
+@{ 
+    var data = ViewBag.status;
+}
 <head>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
@@ -157,7 +159,10 @@
             <input type="password" placeholder="Password" name="Password" required />
             <span><i class="fa fa-lock"></i></span>
         </div>
-
+        @if (data != "")
+        {
+            <span style="font-size:12px; color:red" id="UserError2">@data</span>
+        }
         <button type="submit" class="submit"><i class="fa fa-long-arrow-right"></i></button>
 
     </fieldset>

@@ -205,7 +205,10 @@ namespace My_Project.Areas.Restaurant.Controllers
             if (sess != "" && sess != null)
                 return RedirectToAction("Index");
             else
+            {
+                ViewBag.status = "";
                 return View();
+            }
         }
 
         public IActionResult ChangePassword()
@@ -320,9 +323,11 @@ namespace My_Project.Areas.Restaurant.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Login");
+                    ViewBag.status = "Username or Password is incorrect";
+                    return View();
                 }
             }
+            ViewBag.status = "Username or Password is incorrect";
             return View();
         }
 

@@ -272,9 +272,9 @@ function buildTable(str) {
     var myData = data.querySet
     $(`#${str} #product`).empty();
     for (var i = 0; i < myData.length; i++) {
-        $(`#${str} #product`).append(` <div class="col-lg-6" onclick="getProductId(${myData[i].product_Id})" >
+        $(`#${str} #product`).append(` <div class="col-lg-6">
                             <div class="d-flex align-items-center">
-                                <img class="flex-shrink-0 img-fluid rounded" src="${myData[i].imgLink}" style="max-width: 3.5rem;" >
+                                <img class="flex-shrink-0 img-fluid rounded" src="${myData[i].imgLink}" style="max-width: 3.5rem;" onclick="getProductId(${myData[i].product_Id})" >
                                 <div class="w-100 d-flex flex-column text-start ps-4">
                                     <h5 class="d-flex justify-content-between border-bottom pb-2">
                                         <span>${myData[i].product_Name}</span>
@@ -535,6 +535,16 @@ $('#SearchRes').click(() => {
     window.location = location3 + "ShowRestaurantProduct?resName=" + data;
 })
 
+function getProductId(id) {
+    $.ajax({
+        //url: location3 + "Rating",
+        type: "Get",
+        data: { prodId: id },
+        success: (response) => {
+            showInPopup(location3 + 'Rating?Prodid=' + id, 'Rating');
+        }
+    })
+}
 
 
 /*=================================Rating========================================*/

@@ -110,5 +110,21 @@ namespace Food_Delivery_Api.Repository
             return "true";
         }
 
+        public Valet GetValet(int ValId)
+        {
+            var data = _context.Valet.Where(x => x.Valet_Id == ValId).FirstOrDefault();
+            return data;
+        }
+        public string UpdateValet(Valet vm)
+        {
+            if (vm != null)
+            {
+                _context.Valet.Update(vm);
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
+        }
+
     }
 }

@@ -47,6 +47,11 @@
                 -moz-transform: translate(0);
                 transform: translate(0);
             }
+
+
+        .m-0{
+            margin-left: -95px !important;
+        }
     </style>
 </head>
 
@@ -64,7 +69,7 @@
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
-                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Foodz</h1>
+                    <h1 class="text-primary m-0" style="margin-left: -33px !important;"><i class="fa fa-utensils me-3"></i>Foodz</h1>
                     <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -72,10 +77,9 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a asp-area="Client" asp-controller="Client" asp-action="Index" class="nav-item nav-link">Home</a>
                         <a asp-area="Client" asp-controller="Client" asp-action="Categories" class="nav-item nav-link">Restaurants</a>
                         <a asp-area="Client" asp-controller="Client" asp-action="ShowOrders" class="nav-item nav-link">Order History</a>
-                        <a asp-area="Client" asp-controller="Client" asp-action="CustomerIndex" class="nav-item nav-link">Menu</a>
+                        <a asp-area="Client" asp-controller="Client" asp-action="CustomerIndex" class="nav-item nav-link">Food Menu</a>
                         <a href="#contactUs" class="nav-item nav-link">Contact</a>
                     </div>
                     <a><i class="fa-solid fa-cart-shopping fa-2x" style="color:orange" onclick="showInPopup('@Url.Action("Cart","Client",null,Context.Request.Scheme)','Cart')"></i></a>
@@ -86,8 +90,6 @@
 
                                 <a class="dropdown-item" onclick="showInPopup('@Url.Action("UpdateCustomer","Client",null,Context.Request.Scheme)','Update Profile')"><i class="fa-solid fa-file-pen" style="color:orange"></i> Update Profile</a>
                                 <a class="dropdown-item" onclick="showInPopup('@Url.Action("ChangePassword","Client",null,Context.Request.Scheme)','Change Password')"><i class="fa-solid fa-key" style="color:orange"></i> Change Password</a>
-
-                                <a class="dropdown-item" onclick="showInPopup('@Url.Action("CustomerReg","Client",null,Context.Request.Scheme)','Customer Registration')"></a>
                             </div>
                         </div>
 
@@ -159,7 +161,7 @@
                             Company
                         </h4>
                         <a class="btn btn-link" href="#ContactUs">Contact Us</a>
-                        <a class="btn btn-link" onclick="GotoIndex()">Menu</a>
+                        <a class="btn btn-link"  asp-area="Client" asp-controller="Client" asp-action="CustomerIndex">Menu</a>
 
                     </div>
                     <div class="col-lg-3 col-md-6">
