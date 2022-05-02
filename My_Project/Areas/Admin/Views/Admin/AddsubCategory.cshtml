@@ -1,0 +1,36 @@
+﻿@model My_Project.Areas.Admin.ViewModels.AddSubCategory
+
+@{
+    ViewData["Title"] = "AddsubCategory";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var data = ViewBag.categories;
+}
+<h4>AddSubCategory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddsubCategory" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="form-group">
+                    <select asp-for="MainId" asp-items="@data.Categories" class="form-control" id="Drop">
+                        <option selected value="-1">Select Type</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+               
+                <input asp-for="SubName" class="form-control" placeholder="Sub Category Name" required />
+                <span asp-validation-for="SubName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add SubCategory" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

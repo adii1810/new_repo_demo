@@ -25,8 +25,8 @@
                         </div>
                     </div>
                     <input asp-for="Restaurant_Detail_Name" tabindex="11" class="form-control" placeholder="Enter Restaurant Name" required />
-                    <span asp-validation-for="Restaurant_Detail_Name" class="text-danger"></span>
                 </div>
+                    <span asp-validation-for="Restaurant_Detail_Name" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -37,8 +37,8 @@
                         </div>
                     </div>
                     <input type="password" asp-for="Restaurant_Detail_Password" tabindex="13" class="form-control" placeholder="Enter Password" id="pass1" required/>
-                    <span asp-validation-for="Restaurant_Detail_Password" class="text-danger" id="Error2"></span>
                 </div>
+                    <span asp-validation-for="Restaurant_Detail_Password" class="text-danger" id="Error2"></span>
             </div>
 
             <div class="form-group">
@@ -49,8 +49,8 @@
                         </div>
                     </div>
                     <input type="email" asp-for="Restaurant_Detail_Email" tabindex="15" class="form-control" placeholder="Enter Email" required/>
-                    <span asp-validation-for="Restaurant_Detail_Email" class="text-danger"></span>
                 </div>
+                    <span asp-validation-for="Restaurant_Detail_Email" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -61,8 +61,8 @@
                         </div>
                     </div>
                     <input asp-for="Restaurant_Detail_Address" tabindex="17" class="form-control" placeholder="Enter Restaurant Address" required/>
-                    <span asp-validation-for="Restaurant_Detail_Address" class="text-danger"></span>
                 </div>
+                    <span asp-validation-for="Restaurant_Detail_Address" class="text-danger"></span>
                 </div>
 
             <div class="form-group">
@@ -73,8 +73,8 @@
                         </div>
                     </div>
                     <input asp-for="Restaurant_Detail_State" tabindex="19"class="form-control" placeholder="Enter State" required/>
-                    <span asp-validation-for="Restaurant_Detail_State" class="text-danger"></span>
                 </div>
+                    <span asp-validation-for="Restaurant_Detail_State" class="text-danger"></span>
             </div>
        </div>
         <div class="col-6">
@@ -87,8 +87,8 @@
                         </div>
                     </div>
                     <input asp-for="Restaurant_Detail_User_Name" tabindex="12" class="form-control" placeholder="Enter Username" maxlength="20" required/>
-                    <span asp-validation-for="Restaurant_Detail_User_Name" class="text-danger"></span>
                 </div>
+                    <span asp-validation-for="Restaurant_Detail_User_Name" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -98,9 +98,10 @@
                             <i class="fa-solid fa-check-double"></i>
                         </div>
                     </div>
-                    <input type="password" class="form-control" tabindex="14" placeholder="Re-Enter Password" id="pass22" required/>
-                    <span asp-validation-for="Restaurant_Detail_Password" class="text-danger" id="Error1"></span>
+                    <input type="password" class="form-control" tabindex="14" placeholder="Re-Enter Password" id="pass22" required />
+
                 </div>
+                <span asp-validation-for="Restaurant_Detail_Password" class="text-danger" id="Error12"></span>
             </div>
 
             <div class="form-group">
@@ -111,8 +112,8 @@
                         </div>
                     </div>
                     <input asp-for="Restaurant_Detail_PhoneNo" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" tabindex="16" class="form-control" placeholder="Enter Contact No" minlength="10" maxlength="10"  required/>
-                    <span asp-validation-for="Restaurant_Detail_PhoneNo" class="text-danger"></span>
                 </div>
+                    <span asp-validation-for="Restaurant_Detail_PhoneNo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="input-group">
@@ -122,8 +123,8 @@
                         </div>
                     </div>
                     <input asp-for="Restaurant_Detail_City" tabindex="18" class="form-control" placeholder="Enter City" required />
-                    <span asp-validation-for="Restaurant_Detail_City" class="text-danger"></span>
                 </div>
+                    <span asp-validation-for="Restaurant_Detail_City" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -134,36 +135,36 @@
                         </div>
                     </div>
                     <input asp-for="Restaurant_Detail_Zipcode" tabindex="20" class="form-control" placeholder="Enter Zipcode" required />
-                    <span asp-validation-for="Restaurant_Detail_Zipcode" class="text-danger"></span>
                 </div>
+                    <span asp-validation-for="Restaurant_Detail_Zipcode" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="input-group">
                     
                     <input type="file" asp-for="img" tabindex="21" class="form-control" required/>
-                    <span asp-validation-for="profileImage" class="text-danger"></span>
                 </div>
+                    <span asp-validation-for="profileImage" class="text-danger"></span>
             </div>
         </div>
     </div>
-    <input type="submit" value="Register" class="btn btn-success btn-block " id="btnsubmit" /> 
-   
+    <input type="submit" value="Register" class="btn btn-success btn-block" disabled id="btnsubmitVendor" /> 
 </form>
 
 <script>
-
-    $(document).ready(function () {
-        console.log("ready");
-    });
     $("#pass22").keyup(() => {
 
         console.log('changed');
        
         var data = document.getElementById("pass1").value;
-        var data2 = document.getElementById("pass2").value;
+        var data2 = document.getElementById("pass22").value;
         console.log(data);
+        console.log(data2);
         if (data != data2) {
-            $('#Error1').in("Password is not same");
+            $('#Error12').text("Password is not same");
+        }
+        else {
+            $('#Error12').text("");
+            $('#btnsubmitVendor').attr('disabled',false);
         }
     })
 </script>

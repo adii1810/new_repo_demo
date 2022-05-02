@@ -20,7 +20,7 @@ namespace Food_Delivery_Api.Repository
 
         public int AdminLogin(string user, string pass)
         {
-            var Data =  _context.User_Data.Where(x => x.User_UserName == user && x.User_Password == pass).Count();
+            var Data = _context.User_Data.Where(x => x.User_UserName == user && x.User_Password == pass).Count();
             return Data;
         }
 
@@ -31,15 +31,16 @@ namespace Food_Delivery_Api.Repository
                 Text = x.ToString(),
                 Value = ((int)x).ToString()
             }).ToList();
-           
+
             return data;
         }
 
         public IEnumerable<SubViewModel> AutocompleteSubCategory(int mainId)
         {
-            var data = _context.Sub_Categorie.Where(x => (int)x.Main_Category_Id == mainId).Select(x=> new { 
-            x.Sub_Category_Id,
-            x.Sub_Category_Name
+            var data = _context.Sub_Categorie.Where(x => (int)x.Main_Category_Id == mainId).Select(x => new
+            {
+                x.Sub_Category_Id,
+                x.Sub_Category_Name
             }).ToList();
             List<SubViewModel> l = new List<SubViewModel>();
             foreach (var item in data)
@@ -55,7 +56,7 @@ namespace Food_Delivery_Api.Repository
 
         public IEnumerable<string> MyRestaurant(string pre)
         {
-           
+
             var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Name.StartsWith(pre)).Select(x => x.Restaurant_Detail_Name).ToList();
             return data;
         }
@@ -78,7 +79,7 @@ namespace Food_Delivery_Api.Repository
                 vm.Quantity = item.Quantity;
                 var data1 = _context.Product.Where(x => x.Product_Id == item.ProductId).FirstOrDefault();
                 vm.Product_name = data1.Product_Name;
-                vm.Price = data1.Product_Price * item.Quantity ;
+                vm.Price = data1.Product_Price * item.Quantity;
 
                 ol.Add(vm);
             }
@@ -88,7 +89,7 @@ namespace Food_Delivery_Api.Repository
         public async Task<IEnumerable<OrderViewModel>> OrderPerUser(int UserId)
         {
             List<OrderViewModel> ol = new List<OrderViewModel>();
-            var data = await _context.Order.Where(x => x.User_DataId == UserId).OrderByDescending(x=>x.Order_Id).ToListAsync();
+            var data = await _context.Order.Where(x => x.User_DataId == UserId).OrderByDescending(x => x.Order_Id).ToListAsync();
 
             foreach (var item in data)
             {
@@ -111,9 +112,9 @@ namespace Food_Delivery_Api.Repository
         }
 
         public IEnumerable<ProductRatingViewModel> ShowProduct()
-        { 
+        {
             var data = _context.Product.ToList();
-            
+
             List<ProductRatingViewModel> l = new List<ProductRatingViewModel>();
 
             foreach (var item in data)
@@ -137,7 +138,7 @@ namespace Food_Delivery_Api.Repository
         }
         public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name)
         {
-            List<Product> data ;            
+            List<Product> data;
             if (mainId >= 0 && name.Equals("null"))
             {
                 data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
@@ -146,22 +147,22 @@ namespace Food_Delivery_Api.Repository
             {
                 data = _context.Product.Include("Restaurant_Detail").Where(x => x.Restaurant_Detail.Restaurant_Detail_Name == name).ToList();
             }
-            else if(mainId >= 0 && name != "null")
+            else if (mainId >= 0 && name != "null")
             {
                 data = _context.Product.Include("Restaurant_Detail").Include("Sub_Category").Where(x => x.Restaurant_Detail.Restaurant_Detail_Name == name && (int)x.Sub_Category.Main_Category_Id == mainId).ToList();
             }
             else
             {
-                data = _context.Product.ToList(); 
+                data = _context.Product.ToList();
             }
 
-            
+
             List<ProductRatingViewModel> l = new List<ProductRatingViewModel>();
             foreach (var item in data)
             {
                 double rate = 5;
                 int user = 0;
-                if ( (user = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count()) > 0)
+                if ((user = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count()) > 0)
                 {
                     rate = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Average(x => x.User_Rating_Star);
                 }
@@ -186,27 +187,27 @@ namespace Food_Delivery_Api.Repository
         public async Task<IEnumerable<User_Data>> ShowUser1(string name)
         {
             List<User_Data> data;
-            if(name == "null")
+            if (name == "null")
                 data = await _context.User_Data.OrderByDescending(x => x.User_Id).ToListAsync();
             else
-                data = await _context.User_Data.Where(x=>x.User_FirstName == name).OrderByDescending(x => x.User_Id).ToListAsync();
+                data = await _context.User_Data.Where(x => x.User_FirstName == name).OrderByDescending(x => x.User_Id).ToListAsync();
 
             return data;
         }
 
         public IEnumerable<Restaurant_Detail> ShowRestaurant()
         {
-            var data = _context.Restaurant_Detail.OrderByDescending(x=>x.Restaurant_Detail_Id).ToList();
+            var data = _context.Restaurant_Detail.OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
             return data;
         }
-        
+
         public IEnumerable<Restaurant_Detail> ShowRestaurant1(string name)
         {
             List<Restaurant_Detail> data;
             if (name == "null")
-                 data = _context.Restaurant_Detail.OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
+                data = _context.Restaurant_Detail.OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
             else
-                 data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Name == name).OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
+                data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Name == name).OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
             return data;
         }
         public string updateStatus(int Id, bool Status)
@@ -217,6 +218,23 @@ namespace Food_Delivery_Api.Repository
                 data.status_by_Admin = Status;
                 _context.SaveChanges();
                 return "true";
+            }
+            return "false";
+        }
+        public string AddSubCategory(SubCategoryViewModel vm)
+        {
+            if(vm != null)
+            {
+                Sub_Category sb = new Sub_Category();
+                sb.Main_Category_Id = (Main)vm.MainId;
+                sb.Sub_Category_Name = sb.Sub_Category_Name;
+
+                var result = _context.Sub_Categorie.Add(sb);
+                if(result != null)
+                {
+                    _context.SaveChanges();
+                    return "true";
+                }
             }
             return "false";
         }

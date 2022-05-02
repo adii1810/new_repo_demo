@@ -30,7 +30,7 @@ namespace Food_Delivery_Api.Controllers
             return data;
         }
 
-        [HttpGet("SubCategory")]
+        [HttpGet("SubCategory/{mainId}")]
         public IEnumerable<SubViewModel> SubCategory(int mainId)
         {
             var data = _admin.AutocompleteSubCategory(mainId);
@@ -133,7 +133,12 @@ namespace Food_Delivery_Api.Controllers
             return data;
         }
 
-        
+        [HttpPost("AddSubCategory")]
+        public string AddSubCategory(SubCategoryViewModel vm)
+        {
+            var data = _admin.AddSubCategory(vm);
+            return data;
+        }
         //POST api/<AdminApiController>
         [HttpPost]
         public void Post([FromBody] string value)

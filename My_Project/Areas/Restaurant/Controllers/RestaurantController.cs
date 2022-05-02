@@ -138,8 +138,6 @@ namespace My_Project.Areas.Restaurant.Controllers
                 client1.BaseAddress = new Uri(RestaurantApiString);
                 HttpResponseMessage httpResponse1 = await client1.GetAsync($"FoodType");
                 HttpResponseMessage httpResponse2 = await client1.GetAsync($"SubCategory");
-
-
                 if (httpResponse1.IsSuccessStatusCode && httpResponse2.IsSuccessStatusCode)
                 {
                     var result = httpResponse1.Content.ReadAsStringAsync().Result;
@@ -159,6 +157,21 @@ namespace My_Project.Areas.Restaurant.Controllers
             }
             else
                 return RedirectToAction("Login");
+        }
+        public async Task<IEnumerable<SubCategoyViewModel>> subCate(int MainId)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(AdminApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"SubCategory/{MainId}");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                List<SubCategoyViewModel> vm = new List<SubCategoyViewModel>();
+                vm = JsonConvert.DeserializeObject<List<SubCategoyViewModel>>(result);
+                return vm;
+                // ViewBag.category = vm;
+            }
+            return null;
         }
         public async Task<IActionResult> EditProduct(int id = 0)
         {

@@ -103,7 +103,7 @@
 
 
             <div class="form-group">
-                <select asp-for="Sub_Category" class="form-control" id="Drop2">
+                <select asp-for="Sub_Category" class="form-control" id="Drop3">
                     <option selected value="-1">Select Type</option>
                     @foreach (var item in sub)
                     {
@@ -114,23 +114,23 @@
        
        
         <div class="form-group">
-            <input asp-for="Product_Name" class="form-control" placeholder="Product Name" />
+            <input asp-for="Product_Name" class="form-control" placeholder="Product Name" required />
             <span asp-validation-for="Product_Name" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <input asp-for="Product_Price" class="form-control" placeholder="Product Price" />
+            <input asp-for="Product_Price" class="form-control" placeholder="Product Price" required />
             <span asp-validation-for="Product_Price" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <input asp-for="Description" class="form-control" placeholder="Description" />
+            <input asp-for="Description" class="form-control" placeholder="Description" required />
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
 
 
 
         <div class="form-group">
-            <input asp-for="images" class="form-control" multiple />
+            <input asp-for="images" class="form-control" multiple required/>
             <span asp-validation-for="images" class="text-danger"></span>
         </div>
 
@@ -146,3 +146,25 @@
     </form>
 
 </div>
+
+<script>
+    $("#Drop").change((response) => {
+        var data = $("#Drop").val();
+        alert(data);
+        $.ajax({
+            url: location2 + "subCate",
+            type: "Get",
+            data: { MainId: data },
+            success: (response) => {
+                if (response != null) {
+                    $("#Drop3").empty();
+                    for (var i = 0; i < response.length; i++) {
+                        $("#Drop3").append(`<option value="${response[i].sub_Category_Id}">${response[i].sub_Category_Name}</option>`)
+                    }
+                    
+                }
+                console.log(response);
+            }
+        })
+    })
+</script>

@@ -143,9 +143,47 @@ namespace My_Project.Areas.Admin.Controllers
             }
             return null;
         }
+        [HttpGet]
+        public async Task<ActionResult> AddsubCategory()
+        {
+            CategoryViewModel vm = new CategoryViewModel();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(AdminApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"Category");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                List<SelectListItem> enums = new List<SelectListItem>();
+                enums = JsonConvert.DeserializeObject<List<SelectListItem>>(result);
+                vm.Categories = enums;
+                ViewBag.categories = vm;
+            }
+            return View();
+        }
 
-        
-
+        [HttpPost]
+        public async Task<ActionResult> AddsubCategory(AddSubCategory avm)
+        {
+            CategoryViewModel vm = new CategoryViewModel();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(AdminApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"Category");
+            HttpResponseMessage httpResponse2 = await client.PostAsJsonAsync($"AddSubCategory",avm);
+            if (httpResponse.IsSuccessStatusCode && httpResponse2.IsSuccessStatusCode)
+            {
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                var result2 = httpResponse2.Content.ReadAsStringAsync().Result;
+                List<SelectListItem> enums = new List<SelectListItem>();
+                enums = JsonConvert.DeserializeObject<List<SelectListItem>>(result);
+                vm.Categories = enums;
+                ViewBag.categories = vm;
+                if(result2 == "true")
+                {
+                    return RedirectToAction("AddsubCategory");
+                }
+            }
+            return View();
+        }
         [HttpPost]
         public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1(int Drop, string Name = "")
         {

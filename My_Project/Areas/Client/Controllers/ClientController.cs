@@ -48,6 +48,7 @@ namespace My_Project.Controllers
 
         public IActionResult Index()
         {
+           
             return View();
         }
 
@@ -65,6 +66,7 @@ namespace My_Project.Controllers
         }
         public IActionResult CustomerLogin()
         {
+            ViewBag.IsRegistered = "";
             return View();
         }
         public async Task<IActionResult> CustomerIndex()
@@ -210,6 +212,7 @@ namespace My_Project.Controllers
                 var result = response.Content.ReadAsStringAsync().Result;
                 List<ShowProductViewModel> vm = new List<ShowProductViewModel>();
                 vm = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result);
+                ViewBag.ResName = ResName;
                 return View(vm);
             }
             return View();
@@ -328,8 +331,14 @@ namespace My_Project.Controllers
             HttpResponseMessage response = await client.PostAsJsonAsync("AddCustomer", cvm);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (result != "false")
+                {
+                    HttpContext.Session.SetString("IsRegistered", "true");
+                    return RedirectToAction("Index");
+                }
             }
+            HttpContext.Session.SetString("IsRegistered", "false");
             return RedirectToAction("Index");
         }
         [HttpPost]
@@ -495,7 +504,7 @@ namespace My_Project.Controllers
                     int randNum = r.Next(1000000);
                     string sixDigitNumber = randNum.ToString("D6");
                     var MsgBody = sixDigitNumber;
-                    var message = new Message(email, "Security Code For Changing Password", MsgBody);
+                    var message = new Message(email, "Security Code For Your Change Password Request", MsgBody);
                     _emailSender.SendEmail(message);
                     return Json(sixDigitNumber);
 

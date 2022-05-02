@@ -20,9 +20,13 @@ namespace Food_Delivery_Api.Repository
 
         public string AddCustomer(User_Data ud)
         {
-            _context.User_Data.Add(ud);
-            _context.SaveChanges();
-            return "true";
+           var result =  _context.User_Data.Add(ud);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
         public async Task<User_Data> LoginCustomer(string uname, string pass)
         {
@@ -252,6 +256,7 @@ namespace Food_Delivery_Api.Repository
                 p.Product_Price = item.Product_Price;
                 p.Product_Status = item.Product_Status;
                 var link = _context.ProductImages.Where(x => x.ProductId == item.Product_Id).Take(1).Select(x => x.ImgLink).FirstOrDefault();
+                p.type = (int)item.FoodType;
                 p.ImgLink = link;
                 p.Rate = rate;
                 lvm.Add(p);

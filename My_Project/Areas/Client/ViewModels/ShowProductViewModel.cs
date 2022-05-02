@@ -14,6 +14,7 @@ namespace My_Project.Areas.Client.ViewModels
         public int Sub_CategoryId { get; set; }
         public string Description { get; set; }
         public bool Product_Status { get; set; }
+        public int type { get; set; }
         public string ImgLink { get; set; }
         public double Rate { get; set; }
     }
