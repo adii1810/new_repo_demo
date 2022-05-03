@@ -324,6 +324,10 @@ namespace Food_Delivery_Api.Repository
             }
             return ol;
         }
-    }
-    
+        public int verifyAccount(string Username, string Email)
+        {
+            var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_User_Name == Username && x.Restaurant_Detail_Email == Email).Count();
+            return data;
+        }
+    }    
 }

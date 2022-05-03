@@ -135,7 +135,19 @@ namespace Food_Delivery_Api.Controllers
             var data = _Customer.UserConfirmPassword(username, password);
             return data;
         }
+        [HttpGet("ResetPassword/{Username}/{Email}")]
+        public async Task<int> ResetPassword(string Username, string Email)
+        {
+            var data = _Customer.verifyAccount(Username, Email);
+            return data;
+        }
 
+        [HttpPut("ChangePassword/{Username}/{Email}")]
+        public async Task<string> ChangePassword(string Username, string Email,[FromBody]string Pass)
+        {
+            var data = _Customer.ChangePassword(Username, Pass);
+            return data;
+        }
 
         [HttpPut("UpdateUser")]
         public string UpdateUser(User_Data vm)

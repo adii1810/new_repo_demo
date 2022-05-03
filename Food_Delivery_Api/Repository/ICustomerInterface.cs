@@ -28,6 +28,7 @@ namespace Food_Delivery_Api.Repository
         public string UpdateUser(User_Data vm);
         public int UserConfirmPassword(string username, string password);
         public string ChangePassword(string username, string password);
+        public int verifyAccount(string Username, string Email);
 
     }
 }

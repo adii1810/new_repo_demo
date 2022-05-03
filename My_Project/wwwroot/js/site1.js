@@ -406,7 +406,7 @@ const AddProduct = (id) => {
             }
             else if (response == "Login") {
                 $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="AddProduct(${id})" id="btn_${id}">Add</button>`);
-                showInPopup(location3 + "CustomerLogin", 'Login');
+                showInPopup(location3 + "CustomerLogin", '');
             }
             else {
                 toastMixin.fire({
@@ -422,6 +422,7 @@ const AddProduct = (id) => {
 $('#form-modal').ready(() => {
     $('#close').click(() => {
         $('#form-modal').hide();
+        $('#Checkout').show();
     })
 })
 

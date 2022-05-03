@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using My_Project.Areas.Client.ViewModels;
 using My_Project.Areas.Valet.ViewModels;
+using My_Project.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace My_Project.Controllers
     [Area("Client")]
     public class ClientController : Controller
     {
-
+        EncryptionDecryption END = new EncryptionDecryption();
         //===============firebase===============
         private static string apiKey = "AIzaSyBXtJAwAegfHApNAxk0zv4a206QLgZV7_U";
         private static string Bucket = "democoreproject.appspot.com";
@@ -48,7 +49,6 @@ namespace My_Project.Controllers
 
         public IActionResult Index()
         {
-           
             return View();
         }
 
@@ -71,7 +71,7 @@ namespace My_Project.Controllers
         }
         public async Task<IActionResult> CustomerIndex()
         {
-            var userId = HttpContext.Session.GetString("UserId")?.ToString()??"";
+            var userId = HttpContext.Session.GetString("UserId")?.ToString() ?? "";
             if (userId != "")
                 return View();
             return RedirectToAction("Index");
@@ -97,7 +97,6 @@ namespace My_Project.Controllers
 
         public async Task<IActionResult> Categories()
         {
-
             return View();
         }
         //For showing cart data
@@ -141,16 +140,22 @@ namespace My_Project.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.SetString("UserId","");
-            HttpContext.Session.SetString("UserName","");
+            HttpContext.Session.SetString("UserId", "");
+            HttpContext.Session.SetString("UserName", "");
             return RedirectToAction("Index");
         }
         //Adding products to cart
         public async Task<JsonResult> AddProductCart(int prodId)
         {
-            var userId = HttpContext.Session.GetString("UserId")?.ToString()??"";
+            var userId = HttpContext.Session.GetString("UserId")?.ToString() ?? "";
             if (userId != "")
             {
                 CartProductViewModel vm = new CartProductViewModel();
@@ -221,7 +226,7 @@ namespace My_Project.Controllers
         public async Task<ActionResult> Rating(int ProdId)
         {
             var userId = HttpContext.Session.GetString("UserId")?.ToString() ?? "";
-           
+
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
             HttpResponseMessage response = await client.GetAsync($"ViewRating/{Convert.ToInt32(userId)}/{ProdId}");
@@ -253,17 +258,19 @@ namespace My_Project.Controllers
         public async Task<ActionResult> ChangePassword()
         {
             var userId = HttpContext.Session.GetString("UserId")?.ToString() ?? "";
-            if(userId != "")
+            if (userId != "")
             {
                 return View();
             }
             return RedirectToAction("Index");
-          
-           
+
+
         }
         [HttpPost]
         public async Task<IActionResult> VendorReg(RestaurantDetailViewModel vm)
         {
+            vm.Restaurant_Detail_Password = END.Encryption(vm.Restaurant_Detail_Password);
+
             var file = vm.img;
             FileStream fs = null;
             string foldername = "RestaurantProfileImage";
@@ -326,6 +333,7 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<ActionResult> CustomerReg(CustomerViewModel cvm)
         {
+            cvm.User_Password = END.Encryption(cvm.User_Password);
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
             HttpResponseMessage response = await client.PostAsJsonAsync("AddCustomer", cvm);
@@ -344,6 +352,8 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<JsonResult> CustomerLogin(string Uname, string Pass)
         {
+            Pass = END.Encryption(Pass);
+
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
             HttpResponseMessage response = await client.GetAsync($"LoginCustomer/{Uname}/{Pass}");
@@ -403,8 +413,6 @@ namespace My_Project.Controllers
             }
             return Json("false");
         }
-
-
         [HttpPost]
         public async Task<JsonResult> CheckOut()
         {
@@ -426,13 +434,15 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> ValetReg(ValetViewModel vm)
         {
+            vm.Valet_Password = END.Encryption(vm.Valet_Password);
+
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(ValetApiString);
             HttpResponseMessage response = await client.PostAsJsonAsync("ValetReg", vm);
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                if(result != "")
+                if (result != "")
                 {
                     return LocalRedirect("~/Valet/Valet/Login");
                 }
@@ -453,7 +463,7 @@ namespace My_Project.Controllers
             return null;
         }
         [HttpPost]
-        public async Task<JsonResult> Rating(int ProdId,int rate)
+        public async Task<JsonResult> Rating(int ProdId, int rate)
         {
             var userId = HttpContext.Session.GetString("UserId")?.ToString() ?? "";
 
@@ -476,11 +486,11 @@ namespace My_Project.Controllers
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
-            HttpResponseMessage response = await client.PutAsJsonAsync($"UpdateUser",cvm);
+            HttpResponseMessage response = await client.PutAsJsonAsync($"UpdateUser", cvm);
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                if(result == "true")
+                if (result == "true")
                 {
                     return RedirectToAction("CustomerIndex");
                 }
@@ -490,6 +500,7 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<JsonResult> code(string prepass)
         {
+            prepass = END.Encryption(prepass);
             var userName = HttpContext.Session.GetString("UserName").ToString();
             var email = HttpContext.Session.GetString("UserEmail").ToString();
             HttpClient client = new HttpClient();
@@ -507,7 +518,6 @@ namespace My_Project.Controllers
                     var message = new Message(email, "Security Code For Your Change Password Request", MsgBody);
                     _emailSender.SendEmail(message);
                     return Json(sixDigitNumber);
-
                 }
             }
             return Json("false");
@@ -516,6 +526,7 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(string pass)
         {
+            pass = END.Encryption(pass);
             var userName = HttpContext.Session.GetString("UserName").ToString();
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
@@ -525,6 +536,40 @@ namespace My_Project.Controllers
                 return RedirectToAction("CustomerIndex");
             }
             return RedirectToAction("CustomerIndex");
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ResetPassword(string Username, string Email)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(CustomerApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"ResetPassword/{Username}/{Email}");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                if (result != "0")
+                {
+                    Random r = new Random();
+                    int randNum = r.Next(1000000);
+                    string sixDigitNumber = randNum.ToString("D6");
+                    var MsgBody = sixDigitNumber + " this is ypur new password please change it once you login with this.";
+                    var message = new Message(Email, "Forget Password Request", MsgBody);
+                    _emailSender.SendEmail(message);
+
+                    sixDigitNumber = END.Encryption(sixDigitNumber);
+
+                    HttpClient client1 = new HttpClient();
+                    client1.BaseAddress = new Uri(CustomerApiString);
+                    HttpResponseMessage httpResponse1 = await client.PutAsJsonAsync($"ResetPassword/{Username}/{Email}", sixDigitNumber);
+                    if (httpResponse1.IsSuccessStatusCode)
+                    {
+                        var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
+                        return Json(result1);
+                    }
+                }
+                return Json("wrong");
+            }
+            return Json("false");
         }
     }
 }

@@ -1675,3 +1675,5 @@ E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Client\Views\Client\ChangePassword.cshtml.g.cs
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Valet\Views\Valet\UpdateValet.cshtml.g.cs
 E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Admin\Views\Admin\AddsubCategory.cshtml.g.cs
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Client\Views\Client\ResetPassword.cshtml.g.cs
+E:\AdityaBackup\Demo\Demo_Project1\new_repo_demo\My_Project\obj\Debug\netcoreapp3.1\Razor\Areas\Restaurant\Views\Restaurant\ResetPassword.cshtml.g.cs

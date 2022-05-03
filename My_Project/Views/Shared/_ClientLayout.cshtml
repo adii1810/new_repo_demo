@@ -101,7 +101,7 @@
                     </div>
                     @if (id == "")
                     {
-                        <a class="btn btn-primary py-2 px-4" onclick="showInPopup('@Url.Action("CustomerLogin", "Client", null, Context.Request.Scheme)','Login')">Sign In</a>
+                        <a class="btn btn-primary py-2 px-4" onclick="showInPopup('@Url.Action("CustomerLogin", "Client", null, Context.Request.Scheme)','')">Sign In</a>
                     }
                     else
                     {
@@ -124,7 +124,7 @@
                             </p>
                             @if (id == "")
                             {
-                                <a onclick="showInPopup('@Url.Action("CustomerLogin", "Client", null, Context.Request.Scheme)','Login')" class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">
+                                <a onclick="showInPopup('@Url.Action("CustomerLogin", "Client", null, Context.Request.Scheme)','')" class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">
                                     Sign In
                                 </a>
                             }

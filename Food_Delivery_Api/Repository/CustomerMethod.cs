@@ -320,9 +320,20 @@ namespace Food_Delivery_Api.Repository
         {
             var data = _context.User_Data.Where(x => x.User_UserName == username).FirstOrDefault();
             data.User_Password = password;
-            _context.User_Data.Update(data);
-            _context.SaveChanges();
-            return "true";
+            var result = _context.User_Data.Update(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            else
+                return "false";
+        }
+
+        public int verifyAccount(string Username, string Email)
+        {
+            var data = _context.User_Data.Where(x => x.User_UserName == Username && x.User_Email == Email).Count();
+            return data;    
         }
     }
 }
