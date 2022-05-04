@@ -122,8 +122,8 @@ namespace Food_Delivery_Api.Controllers
             return result;
         }
 
-        [HttpGet("ChangePassword/{uname}/{pass}")]
-        public string ChangePassword(string uname, string pass)
+        [HttpPut("ChangePassword/{uname}")]
+        public string ChangePassword(string uname,[FromBody] string pass)
         {
             var data = _Customer.ChangePassword(uname, pass);
             return data;

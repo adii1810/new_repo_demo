@@ -22,13 +22,13 @@ namespace Food_Delivery_Api.Repository
         public Task<ProductViewModel> GetProductDetail(int ProdId);
         public Task<IEnumerable<ImageViewModel>> UpdateImage(int Prodid);
         public string AddImgLink(string imgName,ProductImageViewModel pvm);
-        public void DeleteImage(string id);
+        public string DeleteImage(string id);
         public IEnumerable<string> MyProduct(string pre);
         public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId, string name,int resId);
 
         public string EditProduct(int id, ProductViewModel pvm);
         public Restaurant_Detail GetRestaurantDetail(int id);
-        public void EditRestaurant(Restaurant_Detail rd);
+        public string EditRestaurant(Restaurant_Detail rd);
         public int RestaurantConfirmPassword(string username, string password);
         public string ChangePassword(string username, string password);
         public IEnumerable<ShowOrderViewModel> GetUnApprovedOrders(int ResId);

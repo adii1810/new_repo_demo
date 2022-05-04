@@ -324,9 +324,13 @@ namespace My_Project.Controllers
             HttpResponseMessage response = await client.PostAsJsonAsync("AddRestaurant", vm);
             if (response.IsSuccessStatusCode)
             {
-                var message = new Message(vm.Restaurant_Detail_Email, "No Reply", "Please wait till Admin Activate Your Account");
-                _emailSender.SendEmail(message);
-                return LocalRedirect("~/Restaurant/Restaurant/Index");
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (result == "true")
+                {
+                    var message = new Message(vm.Restaurant_Detail_Email, "No Reply", "Please wait till Admin Activate Your Account");
+                    _emailSender.SendEmail(message);
+                    return LocalRedirect("~/Restaurant/Restaurant/Index");
+                }
             }
             return RedirectToAction("Index");
         }
@@ -530,7 +534,7 @@ namespace My_Project.Controllers
             var userName = HttpContext.Session.GetString("UserName").ToString();
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
-            HttpResponseMessage httpResponse = await client.GetAsync($"ChangePassword/{userName}/{pass}");
+            HttpResponseMessage httpResponse = await client.PutAsJsonAsync($"ChangePassword/{userName}",pass);
             if (httpResponse.IsSuccessStatusCode)
             {
                 return RedirectToAction("CustomerIndex");
@@ -560,7 +564,7 @@ namespace My_Project.Controllers
 
                     HttpClient client1 = new HttpClient();
                     client1.BaseAddress = new Uri(CustomerApiString);
-                    HttpResponseMessage httpResponse1 = await client.PutAsJsonAsync($"ResetPassword/{Username}/{Email}", sixDigitNumber);
+                    HttpResponseMessage httpResponse1 = await client.PutAsJsonAsync($"ChangePassword/{Username}/{Email}", sixDigitNumber);
                     if (httpResponse1.IsSuccessStatusCode)
                     {
                         var result1 = httpResponse1.Content.ReadAsStringAsync().Result;

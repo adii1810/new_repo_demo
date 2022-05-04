@@ -34,7 +34,7 @@ namespace My_Project.Areas.Restaurant.Controllers
         private static string AuthPassword = "dotnet@123";
 
 
-      
+
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _config;
         public string AdminApiString;
@@ -45,12 +45,12 @@ namespace My_Project.Areas.Restaurant.Controllers
             _config = config;
             AdminApiString = _config.GetValue<string>("APISTRING");
             RestaurantApiString = _config.GetValue<string>("RESTAURANTAPISTRING");
-            
+
             _env = env;
         }
         public IActionResult Index()
         {
-            var sess = HttpContext.Session.GetString("ResId")?.ToString()??"";
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
             if (sess != "" && sess != null)
                 return View();
             else
@@ -59,7 +59,7 @@ namespace My_Project.Areas.Restaurant.Controllers
         }
         public async Task<IActionResult> ShowProduct()
         {
-            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? ""; 
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
             if (sess != "" && sess != null)
             {
                 CategoryViewModel vm = new CategoryViewModel();
@@ -121,7 +121,7 @@ namespace My_Project.Areas.Restaurant.Controllers
 
         public async Task<IActionResult> AddOrEditProduct(int id = 0)
         {
-            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? ""; 
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
             if (sess != "" && sess != null)
             {
                 CategoryViewModel vm = new CategoryViewModel();
@@ -177,7 +177,7 @@ namespace My_Project.Areas.Restaurant.Controllers
         }
         public async Task<IActionResult> EditProduct(int id = 0)
         {
-            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? ""; 
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
             if (sess != "" && sess != null)
             {
                 ProductViewModel pvm = new ProductViewModel();
@@ -359,7 +359,7 @@ namespace My_Project.Areas.Restaurant.Controllers
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(RestaurantApiString);
-            HttpResponseMessage httpResponse = await client.GetAsync($"ChangeStatus/{ProdId}/{status}");
+            HttpResponseMessage httpResponse = await client.PutAsJsonAsync($"ChangeStatus/{ProdId}", status);
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
@@ -407,92 +407,100 @@ namespace My_Project.Areas.Restaurant.Controllers
                 ViewBag.categories = vm;
 
                 //getting current product Id
-
-                HttpClient client2 = new HttpClient();
-                client2.BaseAddress = new Uri(RestaurantApiString);
-                HttpResponseMessage httpResponse4 = await client2.GetAsync($"GetCurrentRecordId");
-                string prodid = null;
-                if (httpResponse4.IsSuccessStatusCode)
+                if (result3 == "true")
                 {
-                    prodid = httpResponse4.Content.ReadAsStringAsync().Result;
-                }
-
-                foreach (var item in pvm.images)
-                {
-                    // var str =  _Upload.ImgUpd(pvm.images, sess, prodid);
-                    ProductImageViewModel pivm = new ProductImageViewModel();
-                    var file = item;
-                    FileStream fs = null;
-                    string foldername = sess;
-                    var guid = Guid.NewGuid().ToString();
-                    var uniqueName = guid + '_' + file.FileName;
-                    pivm.imgName = uniqueName;
-                    pivm.ProductId = Convert.ToInt32(prodid);
-                    pivm.Restaurant_DetailId = Convert.ToInt32(sess);
-
-                    HttpClient client3 = new HttpClient();
-                    client3.BaseAddress = new Uri(RestaurantApiString);
-                    HttpResponseMessage httpResponse5 = await client3.PostAsJsonAsync($"StoringImage", pivm);
-                    if (httpResponse5.IsSuccessStatusCode)
+                    HttpClient client2 = new HttpClient();
+                    client2.BaseAddress = new Uri(RestaurantApiString);
+                    HttpResponseMessage httpResponse4 = await client2.GetAsync($"GetCurrentRecordId");
+                    string prodid = null;
+                    if (httpResponse4.IsSuccessStatusCode)
                     {
-                        string path = Path.Combine(_env.WebRootPath, $"images/{foldername}");
-                        if (Directory.Exists(path))
+                        prodid = httpResponse4.Content.ReadAsStringAsync().Result;
+                        if (prodid == "0")
                         {
-                            using (fs = new FileStream(Path.Combine(path, uniqueName), FileMode.Create))
-                            {
-                                await file.CopyToAsync(fs);
-                            }
-                            fs = new FileStream(Path.Combine(path, uniqueName), FileMode.Open);
-                        }
-                        else
-                        {
-                            Directory.CreateDirectory(path);
-                            using (fs = new FileStream(Path.Combine(path, uniqueName), FileMode.Create))
-                            {
-                                await file.CopyToAsync(fs);
-                            }
-                            fs = new FileStream(Path.Combine(path, uniqueName), FileMode.Open);
-                        }
-                        //FireBase Uploading
-                        var auth = new FirebaseAuthProvider(new FirebaseConfig(apiKey));
-                        var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
-
-                        //Cancelation token
-                        var canceation = new CancellationTokenSource();
-                        var upload = new FirebaseStorage(Bucket, new FirebaseStorageOptions
-                        {
-                            AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
-                            ThrowOnCancel = true
-                        }).Child("assets").Child(sess)
-                        .Child($"{uniqueName}")
-                        .PutAsync(fs, canceation.Token);
-                       
-                        try
-                        {
-                            var link = await upload;
-                            pivm.link = link;
-                            HttpClient client5 = new HttpClient();
-                            client5.BaseAddress = new Uri(RestaurantApiString);
-                            HttpResponseMessage httpResponse6 = await client5.PutAsJsonAsync($"imgLink/{uniqueName}", pivm);
-                            if (httpResponse6.IsSuccessStatusCode)
-                            {
-                                var result11 = httpResponse6.Content.ReadAsStringAsync().Result;
-
-                            }
-                            ViewBag.link = await upload;
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine($"***************{ex}*************");
-                            throw;
+                            return View();
                         }
                     }
+
+                    foreach (var item in pvm.images)
+                    {
+                        // var str =  _Upload.ImgUpd(pvm.images, sess, prodid);
+                        ProductImageViewModel pivm = new ProductImageViewModel();
+                        var file = item;
+                        FileStream fs = null;
+                        string foldername = sess;
+                        var guid = Guid.NewGuid().ToString();
+                        var uniqueName = guid + '_' + file.FileName;
+                        pivm.imgName = uniqueName;
+                        pivm.ProductId = Convert.ToInt32(prodid);
+                        pivm.Restaurant_DetailId = Convert.ToInt32(sess);
+
+                        HttpClient client3 = new HttpClient();
+                        client3.BaseAddress = new Uri(RestaurantApiString);
+                        HttpResponseMessage httpResponse5 = await client3.PostAsJsonAsync($"StoringImage", pivm);
+                        if (httpResponse5.IsSuccessStatusCode)
+                        {
+                            var result5 = httpResponse5.Content.ReadAsStringAsync().Result;
+                            if (result5 == "0")
+                                return View();
+                            string path = Path.Combine(_env.WebRootPath, $"images/{foldername}");
+                            if (Directory.Exists(path))
+                            {
+                                using (fs = new FileStream(Path.Combine(path, uniqueName), FileMode.Create))
+                                {
+                                    await file.CopyToAsync(fs);
+                                }
+                                fs = new FileStream(Path.Combine(path, uniqueName), FileMode.Open);
+                            }
+                            else
+                            {
+                                Directory.CreateDirectory(path);
+                                using (fs = new FileStream(Path.Combine(path, uniqueName), FileMode.Create))
+                                {
+                                    await file.CopyToAsync(fs);
+                                }
+                                fs = new FileStream(Path.Combine(path, uniqueName), FileMode.Open);
+                            }
+                            //FireBase Uploading
+                            var auth = new FirebaseAuthProvider(new FirebaseConfig(apiKey));
+                            var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+
+                            //Cancelation token
+                            var canceation = new CancellationTokenSource();
+                            var upload = new FirebaseStorage(Bucket, new FirebaseStorageOptions
+                            {
+                                AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                                ThrowOnCancel = true
+                            }).Child("assets").Child(sess)
+                            .Child($"{uniqueName}")
+                            .PutAsync(fs, canceation.Token);
+
+                            try
+                            {
+                                var link = await upload;
+                                pivm.link = link;
+                                HttpClient client5 = new HttpClient();
+                                client5.BaseAddress = new Uri(RestaurantApiString);
+                                HttpResponseMessage httpResponse6 = await client5.PutAsJsonAsync($"imgLink/{uniqueName}", pivm);
+                                if (httpResponse6.IsSuccessStatusCode)
+                                {
+                                    var result11 = httpResponse6.Content.ReadAsStringAsync().Result;
+
+                                }
+                                ViewBag.link = await upload;
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine($"***************{ex}*************");
+                                throw;
+                            }
+                        }
+
+                    }
+                    return LocalRedirect("~/Restaurant/Restaurant/Index");
                 }
-                return LocalRedirect("~/Restaurant/Restaurant/Index");
             }
             return View();
-
-
         }
 
         [HttpPost]
@@ -500,14 +508,16 @@ namespace My_Project.Areas.Restaurant.Controllers
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(RestaurantApiString);
-            HttpResponseMessage httpResponse = await client.GetAsync($"DeleteImage/{Id}");
+            HttpResponseMessage httpResponse = await client.DeleteAsync($"DeleteImage/{Id}");
             if (httpResponse.IsSuccessStatusCode)
             {
-                return "null";
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                if (result == "true")
+                {
+                    return "true";
+                }
             }
-            return "null";
-
-
+            return "false";
         }
 
         [HttpPost]
@@ -518,7 +528,7 @@ namespace My_Project.Areas.Restaurant.Controllers
             {
                 HttpClient client1 = new HttpClient();
                 client1.BaseAddress = new Uri(RestaurantApiString);
-                HttpResponseMessage httpResponse3 = await client1.PutAsJsonAsync($"EditProduct/{pvm.Product_Id}",pvm);
+                HttpResponseMessage httpResponse3 = await client1.PutAsJsonAsync($"EditProduct/{pvm.Product_Id}", pvm);
                 if (httpResponse3.IsSuccessStatusCode)
                 {
                     return RedirectToAction("ShowProduct");
@@ -567,6 +577,10 @@ namespace My_Project.Areas.Restaurant.Controllers
                 HttpResponseMessage httpResponse5 = await client3.PostAsJsonAsync($"StoringImage", pvm);
                 if (httpResponse5.IsSuccessStatusCode)
                 {
+                    var result = httpResponse5.Content.ReadAsStringAsync().Result;
+                    if (result == "false")
+                        return View();
+
                     string path = Path.Combine(_env.WebRootPath, $"images/{foldername}");
                     if (Directory.Exists(path))
                     {
@@ -693,7 +707,7 @@ namespace My_Project.Areas.Restaurant.Controllers
                 }
                 HttpClient client1 = new HttpClient();
                 client1.BaseAddress = new Uri(RestaurantApiString);
-                HttpResponseMessage httpResponse3 = await client1.PostAsJsonAsync($"EditRestaurantDetails",vm);
+                HttpResponseMessage httpResponse3 = await client1.PutAsJsonAsync($"EditRestaurantDetails", vm);
                 if (httpResponse3.IsSuccessStatusCode)
                 {
                     HttpContext.Session.SetString("ResId", vm.Restaurant_Detail_Id.ToString());
@@ -718,7 +732,7 @@ namespace My_Project.Areas.Restaurant.Controllers
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
-                if(Convert.ToInt32(result) > 0)
+                if (Convert.ToInt32(result) > 0)
                 {
                     Random r = new Random();
                     int randNum = r.Next(1000000);
@@ -727,7 +741,7 @@ namespace My_Project.Areas.Restaurant.Controllers
                     var message = new Message(email, "Security Code For Changing Password", MsgBody);
                     _emailSender.SendEmail(message);
                     return Json(sixDigitNumber);
-                    
+
                 }
             }
             return Json("false");
@@ -741,10 +755,12 @@ namespace My_Project.Areas.Restaurant.Controllers
             var userName = HttpContext.Session.GetString("ResUserName").ToString();
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(RestaurantApiString);
-            HttpResponseMessage httpResponse = await client.GetAsync($"ChangePassword/{userName}/{pass}");
+            HttpResponseMessage httpResponse = await client.PutAsJsonAsync($"ChangePassword/{userName}", pass);
             if (httpResponse.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                if (result == "true")
+                    return RedirectToAction("Index");
             }
             return View();
         }
@@ -755,11 +771,11 @@ namespace My_Project.Areas.Restaurant.Controllers
             var userName = HttpContext.Session.GetString("ResUserName").ToString();
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(RestaurantApiString);
-            HttpResponseMessage httpResponse = await client.GetAsync($"UpdateOrderStatus/{OrdId}");
+            HttpResponseMessage httpResponse = await client.PutAsJsonAsync($"UpdateOrderStatus/{OrdId}", OrdId);
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
-                if(result != "")
+                if (result != "false")
                 {
                     return Json("true");
                 }

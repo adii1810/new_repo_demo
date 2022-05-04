@@ -236,16 +236,19 @@ namespace My_Project.Areas.Admin.Controllers
         {
             HttpClient client1 = new HttpClient();
             client1.BaseAddress = new Uri(AdminApiString);
-            var httpResponse1 = await client1.GetAsync($"updateStatus/{Id}/{Status}");
+            var httpResponse1 = await client1.PutAsJsonAsync($"updateStatus/{Id}",Status);
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
-                var MsgBody = Status == true ? "Account Has Been Activated" : "Account Has Been Dectivated";
-                var message = new Message(Email, "No Reply",MsgBody);
-                _emailSender.SendEmail(message);
-                return Json(result1);
+                if (result1 == "true")
+                {
+                    var MsgBody = Status == true ? "Account Has Been Activated" : "Account Has Been Dectivated";
+                    var message = new Message(Email, "No Reply", MsgBody);
+                    _emailSender.SendEmail(message);
+                    return Json(result1);
+                }
             }
-            return null;
+            return Json("false");
         }
         [HttpPost]
         public async Task<IEnumerable<UserDataViewModel>> FindUser(string Name)

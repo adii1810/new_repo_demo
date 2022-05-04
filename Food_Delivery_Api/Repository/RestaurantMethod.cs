@@ -33,9 +33,13 @@ namespace Food_Delivery_Api.Repository
             rd.Restaurant_Detail_User_Name = vm.Restaurant_Detail_User_Name;
             rd.Restaurant_Detail_Zipcode = vm.Restaurant_Detail_Zipcode;
             rd.profileImage = vm.profileImage;
-            _context.Restaurant_Detail.Add(rd);
-            _context.SaveChanges();
-            return "true";
+            var result = _context.Restaurant_Detail.Add(rd);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
 
         public Restaurant_Detail RestaurantLogin(string uname, string pass)
@@ -84,9 +88,13 @@ namespace Food_Delivery_Api.Repository
             p.Description = vm.Description;
             p.FoodType = (FoodType)vm.FoodType;
             p.Sub_CategoryId = vm.Sub_Category;
-            _context.Product.Add(p);
-            _context.SaveChanges();
-            return "true";
+            var result = _context.Product.Add(p);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
 
         public async Task<int> StoringImages(ProductImageViewModel pmvm)
@@ -97,9 +105,13 @@ namespace Food_Delivery_Api.Repository
             pm.Restaurant_DetailId = pmvm.Restaurant_DetailId;
             pm.ImgLink = null;
 
-            _ = await _context.ProductImages.AddAsync(pm);
-            _context.SaveChanges();
-            return 1;
+            var result = await _context.ProductImages.AddAsync(pm);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return 1;
+            }
+            return 0;
         }
         public async Task<int> GetCurrentRecordId()
         {
@@ -136,8 +148,13 @@ namespace Food_Delivery_Api.Repository
         {
             var data = _context.Product.Where(x => x.Product_Id == ProdId).FirstOrDefault();
             data.Product_Status = Status;
-            _context.SaveChanges();
-            return "true";
+            var result = _context.Product.Update(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
         public async Task<ProductViewModel> GetProductDetail(int ProdId)
         {
@@ -179,16 +196,26 @@ namespace Food_Delivery_Api.Repository
         {
             var data = _context.ProductImages.Where(x => x.imgName == imgName).FirstOrDefault();
             data.ImgLink = pvm.Link;
-            _context.SaveChanges();
-            return "true";
+            var result = _context.ProductImages.Update(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
 
-        public void DeleteImage(string id)
+        public string DeleteImage(string id)
         {
             var Id = Convert.ToInt32(id);
             var data = _context.ProductImages.Where(x => x.Id == Id).FirstOrDefault();
-            _context.ProductImages.Remove(data);
-            _context.SaveChanges();
+            var result = _context.ProductImages.Remove(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
 
         public IEnumerable<string> MyProduct(string pre)
@@ -244,9 +271,13 @@ namespace Food_Delivery_Api.Repository
             data.Description = p.Description;
             data.Product_Name = p.Product_Name;
             data.Product_Price = p.Product_Price;
-            _context.Product.Update(data);
-            _context.SaveChanges();
-            return "true";
+           var result = _context.Product.Update(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
 
         public Restaurant_Detail GetRestaurantDetail(int id)
@@ -254,7 +285,7 @@ namespace Food_Delivery_Api.Repository
             var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Id == id).FirstOrDefault();
             return data;
         }
-        public void EditRestaurant(Restaurant_Detail rd)
+        public string EditRestaurant(Restaurant_Detail rd)
         {
             var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Id == rd.Restaurant_Detail_Id).FirstOrDefault();
             data.profileImage = rd.profileImage;
@@ -265,8 +296,13 @@ namespace Food_Delivery_Api.Repository
             data.Restaurant_Detail_PhoneNo = rd.Restaurant_Detail_PhoneNo;
             data.Restaurant_Detail_State = rd.Restaurant_Detail_State;
             data.Restaurant_Detail_Zipcode = rd.Restaurant_Detail_Zipcode;
-            _context.Restaurant_Detail.Update(data);
-            _context.SaveChanges();
+            var result = _context.Restaurant_Detail.Update(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
         public int RestaurantConfirmPassword(string username,string password)
         {
@@ -277,9 +313,13 @@ namespace Food_Delivery_Api.Repository
         {
             var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_User_Name == username).FirstOrDefault();
             data.Restaurant_Detail_Password = password;
-            _context.Restaurant_Detail.Update(data);
-            _context.SaveChanges();
-            return "true";
+            var result = _context.Restaurant_Detail.Update(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
 
         public IEnumerable<ShowOrderViewModel> GetUnApprovedOrders(int ResId)
@@ -303,9 +343,13 @@ namespace Food_Delivery_Api.Repository
         {
             var data = _context.Order.Where(x => x.Order_Id == OrdId).FirstOrDefault();
             data.Order_Status_Id = (OrderStatus)1;
-            _context.Order.Update(data);
-            _context.SaveChanges();
-            return "true";        
+            var result = _context.Order.Update(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
         public async Task<IEnumerable<OrderDetailViewModel>> ShowOrderDetail(int OrderId)
         {

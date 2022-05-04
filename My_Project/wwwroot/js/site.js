@@ -101,6 +101,14 @@ $("#UserName").autocomplete({
                 return item;
             }))
 
+        },
+        failure: function (response) {
+            console.log("failure");
+            alert(response.responseText);
+        },
+        error: function (response) {
+            console.log("error");
+            alert(response.responseText);
         }
     })
     },
@@ -126,6 +134,14 @@ $("#Name").autocomplete({
                         return item;
                     }))
 
+                },
+                failure: function (response) {
+                    console.log("failure");
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    console.log("error");
+                    alert(response.responseText);
                 }
             })
         
@@ -221,6 +237,14 @@ $(document).ready(() => {
 
             success: function (data) {
                 page1(data);
+            },
+            failure: function (response) {
+                console.log("failure");
+                alert(response.responseText);
+            },
+            error: function (response) {
+                console.log("error");
+                alert(response.responseText);
             }
         });
     }
@@ -236,6 +260,14 @@ $(document).ready(() => {
             success: function (data) {
                 console.log(data);
                 page1(data);
+            },
+            failure: function (response) {
+                console.log("failure");
+                alert(response.responseText);
+            },
+            error: function (response) {
+                console.log("error");
+                alert(response.responseText);
             }
         });
     }
@@ -251,6 +283,14 @@ $(document).ready(() => {
             success: function (data) {
                 console.log(data);
                 page1(data);
+            },
+            failure: function (response) {
+                console.log("failure");
+                alert(response.responseText);
+            },
+            error: function (response) {
+                console.log("error");
+                alert(response.responseText);
             }
         });
     }
@@ -271,7 +311,21 @@ function resStatus(value, email) {
             data: { Status: status, Id: value, Email: email },
             success: function (response) {
                 $('#restaurantStatus_' + value).removeClass('lds-dual-ring');
-                alert("Update Success");
+                if (response != "true") {
+                    alert("Some Problem occurrs");
+                }
+                else {
+                    alert("Update Success");
+                }
+                
+            },
+            failure: function (response) {
+                console.log("failure");
+                alert(response.responseText);
+            },
+            error: function (response) {
+                console.log("error");
+                alert(response.responseText);
             }
         });
     }

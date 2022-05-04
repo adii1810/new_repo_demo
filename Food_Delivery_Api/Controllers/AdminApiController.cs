@@ -109,15 +109,6 @@ namespace Food_Delivery_Api.Controllers
             var data = _admin.ShowRestaurant1(name);
             return data;
         }
-        [HttpGet("updateStatus/{Id}/{Status}")]
-        public string ShowRestaurant(int Id,bool Status)
-        {
-
-            var data = _admin.updateStatus(Id, Status);
-            return data;
-        }
-
-
 
         [HttpGet("ShowOrder/{UserId}")]
         public async Task<IEnumerable<OrderViewModel>> ShowOrder(int UserId)
@@ -139,22 +130,14 @@ namespace Food_Delivery_Api.Controllers
             var data = _admin.AddSubCategory(vm);
             return data;
         }
-        //POST api/<AdminApiController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
 
-        // PUT api/<AdminApiController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("updateStatus/{Id}")]
+        public string ShowRestaurant(int Id, [FromBody] bool Status)
         {
-        }
 
-        // DELETE api/<AdminApiController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var data = _admin.updateStatus(Id, Status);
+            return data;
         }
+        
     }
 }

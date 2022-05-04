@@ -119,7 +119,7 @@ namespace Food_Delivery_Api.Repository
 
             foreach (var item in data)
             {
-                double rate = 5;
+                double rate = 0;
                 int user = 0;
                 if ((user = _context.User_Rating.Where(x => x.ProductId == item.Product_Id).Count()) > 0)
                 {
@@ -216,8 +216,13 @@ namespace Food_Delivery_Api.Repository
             {
                 var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Id == Id).FirstOrDefault();
                 data.status_by_Admin = Status;
-                _context.SaveChanges();
-                return "true";
+                var result = _context.Restaurant_Detail.Update(data);
+                if (result != null)
+                {
+                    _context.SaveChanges();
+                    return "true";
+                }
+                return "false";
             }
             return "false";
         }
@@ -227,10 +232,10 @@ namespace Food_Delivery_Api.Repository
             {
                 Sub_Category sb = new Sub_Category();
                 sb.Main_Category_Id = (Main)vm.MainId;
-                sb.Sub_Category_Name = sb.Sub_Category_Name;
+                sb.Sub_Category_Name = vm.SubName;
 
                 var result = _context.Sub_Categorie.Add(sb);
-                if(result != null)
+                if(result.Entity != null)
                 {
                     _context.SaveChanges();
                     return "true";

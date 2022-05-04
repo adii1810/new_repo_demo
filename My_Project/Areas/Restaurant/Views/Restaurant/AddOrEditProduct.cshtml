@@ -76,6 +76,9 @@
         .slider.round:before {
             border-radius: 50%;
         }
+        .btn{
+            border-radius:5px;
+        }
 </style>
 
 <div class="container ">
@@ -142,7 +145,7 @@
             </label>
         </div>
 
-        <input type="submit" value="Create" class="btn btn-primary" />
+        <button type="submit" value="Create" class="btn btn-primary" id="btnAddProduct"> Add Product </button>
     </form>
 
 </div>
@@ -150,7 +153,6 @@
 <script>
     $("#Drop").change((response) => {
         var data = $("#Drop").val();
-        alert(data);
         $.ajax({
             url: location2 + "subCate",
             type: "Get",
@@ -166,5 +168,8 @@
                 console.log(response);
             }
         })
+    })
+    $("#btnAddProduct").click(() => {
+        $("#btnAddProduct").html(`<i class="fa fa-refresh fa-spin"></i>Loading`);
     })
 </script>
