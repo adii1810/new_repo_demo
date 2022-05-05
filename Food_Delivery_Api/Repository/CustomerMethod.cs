@@ -84,8 +84,11 @@ namespace Food_Delivery_Api.Repository
                     tempOrder TO = new tempOrder();
                     TO.Order_Date = vm.Order_Date;
                     TO.User_DataId = vm.User_DataId;
-                    _context.tempOrder.Add(TO);
-                    _context.SaveChanges();
+                   var result = _context.tempOrder.Add(TO);
+                    if (result.Entity != null)
+                        _context.SaveChanges();
+                    else
+                        return "false";
 
                     /* fetching current orderId*/
                     var orderId = _context.tempOrder.OrderByDescending(x => x.Order_Id).Take(1).Select(x => x.Order_Id).FirstOrDefault();
@@ -95,8 +98,9 @@ namespace Food_Delivery_Api.Repository
                     TOD.OrderId = orderId;
                     TOD.ProductId = vm.ProductId;
                     TOD.Quantity = vm.Quantity;
-                    _context.tempOrder_Detail.Add(TOD);
-                    _context.SaveChanges();
+                    var result2 = _context.tempOrder_Detail.Add(TOD);
+                    if (result2.Entity != null)
+                        _context.SaveChanges();                   
                 }
                 else
                 {
@@ -107,8 +111,11 @@ namespace Food_Delivery_Api.Repository
             {
                 var data = _context.tempOrder_Detail.Include("Order").Where(x => x.Order.User_DataId == vm.User_DataId && x.ProductId == vm.ProductId).FirstOrDefault();
                 data.Quantity += 1;
-                _context.Update(data);
-                _context.SaveChanges();
+                var result = _context.Update(data);
+                if (result.Entity != null)
+                    _context.SaveChanges();
+                else
+                    return "false";
             }
             return "true";
         }
@@ -139,9 +146,13 @@ namespace Food_Delivery_Api.Repository
             var data = _context.tempOrder_Detail.Include("Order").Where(x => x.Order.User_DataId == userId && x.OrderId == x.Order.Order_Id && x.ProductId == ProdId).FirstOrDefault();
             var dataOrder = _context.tempOrder.Where(x => x.Order_Id == data.OrderId).FirstOrDefault();
             _context.tempOrder_Detail.Remove(data);
-            _context.tempOrder.Remove(dataOrder);
-            _context.SaveChanges();
-            return "true";
+            var result = _context.tempOrder.Remove(dataOrder);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
         public string IncrementDecrement(string status, int prodId, int userId)
         {
@@ -152,9 +163,14 @@ namespace Food_Delivery_Api.Repository
                 if (data.Quantity > 1)
                     data.Quantity = data.Quantity - 1;
 
-            _context.tempOrder_Detail.Update(data);
-            _context.SaveChanges();
-            return "true";
+            var result = _context.tempOrder_Detail.Update(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            else
+                return "false";
         }
         public string CheckOut(int userId)
         {
@@ -163,8 +179,11 @@ namespace Food_Delivery_Api.Repository
             od.Order_Date = DateTime.Now;
             od.User_DataId = userId;
             od.Order_Status_Id = 0;
-            _context.Order.Add(od);
-            _context.SaveChanges();
+            var result = _context.Order.Add(od);
+            if (result.Entity != null)
+                _context.SaveChanges();
+            else
+                return "false";
 
             // Get current Order Id
             var orderId = _context.Order.OrderByDescending(x => x.Order_Id).Take(1).Select(x => x.Order_Id).FirstOrDefault();
@@ -180,10 +199,13 @@ namespace Food_Delivery_Api.Repository
                 ordDetail.Quantity = data.Quantity;
                 detailId++;
 
-                _context.Order_Detail.Add(ordDetail);
-                _context.tempOrder_Detail.Remove(data);
-                _context.tempOrder.Remove(item);
-                _context.SaveChanges();
+                var result2 = _context.Order_Detail.Add(ordDetail);
+                var result3 = _context.tempOrder_Detail.Remove(data);
+                var result4 = _context.tempOrder.Remove(item);
+                if (result2.Entity != null && result3.Entity != null && result4.Entity != null)
+                    _context.SaveChanges();
+                else
+                    return "false";
             }
             return "true";
         }
@@ -283,16 +305,26 @@ namespace Food_Delivery_Api.Repository
                 RatingData.ProductId = ProdId;
                 RatingData.User_DataId = userId;
                 RatingData.User_Rating_Star = rate;
-                _context.User_Rating.Add(RatingData);
-                _context.SaveChanges();
-                return "RatingAdded";
+                var result = _context.User_Rating.Add(RatingData);
+                if (result.Entity != null)
+                {
+                    _context.SaveChanges();
+                    return "RatingAdded";
+                }
+                else
+                    return "false";
             }
             else
             {
                 data.User_Rating_Star = rate;
-                _context.User_Rating.Update(data);
-                _context.SaveChanges();
-                return "RatingUpdated";
+                var result = _context.User_Rating.Update(data);
+                if (result.Entity != null)
+                {
+                    _context.SaveChanges();
+                    return "RatingUpdated";
+                }
+                else
+                    return "false";
             }
 
         }
@@ -305,9 +337,13 @@ namespace Food_Delivery_Api.Repository
         {
             if(vm != null)
             {
-                _context.User_Data.Update(vm);
-                _context.SaveChanges();
-                return "true";
+                var result = _context.User_Data.Update(vm);
+                if (result.Entity != null)
+                {
+                    _context.SaveChanges();
+                    return "true";
+                }
+                return "false";
             }
             return "false";
         }

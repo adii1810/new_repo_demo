@@ -14,7 +14,8 @@ var pagination = $('#pagination'),
     response = [],
     recPerPage = 5,
     page = 1,
-    totalPages = 0;
+    totalPages = 0,
+    Index = 1;
 
 function apply_pagination() {
 
@@ -40,14 +41,19 @@ function generate_table() {
         $(".customtbl .table tbody").empty();
 
         for (var i = 0; i < response.length; i++) {
-            if (response[i].product_Status === true) {
-                var data = "<label class='btn btn-success text - white'>Active</label>"
-            }
-            else {
-                data = "<label class='btn btn-danger text-white'>InActive</label>"
-            }
-            $('.customtbl .table tbody').append(`<tr ><td data-label="Sr.No" class="col-2">${i+1}</td><td data-label="Product Name">${response[i].product_Name}</td>
-                    <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
+            //if (response[i].product_Status === true) {
+            //    var data = "<label class='btn btn-success text - white'>Active</label>"
+            //}
+            //else {
+            //    data = "<label class='btn btn-danger text-white'>InActive</label>"
+            //}
+            //$('.customtbl .table tbody').append(`<tr ><td data-label="Sr.No" class="col-2">${i+1}</td><td data-label="Product Name">${response[i].product_Name}</td>
+            //        <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td></tr>`);
+
+            $('.customtbl .table tbody').append(`<tr><td data-label="Restaurant Name">${response[i].restaurantName}</td>
+                   <td data-label="Active Products">${response[i].activeProducts}</td><td  data-label="InActive Products"><label>${response[i].inActiveProducts}</td><td><button onclick="showProduct(${response[i].restaurantId})" class="btn btn-success"><i class="fa-solid fa-up-down"></i> See Products</button></td></tr><tr><td colspan="5"><div id="Products_${response[i].restaurantId}" class="Products"></div></td></tr>`);
+            Index++;
+            $(".Products").slideUp();
         }
     }
     else if (window.location == location1 + "ShowRestaurant") {
@@ -85,6 +91,31 @@ function page1(data) {
 //======================================================================================================
 
 // Function for showing Order Details
+
+const showProduct = id => {
+    $(`#Products_${id}`).slideToggle();
+    $.ajax({
+        url: location1 + "ShowProduct1",
+        type: "Get",
+        data: { ResId: id },
+        success: (response) => {
+            console.log(response);
+            $(`#Products_${id}`).empty()
+            for (var i = 0; i < response.length; i++) {
+                if (response[i].product_Status === true) {
+                    var data = `<label class='btn btn-success text - white disabled' ><i class="fa-solid fa-check"></i></label>`
+                }
+                else {
+                    data = `<label class='btn btn-danger text-white disabled' ><i class="fa-solid fa-xmark"></i></label>`
+                }
+                $(`#Products_${id}`).append(`<table class="table table-bordered"><thead><tr><th>Sr.No</th><th>Product Name</th><th>Product Price</th><th>Rating</th><th>Product Status</th></tr>
+        </thead><tbody><tr class=" bg-dark text-white"><td data-label="Sr.No" class="col-2">${i+1}</td><td data-label="Product Name">${response[i].product_Name}</td>
+                        <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td><tr></tbody></table>`);
+            }
+            
+        }
+    })
+}
 
 $("#UserName").autocomplete({
 
@@ -157,17 +188,16 @@ $(document).ready(function () {
 
 $("#btnSearch").click(function () {
 
-    $("#pager").show();
-    var id = document.getElementById("Drop").value;
     var name = document.getElementById("Name").value;
     $.ajax({
         url: location1 + `ShowProduct1`,
         type: "Post",
-        data: { Drop: id, Name: name },
+        data: { Name: name },
         success: function (data) {
             if (data.length == 0) {
                 $(".customtbl .table tbody").empty();
             }
+            console.log(data)
             page1(data);
         },
         failure: function (response) {
@@ -232,10 +262,13 @@ $("#btnSearchRestaurant").click(function () {
 $(document).ready(() => {
     if (window.location == location1 + "ShowProduct") {
         $("#pager").show();
+       
         $.ajax({
-            url: location1 + `ShowProduct1`,
+           // url: location1 + `ShowProduct1`,
+            url: location1 + `ShowRestaurantWiseProduct`,
 
             success: function (data) {
+                console.log(data);
                 page1(data);
             },
             failure: function (response) {

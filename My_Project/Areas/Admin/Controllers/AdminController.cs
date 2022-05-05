@@ -89,7 +89,8 @@ namespace My_Project.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<ActionResult> ShowProduct()
+       
+            public async Task<ActionResult> ShowProduct()
         {
                 
             CategoryViewModel vm = new CategoryViewModel();
@@ -108,12 +109,27 @@ namespace My_Project.Areas.Admin.Controllers
            
         }
 
-        public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1()
+        public async Task<IEnumerable<RestaurantDetailViewModal>> ShowRestaurantWiseProduct()
+        {
+            HttpClient client1 = new HttpClient();
+            client1.BaseAddress = new Uri(AdminApiString);
+            var httpResponse1 = await client1.GetAsync($"ShowProductRestaurantwise");
+            if (httpResponse1.IsSuccessStatusCode)
+            {
+                var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
+                List<RestaurantDetailViewModal> data1 = new List<RestaurantDetailViewModal>();
+                data1 = JsonConvert.DeserializeObject<List<RestaurantDetailViewModal>>(result1);
+                return data1;
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1(int ResId)
         {
             HttpClient client1 = new HttpClient();
 
             client1.BaseAddress = new Uri(AdminApiString);
-            var httpResponse1 = await client1.GetAsync($"ShowProduct");
+            var httpResponse1 = await client1.GetAsync($"ShowProduct/{ResId}");
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
@@ -185,25 +201,27 @@ namespace My_Project.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IEnumerable<ShowProductViewModel>> ShowProduct1(int Drop, string Name = "")
+        public async Task<IEnumerable<RestaurantDetailViewModal>> ShowProduct1(string Name="")
         {
-            if (Name == null)
+            if(Name == null)
+            {
                 Name = "null";
+            }
 
             HttpClient client1 = new HttpClient();
             client1.BaseAddress = new Uri(AdminApiString);
-            var httpResponse1 = await client1.GetAsync($"Showproduct/{Drop}/{Name}");
+            var httpResponse1 = await client1.GetAsync($"ShowproductRestaurant/{Name}");
             if (httpResponse1.IsSuccessStatusCode)
             {
                 var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
                 
-                List<ShowProductViewModel> data1 = new List<ShowProductViewModel>();
-                data1 = JsonConvert.DeserializeObject<List<ShowProductViewModel>>(result1);
+                List<RestaurantDetailViewModal> data1 = new List<RestaurantDetailViewModal>();
+                data1 = JsonConvert.DeserializeObject<List<RestaurantDetailViewModal>>(result1);
                 return data1;
             }
             return null;
         }
-
+        
         [HttpPost]
         public async Task<JsonResult> myResturant(string Prefix)
         {

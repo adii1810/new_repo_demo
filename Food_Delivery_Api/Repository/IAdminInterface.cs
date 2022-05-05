@@ -19,12 +19,14 @@ namespace Food_Delivery_Api.Repository
         public IEnumerable<SubViewModel> AutocompleteSubCategory(int mainId);
         public IEnumerable< string> MyRestaurant(string pre);
         public IEnumerable< string> MyUser(string pre);
-        public IEnumerable<ProductRatingViewModel> ShowProduct();
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int ResId);
         public IEnumerable<ProductRatingViewModel> ShowProduct(int id,string name);
         public IEnumerable<Restaurant_Detail> ShowRestaurant();
         public IEnumerable<Restaurant_Detail> ShowRestaurant1(string name);
         public string updateStatus(int Id,bool Status);
         public string AddSubCategory(SubCategoryViewModel vm);
+        public IEnumerable<RestaurantDetailViewModal> ShowRestaurantWiseProduct();
+        public IEnumerable<RestaurantDetailViewModal> ShowproductRestaurant(string name);
 
     }
 }

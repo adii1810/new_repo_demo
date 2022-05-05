@@ -35,15 +35,27 @@ namespace Food_Delivery_Api.Controllers
         {
             var data = _admin.AutocompleteSubCategory(mainId);
             return data;
-            }
+        }
 
-        [HttpGet("ShowProduct")]
-        public IEnumerable<ProductRatingViewModel> ShowProduct()
+        [HttpGet("ShowProductRestaurantwise")]
+        public IEnumerable<RestaurantDetailViewModal> ShowProductRestaurantwise()
         {
-            var data = _admin.ShowProduct();
+            var data = _admin.ShowRestaurantWiseProduct();
             return data;
         }
 
+        [HttpGet("ShowProduct/{ResId}")]
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int ResId)
+        {
+            var data = _admin.ShowProduct(ResId);
+            return data;
+        }
+        [HttpGet("ShowProductRestaurant/{name}")]
+        public IEnumerable<RestaurantDetailViewModal> ShowProductRestaurant(string name)
+        {
+            var data = _admin.ShowproductRestaurant(name);
+            return data;
+        }
 
         [HttpGet("ShowProduct/{mainId}/{name}")]
         public IEnumerable<ProductRatingViewModel> ShowProduct(int mainId,string name=null)

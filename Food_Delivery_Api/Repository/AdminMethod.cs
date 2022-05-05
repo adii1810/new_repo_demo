@@ -111,9 +111,47 @@ namespace Food_Delivery_Api.Repository
             return ol;
         }
 
-        public IEnumerable<ProductRatingViewModel> ShowProduct()
+        public IEnumerable<RestaurantDetailViewModal> ShowRestaurantWiseProduct()
         {
-            var data = _context.Product.ToList();
+            List<RestaurantDetailViewModal> lrvm = new List<RestaurantDetailViewModal>();
+            var res = _context.Restaurant_Detail.OrderByDescending(x=>x.Restaurant_Detail_Id).ToList();
+            foreach (var item in res)
+            {
+                RestaurantDetailViewModal vm = new RestaurantDetailViewModal();
+                vm.RestaurantId = item.Restaurant_Detail_Id;
+                vm.RestaurantName = item.Restaurant_Detail_Name;
+                vm.ActiveProducts = _context.Product.Where(x => x.Restaurant_DetailId == item.Restaurant_Detail_Id && x.Product_Status == true).Count();
+                vm.InActiveProducts = _context.Product.Where(x => x.Restaurant_DetailId == item.Restaurant_Detail_Id && x.Product_Status == false).Count();
+
+                lrvm.Add(vm);
+            }
+            return lrvm;
+        }
+        public IEnumerable<RestaurantDetailViewModal> ShowproductRestaurant(string name)
+        {
+            if(name == "null")
+            {
+                List<RestaurantDetailViewModal> lrvm1 = new List<RestaurantDetailViewModal>();
+                lrvm1 = (List<RestaurantDetailViewModal>)ShowRestaurantWiseProduct();
+                return lrvm1;
+            }
+            List<RestaurantDetailViewModal> lrvm = new List<RestaurantDetailViewModal>();
+            var res = _context.Restaurant_Detail.Where(x=>x.Restaurant_Detail_Name == name).OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
+            foreach (var item in res)
+            {
+                RestaurantDetailViewModal vm = new RestaurantDetailViewModal();
+                vm.RestaurantId = item.Restaurant_Detail_Id;
+                vm.RestaurantName = item.Restaurant_Detail_Name;
+                vm.ActiveProducts = _context.Product.Where(x => x.Restaurant_DetailId == item.Restaurant_Detail_Id && x.Product_Status == true).Count();
+                vm.InActiveProducts = _context.Product.Where(x => x.Restaurant_DetailId == item.Restaurant_Detail_Id && x.Product_Status == false).Count();
+
+                lrvm.Add(vm);
+            }
+            return lrvm;
+        }
+        public IEnumerable<ProductRatingViewModel> ShowProduct(int ResId)
+        {
+            var data = _context.Product.Where(x=>x.Restaurant_DetailId == ResId).ToList();
 
             List<ProductRatingViewModel> l = new List<ProductRatingViewModel>();
 
@@ -217,7 +255,7 @@ namespace Food_Delivery_Api.Repository
                 var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Id == Id).FirstOrDefault();
                 data.status_by_Admin = Status;
                 var result = _context.Restaurant_Detail.Update(data);
-                if (result != null)
+                if (result.Entity != null)
                 {
                     _context.SaveChanges();
                     return "true";

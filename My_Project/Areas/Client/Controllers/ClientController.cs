@@ -389,7 +389,7 @@ namespace My_Project.Controllers
             var userId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
-            HttpResponseMessage response = await client.GetAsync($"IncrementDecrement/{status}/{prodId}/{userId}");
+            HttpResponseMessage response = await client.PutAsJsonAsync($"IncrementDecrement/{prodId}/{userId}",status);
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
@@ -406,7 +406,7 @@ namespace My_Project.Controllers
             var userId = Convert.ToInt32(HttpContext.Session.GetString("UserId").ToString());
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
-            HttpResponseMessage response = await client.GetAsync($"deleteProduct/{ProdId}/{userId}");
+            HttpResponseMessage response = await client.DeleteAsync($"deleteProduct/{ProdId}/{userId}");
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
@@ -473,7 +473,7 @@ namespace My_Project.Controllers
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
-            HttpResponseMessage response = await client.GetAsync($"AddRating/{Convert.ToInt32(userId)}/{ProdId}/{rate}");
+            HttpResponseMessage response = await client.PutAsJsonAsync($"AddRating/{Convert.ToInt32(userId)}/{ProdId}",rate);
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;

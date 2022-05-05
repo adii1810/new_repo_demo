@@ -47,14 +47,14 @@ namespace Food_Delivery_Api.Controllers
             return data;
         }
 
-        [HttpGet("deleteProduct/{ProdId}/{userId}")]
+        [HttpDelete("deleteProduct/{ProdId}/{userId}")]
         public string deleteProduct(int ProdId, int userId)
         {
             var result = _Customer.deleteProduct(ProdId, userId);
             return result;
         }
-        [HttpGet("IncrementDecrement/{status}/{prodId}/{userId}")]
-        public string IncrementDecrement(string status, int prodId, int userId)
+        [HttpPut("IncrementDecrement/{prodId}/{userId}")]
+        public string IncrementDecrement(int prodId, int userId,[FromBody]string status)
         {
             var result = _Customer.IncrementDecrement(status, prodId, userId);
             return result;
@@ -109,8 +109,8 @@ namespace Food_Delivery_Api.Controllers
             var result = _Customer.ViewRating(userId,ProdId);
             return result;
         }
-        [HttpGet("AddRating/{userId}/{ProdId}/{rate}")]
-        public string AddRating(int userId, int ProdId,int rate)
+        [HttpPut("AddRating/{userId}/{ProdId}/{rate}")]
+        public string AddRating(int userId, int ProdId,[FromBody]int rate)
         {
             var result = _Customer.AddRating(userId, ProdId,rate);
             return result;

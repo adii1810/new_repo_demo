@@ -29,61 +29,61 @@ $(".close").click(() => {
 
 
 /*======================================================Pagination=========================================================================================================*/
-var state = {
-    'querySet': null,
-    'page': 1,
-    'rows': 10,
-    'window': 5
-}
+//var state = {
+//    'querySet': null,
+//    'page': 1,
+//    'rows': 2,
+//    'window': 5
+//}
 
-function Custpagination(querySet, page, rows) {
-    var trimStart = (page - 1) * rows;
-    var trimEnd = trimStart + rows;
-    var trimmedData = querySet.slice(trimStart, trimEnd);
-    var pages = Math.ceil(querySet.length / rows);
-    return {
-        'querySet': trimmedData,
-        'pages': pages
-    }
+//function Custpagination(querySet, page, rows) {
+//    var trimStart = (page - 1) * rows;
+//    var trimEnd = trimStart + rows;
+//    var trimmedData = querySet.slice(trimStart, trimEnd);
+//    var pages = Math.ceil(querySet.length / rows);
+//    return {
+//        'querySet': trimmedData,
+//        'pages': pages
+//    }
 
-}
+//}
 
-function pageButton(pages) {
-    var wrapper = document.getElementById('pagination-wrapper');
-    wrapper.innerHTML = ""
-    var maxLeft = (state.page - Math.floor(state.window / 2));
-    var maxRight = (state.page - Math.floor(state.window / 2));
-    if (maxLeft < 1) {
-        maxLeft = 1;
-        maxRight = state.window;
-    }
-    if (maxRight > pages) {
-        maxLeft = pages - (state.window - 1);
-        maxRight = pages;
-        if (maxLeft < 1) {
-            maxLeft = 1;
-        }
-    }
-    for (var page = maxLeft; page <= maxRight; page++) {
-        wrapper.innerHTML += `<button value=${page} class="page btn btn-sm btn-warning text-white">${page}</button>`
-    }
-    if (state.page != 1) {
-        wrapper.innerHTML = `<button value="${state}" class="page btn btn-sm btn-warning text-white">&#171; First</button>` + wrapper.innerHTML;
-    }
-    if (state.page != pages) {
-        wrapper.innerHTML += `<button value="${pages}" class="page btn btn-sm btn-warning text-white"> Last &#187;</button>`;
-    }
+//function pageButton(pages) {
+//    var wrapper = document.getElementById('pagination-wrapper');
+//    wrapper.innerHTML = ""
+//    var maxLeft = (state.page - Math.floor(state.window / 2));
+//    var maxRight = (state.page - Math.floor(state.window / 2));
+//    if (maxLeft < 1) {
+//        maxLeft = 1;
+//        maxRight = state.window;
+//    }
+//    if (maxRight > pages) {
+//        maxLeft = pages - (state.window - 1);
+//        maxRight = pages;
+//        if (maxLeft < 1) {
+//            maxLeft = 1;
+//        }
+//    }
+//    for (var page = maxLeft; page <= maxRight; page++) {
+//        wrapper.innerHTML += `<button value=${page} class="page btn btn-sm btn-warning text-white">${page}</button>`
+//    }
+//    if (state.page != 1) {
+//        wrapper.innerHTML = `<button value="${state}" class="page btn btn-sm btn-warning text-white">&#171; First</button>` + wrapper.innerHTML;
+//    }
+//    if (state.page != pages) {
+//        wrapper.innerHTML += `<button value="${pages}" class="page btn btn-sm btn-warning text-white"> Last &#187;</button>`;
+//    }
 
-    $('.page').click(function () {
+//    $('.page').click(function () {
 
-        state.page = $(this).val();
-        buildTable();
-    })
-}
-function buildTable(str) {
-    var data = Custpagination(state.querySet, state.page, state.rows);
-    console.log(data);
-    var myData = data.querySet
+//        state.page = $(this).val();
+//        buildTable();
+//    })
+//}
+function buildTable(str,myData) {
+    //var data = Custpagination(state.querySet, state.page, state.rows);
+    //console.log(data);
+    //var myData = data.querySet
     $(`#${str} #product`).empty();
     for (var i = 0; i < myData.length; i++) {
         $(`#${str} #product`).append(` <div class="col-lg-6">
@@ -100,7 +100,7 @@ function buildTable(str) {
                             </div>
                         </div>`);
     }
-    pageButton(data.pages);
+   /* pageButton(data.pages);*/
 }
 
 
@@ -118,8 +118,8 @@ $(document).ready(() => {
         type: "Get",
         data: { Tab: "tab2" },
         success: (response) => {
-            state.querySet = response;
-            buildTable("tab-2")
+           // state.querySet = response;
+            buildTable("tab-2",response)
             console.log(response)
         },
         failure: function (response) {
@@ -173,8 +173,8 @@ $(document).ready(() => {
             type: "Get",
             data: { Tab: "tab1" },
             success: (response) => {
-                state.querySet = response;
-                buildTable("tab-1")
+               // state.querySet = response;
+                buildTable("tab-1", response)
                 console.log(response)
             },
             failure: function (response) {
@@ -201,8 +201,8 @@ $(document).ready(() => {
             type: "Get",
             data: { Tab: "tab2" },
             success: (response) => {
-                state.querySet = response;
-                buildTable("tab-2")
+              //  state.querySet = response;
+                buildTable("tab-2", response)
                 console.log(response)
             },
             failure: function (response) {
@@ -230,8 +230,8 @@ $(document).ready(() => {
             type: "Get",
             data: { Tab: "tab3" },
             success: (response) => {
-                state.querySet = response;
-                buildTable("tab-3")
+              //  state.querySet = response;
+                buildTable("tab-3", response)
                 console.log(response)
             },
             failure: function (response) {

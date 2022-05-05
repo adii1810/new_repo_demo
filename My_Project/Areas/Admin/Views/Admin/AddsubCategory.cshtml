@@ -5,7 +5,9 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var data = ViewBag.categories;
 }
-<h4>AddSubCategory</h4>
+<div class="py-4">
+    <label class="text-blue"><i class="fa-solid fa-puzzle-piece"> Add Sub Category</i></label>
+</div>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,7 +21,7 @@
                 </div>
             </div>
             <div class="form-group">
-               
+
                 <input asp-for="SubName" class="form-control" placeholder="Sub Category Name" required />
                 <span asp-validation-for="SubName" class="text-danger"></span>
             </div>
@@ -30,7 +32,5 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
