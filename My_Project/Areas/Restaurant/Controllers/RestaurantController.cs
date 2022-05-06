@@ -26,7 +26,7 @@ namespace My_Project.Areas.Restaurant.Controllers
     public class RestaurantController : Controller
     {
         private readonly IHostingEnvironment _env;
-        EncryptionDecryption END = new EncryptionDecryption();
+       
         //=====FireBase========
         private static string apiKey = "AIzaSyBXtJAwAegfHApNAxk0zv4a206QLgZV7_U";
         private static string Bucket = "democoreproject.appspot.com";
@@ -288,6 +288,29 @@ namespace My_Project.Areas.Restaurant.Controllers
             else
                 return RedirectToAction("Login");
         }
+        public async Task<IActionResult> ApprovedOrder()
+        {
+            var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
+            if (sess != "" && sess != null)
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(RestaurantApiString);
+                HttpResponseMessage httpResponse = await client.GetAsync($"GetApprovedOrders/{Convert.ToInt32(sess)}");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var result = httpResponse.Content.ReadAsStringAsync().Result;
+                    if (result != "")
+                    {
+                        List<ShowOrderViewModel> lvm = new List<ShowOrderViewModel>();
+                        lvm = JsonConvert.DeserializeObject<List<ShowOrderViewModel>>(result);
+                        return View(lvm);
+                    }
+                }
+                return View();
+            }
+            else
+                return RedirectToAction("Login");
+        }
         public async Task<IActionResult> ShowOrderDetail(int OrdId)
         {
             var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
@@ -321,7 +344,7 @@ namespace My_Project.Areas.Restaurant.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string uname, string pass)
         {
-            pass = END.Encryption(pass);
+            
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(RestaurantApiString);
@@ -723,7 +746,7 @@ namespace My_Project.Areas.Restaurant.Controllers
         [HttpPost]
         public async Task<JsonResult> code(string prepass)
         {
-            prepass = END.Encryption(prepass);
+           
             var userName = HttpContext.Session.GetString("ResUserName").ToString();
             var email = HttpContext.Session.GetString("ResEmail").ToString();
             HttpClient client = new HttpClient();
@@ -751,7 +774,6 @@ namespace My_Project.Areas.Restaurant.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(string pass)
         {
-            pass = END.Encryption(pass);
             var userName = HttpContext.Session.GetString("ResUserName").ToString();
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(RestaurantApiString);
@@ -799,9 +821,7 @@ namespace My_Project.Areas.Restaurant.Controllers
                     string sixDigitNumber = randNum.ToString("D6");
                     var MsgBody = sixDigitNumber + " this is ypur new password please change it once you login with this.";
                     var message = new Message(Email, "Forget Password Request", MsgBody);
-                    _emailSender.SendEmail(message);
-
-                    sixDigitNumber = END.Encryption(sixDigitNumber);
+                    _emailSender.SendEmail(message);                  
 
                     HttpClient client1 = new HttpClient();
                     client1.BaseAddress = new Uri(RestaurantApiString);

@@ -15,6 +15,8 @@ namespace Food_Delivery_Api.Controllers
     public class ValetController : ControllerBase
     {
         private readonly IValetInterface _valet;
+        EncryptionDecryption END = new EncryptionDecryption();
+
         public ValetController(IValetInterface valet)
         {
             _valet = valet;
@@ -22,6 +24,7 @@ namespace Food_Delivery_Api.Controllers
         [HttpGet("Login/{user}/{pass}")]
         public Valet Login(string user, string pass)
         {
+            pass = END.Encryption(pass);
             if (user != null && pass != null)
             {
                 var data = _valet.ValetLogin(user, pass);
@@ -64,34 +67,18 @@ namespace Food_Delivery_Api.Controllers
             }
             return null;
         }
-        [HttpPost("ValetReg")]
-        public String ValetReg(Valet val)
-        {
-            if (val != null)
-            {
-                var data = _valet.ValetReg(val);
-                if (data != ""&& data != "false")
-                {
-                    return data;
-                }
-            }
-            return "false";
-        }
-        [HttpGet("ApproveOrders/{OrdId}/{valId}")]
-        public string ApproveOrders(int OrdId, int valId)
+       
+        [HttpPut("ApproveOrders/{OrdId}")]
+        public string ApproveOrders(int OrdId,[FromBody] int valId)
         {
             var result = _valet.ApproveOrder(OrdId, valId);
             return result;
         }
-        [HttpGet("ChangeStatus/{OrdId}/{status}")]
-        public string ChangeStatus(int OrdId, int status)
+       
+        [HttpPut("ChangePassword/{uname}")]
+        public string ChangePassword(string uname,[FromBody] string pass)
         {
-            var result = _valet.ChangeStatus(OrdId, status);
-            return result;
-        }
-        [HttpGet("ChangePassword/{uname}/{pass}")]
-        public string ChangePassword(string uname, string pass)
-        {
+            pass = END.Encryption(pass);
             var data = _valet.ChangePassword(uname, pass);
             return data;
         }
@@ -99,6 +86,7 @@ namespace Food_Delivery_Api.Controllers
         [HttpGet("ValetConfirmPass/{username}/{password}")]
         public async Task<int> ValetConfirmPass(string username, string password)
         {
+            password = END.Encryption(password);
             var data = _valet.ValetConfirmPassword(username, password);
             return data;
         }
@@ -108,11 +96,45 @@ namespace Food_Delivery_Api.Controllers
             var result = _valet.GetValet(ValId);
             return result;
         }
+        [HttpGet("ResetPassword/{Username}/{Email}")]
+        public async Task<int> ResetPassword(string Username, string Email)
+        {
+            var data = _valet.verifyAccount(Username, Email);
+            return data;
+        }
+        [HttpPost("ValetReg")]
+        public String ValetReg(Valet val)
+        {
+            val.Valet_Password = END.Encryption(val.Valet_Password);
+            if (val != null)
+            {
+                var data = _valet.ValetReg(val);
+                if (data != "" && data != "false")
+                {
+                    return data;
+                }
+            }
+            return "false";
+        }
+        [HttpPut("ChangeStatus/{OrdId}")]
+        public string ChangeStatus(int OrdId, [FromBody] int status)
+        {
+            var result = _valet.ChangeStatus(OrdId, status);
+            return result;
+        }
         [HttpPut("UpdateValet")]
         public string UpdateValet(Valet vm)
         {
             var result = _valet.UpdateValet(vm);
             return result;
+        }
+       
+        [HttpPut("ResetPassword/{Username}/{Email}")]
+        public async Task<string> ResetPassword(string Username, string Email, [FromBody] string Pass)
+        {
+            Pass = END.Encryption(Pass);
+            var data = _valet.ChangePassword(Username, Pass);
+            return data;
         }
     }
 }

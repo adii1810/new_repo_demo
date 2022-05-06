@@ -23,7 +23,7 @@ namespace My_Project.Controllers
     [Area("Client")]
     public class ClientController : Controller
     {
-        EncryptionDecryption END = new EncryptionDecryption();
+        
         //===============firebase===============
         private static string apiKey = "AIzaSyBXtJAwAegfHApNAxk0zv4a206QLgZV7_U";
         private static string Bucket = "democoreproject.appspot.com";
@@ -49,6 +49,11 @@ namespace My_Project.Controllers
 
         public IActionResult Index()
         {
+            var userId = HttpContext.Session.GetString("UserId")?.ToString() ?? "";
+            if (userId != "")
+            {
+                return RedirectToAction("CustomerIndex");
+            }
             return View();
         }
 
@@ -269,8 +274,6 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> VendorReg(RestaurantDetailViewModel vm)
         {
-            vm.Restaurant_Detail_Password = END.Encryption(vm.Restaurant_Detail_Password);
-
             var file = vm.img;
             FileStream fs = null;
             string foldername = "RestaurantProfileImage";
@@ -337,7 +340,7 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<ActionResult> CustomerReg(CustomerViewModel cvm)
         {
-            cvm.User_Password = END.Encryption(cvm.User_Password);
+            
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
             HttpResponseMessage response = await client.PostAsJsonAsync("AddCustomer", cvm);
@@ -356,7 +359,7 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<JsonResult> CustomerLogin(string Uname, string Pass)
         {
-            Pass = END.Encryption(Pass);
+            
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
@@ -438,7 +441,7 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> ValetReg(ValetViewModel vm)
         {
-            vm.Valet_Password = END.Encryption(vm.Valet_Password);
+          
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(ValetApiString);
@@ -504,7 +507,7 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<JsonResult> code(string prepass)
         {
-            prepass = END.Encryption(prepass);
+           
             var userName = HttpContext.Session.GetString("UserName").ToString();
             var email = HttpContext.Session.GetString("UserEmail").ToString();
             HttpClient client = new HttpClient();
@@ -530,7 +533,6 @@ namespace My_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(string pass)
         {
-            pass = END.Encryption(pass);
             var userName = HttpContext.Session.GetString("UserName").ToString();
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(CustomerApiString);
@@ -559,9 +561,6 @@ namespace My_Project.Controllers
                     var MsgBody = sixDigitNumber + " this is ypur new password please change it once you login with this.";
                     var message = new Message(Email, "Forget Password Request", MsgBody);
                     _emailSender.SendEmail(message);
-
-                    sixDigitNumber = END.Encryption(sixDigitNumber);
-
                     HttpClient client1 = new HttpClient();
                     client1.BaseAddress = new Uri(CustomerApiString);
                     HttpResponseMessage httpResponse1 = await client.PutAsJsonAsync($"ChangePassword/{Username}/{Email}", sixDigitNumber);

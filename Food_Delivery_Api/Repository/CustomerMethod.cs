@@ -39,19 +39,19 @@ namespace Food_Delivery_Api.Repository
             List<ProductforCustomerViewModel> lvm = new List<ProductforCustomerViewModel>();
             if (tab == "tab1")
             {
-                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 1 && x.Product_Status == true).ToList();
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 1 && x.Product_Status == true && x.Restaurant_DetailId == x.Restaurant_Detail.Restaurant_Detail_Id && x.Restaurant_Detail.status_by_Admin == true).ToList();
             }
             else if (tab == "tab2")
             {
-                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 0 && x.Product_Status == true).ToList();
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 0 && x.Product_Status == true && x.Restaurant_DetailId == x.Restaurant_Detail.Restaurant_Detail_Id && x.Restaurant_Detail.status_by_Admin == true).ToList();
             }
             else if (tab == "tab3")
             {
-                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 2 && x.Product_Status == true).ToList();
+                data = _context.Product.Include("Sub_Category").Where(x => (int)x.Sub_Category.Main_Category_Id == 2 && x.Product_Status == true && x.Restaurant_DetailId == x.Restaurant_Detail.Restaurant_Detail_Id && x.Restaurant_Detail.status_by_Admin == true).ToList();
             }
             else
             {
-                data = _context.Product.Include("Sub_Category").ToList();
+                data = _context.Product.Include("Sub_Category").Where(x=> x.Restaurant_DetailId == x.Restaurant_Detail.Restaurant_Detail_Id && x.Restaurant_Detail.status_by_Admin == true).ToList();
             }
             foreach (var item in data)
             {
@@ -126,17 +126,30 @@ namespace Food_Delivery_Api.Repository
             List<CartProductViewModel> lvm = new List<CartProductViewModel>();
             foreach (var item in data)
             {
-                CartProductViewModel cvm = new CartProductViewModel();
-                cvm.Order_Date = item.Order_Date;
-                var orderDetail = _context.tempOrder_Detail.Where(x => x.OrderId == item.Order_Id).FirstOrDefault();
-                var productDetails = _context.Product.Where(x => x.Product_Id == orderDetail.ProductId).FirstOrDefault();
-                var ImgLink = _context.ProductImages.Where(x => x.ProductId == productDetails.Product_Id).Select(x => x.ImgLink).FirstOrDefault();
-                cvm.ProductId = orderDetail.ProductId;
-                cvm.Quantity = orderDetail.Quantity;
-                cvm.ProductName = productDetails.Product_Name;
-                cvm.Price = productDetails.Product_Price;
-                cvm.ImgLink = ImgLink;
-                lvm.Add(cvm);
+                var prod_status = _context.tempOrder_Detail.Where(x => x.OrderId == item.Order_Id && x.ProductId == x.Product.Product_Id).Select(x => x.Product.Product_Status).FirstOrDefault();
+                var res_status = _context.tempOrder_Detail.Where(x => x.OrderId == item.Order_Id && x.ProductId == x.Product.Product_Id && x.Product.Restaurant_DetailId == x.Product.Restaurant_Detail.Restaurant_Detail_Id).Select(x => x.Product.Restaurant_Detail.status_by_Admin).FirstOrDefault();
+                if (prod_status == false || res_status == false)
+                {
+                    var tempOrderDetailData = _context.tempOrder_Detail.Where(x => x.OrderId == item.Order_Id).FirstOrDefault();
+                    var result1 = _context.tempOrder_Detail.Remove(tempOrderDetailData);
+                    var tempOrderData = _context.tempOrder.Where(x => x.Order_Id == item.Order_Id).FirstOrDefault();
+                    var result2 = _context.tempOrder.Remove(tempOrderData);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    CartProductViewModel cvm = new CartProductViewModel();
+                    cvm.Order_Date = item.Order_Date;
+                    var orderDetail = _context.tempOrder_Detail.Where(x => x.OrderId == item.Order_Id).FirstOrDefault();
+                    var productDetails = _context.Product.Where(x => x.Product_Id == orderDetail.ProductId).FirstOrDefault();
+                    var ImgLink = _context.ProductImages.Where(x => x.ProductId == productDetails.Product_Id).Select(x => x.ImgLink).FirstOrDefault();
+                    cvm.ProductId = orderDetail.ProductId;
+                    cvm.Quantity = orderDetail.Quantity;
+                    cvm.ProductName = productDetails.Product_Name;
+                    cvm.Price = productDetails.Product_Price;
+                    cvm.ImgLink = ImgLink;
+                    lvm.Add(cvm);
+                }
             }
             return lvm;
         }
@@ -175,6 +188,8 @@ namespace Food_Delivery_Api.Repository
         public string CheckOut(int userId)
         {
             var tempOrders = _context.tempOrder.Where(x => x.User_DataId == userId).ToList();
+            if (tempOrders.Count < 1)
+                return "empty";
             Order od = new Order();
             od.Order_Date = DateTime.Now;
             od.User_DataId = userId;
@@ -252,7 +267,7 @@ namespace Food_Delivery_Api.Repository
         public IEnumerable<Restaurant_Detail> ShowRestaurant()
         {
             //List<Restaurant_Detail> lvm = new List<ShowOrderViewModel>();
-            var data = _context.Restaurant_Detail.OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
+            var data = _context.Restaurant_Detail.Where(x=>x.status_by_Admin == true).OrderByDescending(x => x.Restaurant_Detail_Id).ToList();
             return data;
         }
         public IEnumerable<ProductforCustomerViewModel> ShowRestaurantProduct(string resName)
@@ -261,7 +276,7 @@ namespace Food_Delivery_Api.Repository
             //List<Restaurant_Detail> lvm = new List<ShowOrderViewModel>();
             List<Product> data = null;
             List<ProductforCustomerViewModel> lvm = new List<ProductforCustomerViewModel>();
-            var result = _context.Product.Where(x => x.Restaurant_DetailId == x.Restaurant_Detail.Restaurant_Detail_Id && resName == x.Restaurant_Detail.Restaurant_Detail_Name).OrderByDescending(x => x.Product_Id).ToList();
+            var result = _context.Product.Where(x => x.Restaurant_DetailId == x.Restaurant_Detail.Restaurant_Detail_Id && resName == x.Restaurant_Detail.Restaurant_Detail_Name && x.Product_Status == true && x.Restaurant_DetailId == x.Restaurant_Detail.Restaurant_Detail_Id && x.Restaurant_Detail.status_by_Admin == true).OrderByDescending(x => x.Product_Id).ToList();
 
             foreach (var item in result)
             {
@@ -287,8 +302,7 @@ namespace Food_Delivery_Api.Repository
         }
         public IEnumerable<string> MyRestaurant(string pre)
         {
-
-            var data = _context.Restaurant_Detail.Where(x => x.Restaurant_Detail_Name.Contains(pre)).Select(x => x.Restaurant_Detail_Name).ToList();
+            var data = _context.Restaurant_Detail.Where(x => x.status_by_Admin == true &&x.Restaurant_Detail_Name.Contains(pre)).Select(x => x.Restaurant_Detail_Name).ToList();
             return data;
         }
         public int ViewRating(int userId, int ProdId)

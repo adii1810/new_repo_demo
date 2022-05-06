@@ -14,6 +14,7 @@ namespace Food_Delivery_Api.Controllers
     public class CustomerController : Controller
     {
         private readonly ICustomerInterface _Customer;
+        EncryptionDecryption END = new EncryptionDecryption();
 
         public CustomerController(ICustomerInterface customer)
         {
@@ -24,13 +25,16 @@ namespace Food_Delivery_Api.Controllers
         [HttpPost("AddCustomer")]
         public string AddCustomer(User_Data ud)
         {
+            ud.User_Password = END.Encryption(ud.User_Password);
             var data = _Customer.AddCustomer(ud);
             return data;
         }
         [HttpGet("LoginCustomer/{Uname}/{Pass}")]
         public async Task<User_Data> LoginCustomer(string Uname, string Pass)
         {
+            Pass = END.Encryption(Pass);
             var data = await _Customer.LoginCustomer(Uname,Pass);
+           
             return data;
         }
         [HttpGet("ShowProduct/{tab}")]
@@ -109,7 +113,7 @@ namespace Food_Delivery_Api.Controllers
             var result = _Customer.ViewRating(userId,ProdId);
             return result;
         }
-        [HttpPut("AddRating/{userId}/{ProdId}/{rate}")]
+        [HttpPut("AddRating/{userId}/{ProdId}")]
         public string AddRating(int userId, int ProdId,[FromBody]int rate)
         {
             var result = _Customer.AddRating(userId, ProdId,rate);
@@ -125,6 +129,8 @@ namespace Food_Delivery_Api.Controllers
         [HttpPut("ChangePassword/{uname}")]
         public string ChangePassword(string uname,[FromBody] string pass)
         {
+
+            pass = END.Encryption(pass);
             var data = _Customer.ChangePassword(uname, pass);
             return data;
         }
@@ -132,6 +138,7 @@ namespace Food_Delivery_Api.Controllers
         [HttpGet("UserConfirmPass/{username}/{password}")]
         public async Task<int> UserConfirmPass(string username, string password)
         {
+            password = END.Encryption(password);
             var data = _Customer.UserConfirmPassword(username, password);
             return data;
         }
@@ -145,6 +152,7 @@ namespace Food_Delivery_Api.Controllers
         [HttpPut("ChangePassword/{Username}/{Email}")]
         public async Task<string> ChangePassword(string Username, string Email,[FromBody]string Pass)
         {
+            Pass = END.Encryption(Pass);
             var data = _Customer.ChangePassword(Username, Pass);
             return data;
         }

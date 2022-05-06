@@ -35,5 +35,6 @@ namespace Food_Delivery_Api.Repository
         public string UpdateOrderStatus(int OrdId);
         public Task<IEnumerable<OrderDetailViewModel>> ShowOrderDetail(int OrderId);
         public int verifyAccount(string Username, string Email);
+        public IEnumerable<ShowOrderViewModel> GetApprovedOrders(int ResId);
     }
 }

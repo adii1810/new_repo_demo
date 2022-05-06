@@ -25,9 +25,12 @@ namespace Food_Delivery_Api.Repository
         {
             if(val != null)
             {
-                _context.Valet.Add(val);
-                _context.SaveChanges();
-                return "true";
+                var result = _context.Valet.Add(val);
+                if (result.Entity != null)
+                {
+                    _context.SaveChanges();
+                    return "true";
+                }
             }
             return "false";            
         }
@@ -52,14 +55,17 @@ namespace Food_Delivery_Api.Repository
             var data = _context.Order.Where(x => x.Order_Id == OrdId).FirstOrDefault();
             data.Order_Status_Id = (OrderStatus)2;
             data.ValetId = valId;
-            _context.Order.Update(data);
-           
-            _context.SaveChanges();
-            return "true";  
+           var result = _context.Order.Update(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
         public IEnumerable<OrderViewForValet> ApprovedOrders(int valId)
         {
-            var data = _context.Order.Where(x => x.Order_Status_Id != OrderStatus.Order_Pending && x.Order_Status_Id != OrderStatus.Order_Registered && x.ValetId == valId).OrderByDescending(x => x.Order_Id).ToList();
+            var data = _context.Order.Where(x => x.Order_Status_Id != OrderStatus.Order_Pending && x.Order_Status_Id != OrderStatus.Order_Registered && x.Order_Status_Id != OrderStatus.Delivered && x.ValetId == valId).OrderByDescending(x => x.Order_Id).ToList();
             List<OrderViewForValet> lvm = new List<OrderViewForValet>();
             foreach (var item in data)
             {
@@ -92,9 +98,13 @@ namespace Food_Delivery_Api.Repository
         {
             var data = _context.Order.Where(x => x.Order_Id == OrdId).FirstOrDefault();
             data.Order_Status_Id = (OrderStatus)status+1;
-            _context.Order.Update(data);
-            _context.SaveChanges();
-            return "true";
+            var result = _context.Order.Update(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
         public int ValetConfirmPassword(string username, string password)
         {
@@ -105,9 +115,13 @@ namespace Food_Delivery_Api.Repository
         {
             var data = _context.Valet.Where(x => x.Valet_UserName == username).FirstOrDefault();
             data.Valet_Password = password;
-            _context.Valet.Update(data);
-            _context.SaveChanges();
-            return "true";
+            var result = _context.Valet.Update(data);
+            if (result.Entity != null)
+            {
+                _context.SaveChanges();
+                return "true";
+            }
+            return "false";
         }
 
         public Valet GetValet(int ValId)
@@ -119,11 +133,18 @@ namespace Food_Delivery_Api.Repository
         {
             if (vm != null)
             {
-                _context.Valet.Update(vm);
-                _context.SaveChanges();
-                return "true";
+               var result = _context.Valet.Update(vm);
+                {
+                    _context.SaveChanges();
+                    return "true";
+                }
             }
             return "false";
+        }
+        public int verifyAccount(string Username, string Email)
+        {
+            var data = _context.Valet.Where(x => x.Valet_UserName == Username && x.Valet_Email == Email).Count();
+            return data;
         }
 
     }

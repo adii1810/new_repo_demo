@@ -54,7 +54,7 @@ namespace My_Project.Areas.Valet.Controllers
            
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(ValetApiString);
-                HttpResponseMessage httpResponse = await client.GetAsync($"ApproveOrders/{OrdId}/{Convert.ToInt32(valetId)}");
+                HttpResponseMessage httpResponse = await client.PutAsJsonAsync($"ApproveOrders/{OrdId}",Convert.ToInt32(valetId));
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     var result = httpResponse.Content.ReadAsStringAsync().Result;
@@ -158,6 +158,12 @@ namespace My_Project.Areas.Valet.Controllers
             HttpContext.Session.SetString("ValetId", "");
             return RedirectToAction("Login");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ResetPassword()
+        {
+            return View();
+        }
         [HttpPost]
         public async Task<ActionResult> Login(string UserName,string Password)
         {
@@ -193,7 +199,7 @@ namespace My_Project.Areas.Valet.Controllers
             var valetId = Convert.ToInt32(HttpContext.Session.GetString("ValetId").ToString());
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(ValetApiString);
-            HttpResponseMessage httpResponse = await client.GetAsync($"ChangeStatus/{OrdId}/{Status}");
+            HttpResponseMessage httpResponse = await client.PutAsJsonAsync($"ChangeStatus/{OrdId}",Status);
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
@@ -237,7 +243,7 @@ namespace My_Project.Areas.Valet.Controllers
             var userName = HttpContext.Session.GetString("ValUserName").ToString();
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(ValetApiString);
-            HttpResponseMessage httpResponse = await client.GetAsync($"ChangePassword/{userName}/{pass}");
+            HttpResponseMessage httpResponse = await client.PutAsJsonAsync($"ChangePassword/{userName}",pass);
             if (httpResponse.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
@@ -262,6 +268,37 @@ namespace My_Project.Areas.Valet.Controllers
                 }
             }
             return RedirectToAction("UpdateValet");
+        }
+        [HttpPost]
+        public async Task<JsonResult> ResetPassword(string Username, string Email)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(ValetApiString);
+            HttpResponseMessage httpResponse = await client.GetAsync($"ResetPassword/{Username}/{Email}");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = httpResponse.Content.ReadAsStringAsync().Result;
+                if (result != "0")
+                {
+                    Random r = new Random();
+                    int randNum = r.Next(1000000);
+                    string sixDigitNumber = randNum.ToString("D6");
+                    var MsgBody = sixDigitNumber + " this is ypur new password please change it once you login with this.";
+                    var message = new Message(Email, "Forget Password Request", MsgBody);
+                    _emailSender.SendEmail(message);
+
+                    HttpClient client1 = new HttpClient();
+                    client1.BaseAddress = new Uri(ValetApiString);
+                    HttpResponseMessage httpResponse1 = await client.PutAsJsonAsync($"ResetPassword/{Username}/{Email}", sixDigitNumber);
+                    if (httpResponse1.IsSuccessStatusCode)
+                    {
+                        var result1 = httpResponse1.Content.ReadAsStringAsync().Result;
+                        return Json(result1);
+                    }
+                }
+                return Json("wrong");
+            }
+            return Json("false");
         }
     }
 }

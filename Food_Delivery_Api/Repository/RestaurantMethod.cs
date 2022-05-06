@@ -339,6 +339,23 @@ namespace Food_Delivery_Api.Repository
             }
             return lvm;
         }
+        public IEnumerable<ShowOrderViewModel> GetApprovedOrders(int ResId)
+        {
+            List<ShowOrderViewModel> lvm = new List<ShowOrderViewModel>();
+
+            var data = _context.Order_Detail.Include("Order").Where(x => x.OrderId == x.Order.Order_Id && x.ProductId == x.Product.Product_Id && x.Product.Restaurant_DetailId == ResId && x.Order.Order_Status_Id == (OrderStatus)1).DistinctBy(x => x.OrderId).ToList();
+            foreach (var item in data)
+            {
+                ShowOrderViewModel vm = new ShowOrderViewModel();
+                vm.OrderDate = item.Order.Order_Date.ToString("D");
+                vm.OrderId = item.Order.Order_Id;
+                vm.OrderStatus = (int)item.Order.Order_Status_Id;
+                var amt = _context.Order_Detail.Where(x => x.OrderId == item.Order.Order_Id).Sum(x => x.Product.Product_Price * x.Quantity);
+                vm.TotalPrice = amt;
+                lvm.Add(vm);
+            }
+            return lvm;
+        }
         public string UpdateOrderStatus(int OrdId)
         {
             var data = _context.Order.Where(x => x.Order_Id == OrdId).FirstOrDefault();

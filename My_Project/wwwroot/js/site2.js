@@ -395,6 +395,8 @@ const deleteProduct1 = (id) => {
         data: { ProdId: id },
         success: (response) => {
             if (response == "true") {
+                $("#btnchange_" + id).empty();
+                $("#btnchange_" + id).append(`<button class="btn btn-warning text-white" onclick="AddProduct(${id})" id="btn_${id}">Add</button>`);
                 showInPopup(location3 + "Cart", 'Cart');
             }
             else {
@@ -419,6 +421,12 @@ $('#Checkout').click(() => {
         success: (response) => {
             if (response == "true") {
                 window.location = location3 + "ShowOrders";
+            }
+            else if (response == "empty") {
+                    toastMixin.fire({
+                    title: "Cart is Empty",
+                    icon: "error"
+                });
             }
             else
                 alert("failure")
