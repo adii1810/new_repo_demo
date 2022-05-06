@@ -20,11 +20,22 @@ namespace Food_Delivery_Api.Repository
 
         public string AddCustomer(User_Data ud)
         {
-           var result =  _context.User_Data.Add(ud);
-            if (result.Entity != null)
+            if (_context.User_Data.Where(x => x.User_UserName == ud.User_UserName).Count() != 0)
             {
-                _context.SaveChanges();
-                return "true";
+                return "userName";
+            }
+            else if (_context.User_Data.Where(x => x.User_Email == ud.User_Email).Count() != 0)
+            {
+                return "email";
+            }
+            else
+            {
+                var result = _context.User_Data.Add(ud);
+                if (result.Entity != null)
+                {
+                    _context.SaveChanges();
+                    return "true";
+                }
             }
             return "false";
         }

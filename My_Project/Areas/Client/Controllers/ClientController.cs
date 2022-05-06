@@ -338,7 +338,7 @@ namespace My_Project.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public async Task<ActionResult> CustomerReg(CustomerViewModel cvm)
+        public async Task<JsonResult> CustomerReg(CustomerViewModel cvm)
         {
             
             HttpClient client = new HttpClient();
@@ -347,14 +347,17 @@ namespace My_Project.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                if (result != "false")
+                if (result == "true")
                 {
                     HttpContext.Session.SetString("IsRegistered", "true");
-                    return RedirectToAction("Index");
+                    return Json(result);
                 }
+                HttpContext.Session.SetString("IsRegistered", result);
+                HttpContext.Session.SetString("userData", JsonConvert.SerializeObject(cvm));
+                return Json(result);
             }
-            HttpContext.Session.SetString("IsRegistered", "false");
-            return RedirectToAction("Index");
+           
+            return Json("false");
         }
         [HttpPost]
         public async Task<JsonResult> CustomerLogin(string Uname, string Pass)

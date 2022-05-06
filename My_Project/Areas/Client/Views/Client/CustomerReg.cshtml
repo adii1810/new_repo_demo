@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "CustomerReg";
     Layout = null;
+ 
 }
 
 
@@ -12,7 +13,7 @@
 </head>
 
 
-<form asp-action="CustomerReg" asp-area="Client" asp-controller="Client" enctype="multipart/form-data">
+<form method="post" id="custForm">
 
     <div class="row">
         <div class="col-6">
@@ -142,8 +143,38 @@
             
         </div>
     </div>
-    <input type="submit" value="Register" class="btn btn-success btn-block" id="btnsubmit" />
+    <button type="button" value="Register" class="btn btn-success btn-block" id="btnsubmit2">Register</button>
 </form>
+
+<script>
+
+    $('#btnsubmit2').click(() => {
+        var data = $('#custForm').serializeArray();
+        $("#errorEmail").html('');
+        $("#errorUserName").html('');
+        console.log(data);
+        $.ajax({
+            url: location3 + "CustomerReg",
+            type: "Post",
+            data: data,
+            success: (response)=>{
+                if (response == "userName") {
+                    $("#errorUserName").html('UserName is already taken');
+                }
+                else if (response == "email") {
+                    $("#errorEmail").html('Email is already taken');
+                }
+                else if (response == "true") {
+                    showInPopup(location3 + "CustomerLogin", '');
+                }
+                else {
+                    alert("Something went wrong");
+                }
+            }
+
+        })
+    })
+</script>
 
 
 
