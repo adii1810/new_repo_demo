@@ -4,9 +4,11 @@ using Firebase.Storage;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using My_Project.Areas.Client.ViewModels;
 using My_Project.Areas.Valet.ViewModels;
+using My_Project.Hubs;
 using My_Project.Models;
 using Newtonsoft.Json;
 using System;
@@ -34,10 +36,11 @@ namespace My_Project.Controllers
         private readonly IHostingEnvironment _env;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _config;
+        private readonly IHubContext<MyHub, IStatusInterface> _context;
         public string CustomerApiString;
         public string RestaurantApiString;
         public string ValetApiString;
-        public ClientController(IEmailSender emailSender, IConfiguration config, IHostingEnvironment env)
+        public ClientController(IEmailSender emailSender, IConfiguration config, IHostingEnvironment env, IHubContext<MyHub, IStatusInterface> context)
         {
             _emailSender = emailSender;
             _config = config;
@@ -45,6 +48,7 @@ namespace My_Project.Controllers
             RestaurantApiString = _config.GetValue<string>("RESTAURANTAPISTRING");
             ValetApiString = _config.GetValue<string>("VALETAPISTRING");
             _env = env;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -94,6 +98,7 @@ namespace My_Project.Controllers
                 if (result != "" && result != null)
                 {
                     lvm = JsonConvert.DeserializeObject<List<ShowOrderViewModel>>(result);
+                   // await _context.Clients.All.StatusUpdated(lvm);
                     return View(lvm);
                 }
             }
@@ -435,6 +440,26 @@ namespace My_Project.Controllers
                 var result = response.Content.ReadAsStringAsync().Result;
                 if (result != "")
                 {
+
+                    var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
+                    if (sess != "" && sess != null)
+                    {
+                        HttpClient client1 = new HttpClient();
+                        client1.BaseAddress = new Uri(RestaurantApiString);
+                        HttpResponseMessage httpResponse = await client1.GetAsync($"GetUnApprovedOrders/{Convert.ToInt32(sess)}");
+                        if (httpResponse.IsSuccessStatusCode)
+                        {
+                            var result1 = httpResponse.Content.ReadAsStringAsync().Result;
+                            if (result != "")
+                            {
+                                List<Areas.Restaurant.ViewModels.ShowOrderViewModel> lvm = new List<Areas.Restaurant.ViewModels.ShowOrderViewModel>();
+                                lvm = JsonConvert.DeserializeObject<List<Areas.Restaurant.ViewModels.ShowOrderViewModel>>(result1);
+                                await _context.Clients.All.ShowCurrentOrders(lvm);
+                            }
+                        }
+                       
+                    }            
+
                     return Json(result);
                 }
             }

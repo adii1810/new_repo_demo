@@ -339,23 +339,23 @@
         <div>
             @RenderBody()
         </div>
-        <div class="container-xxl py-5 px-0 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container-xxl py-5 px-0 wow fadeInUp" data-wow-delay="0.1s ">
             <div class="row g-0">
-                <div class="col-md-6">
+                @*<div class="col-md-6">
                     <div class="video">
                         <button type="button" class="btn-play" data-bs-toggle="modal"
-                                data-src="https://www.youtube.com/embed/DWRcNpR6Kdc" data-bs-target="#videoModal">
+                                data-src="https://www.youtube.com/watch?v=yk39jzdnhHc" data-bs-target="#videoModal">
                             <span></span>
                         </button>
                     </div>
-                </div>
+                </div>*@
                 <div class="col-md-6 bg-dark d-flex align-items-center">
                     <div class="p-5 wow fadeInUp" data-wow-delay="0.2s">
                         <h5 class="section-title ff-secondary text-start text-primary fw-normal">
                             Hello---------
                         </h5>
                         <h1 class="text-white mb-4">Register Here</h1>
-                        <form asp-action="CustomerReg" asp-area="Client" asp-controller="Client" enctype="multipart/form-data">
+                        <form method="post" id="indexForm" enctype="multipart/form-data">
 
                             <div class="row">
                                 <div class="col-6">
@@ -382,7 +382,7 @@
                                             </div>
                                             <input asp-for="User_UserName" tabindex="53" class="form-control" placeholder="Enter Username" required/>
                                         </div>
-                                            <span asp-validation-for="User_UserName" class="text-danger" id="Error1"></span>
+                                            <span asp-validation-for="User_UserName" class="text-danger" id="ErrorUser"></span>
                                     </div>
 
                                     <div class="form-group">
@@ -407,7 +407,7 @@
                                             </div>
                                             <input type="email" asp-for="User_Email" tabindex="57" class="form-control" placeholder="Enter Email" required />
                                         </div>
-                                            <span asp-validation-for="User_Email" class="text-danger"></span>
+                                            <span asp-validation-for="User_Email" class="text-danger" id="ErrorEmail"></span>
                                     </div>
                                     <div class="form-group">
                                         <div class="input-group">
@@ -488,7 +488,7 @@
 
                                 </div>
                             </div>
-                            <input type="submit" value="Register" tabindex="61" class="btn btn-success btn-block " id="btnsubmit" />
+                            <button type="button" tabindex="61" class="btn btn-success btn-block " id="btnsubmit3">Register</button>
                         </form>
 
                     </div>
@@ -496,146 +496,23 @@
             </div>
         </div>
 
-        <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Youtube Video</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- 16:9 aspect ratio -->
-                        <div class="ratio ratio-16x9">
-                            <iframe class="embed-responsive-item" src="" id="video" allowfullscreen
-                                    allowscriptaccess="always" allow="autoplay"></iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Reservation Start -->
-        <!--  -->
-        <!-- Team Start -->
-        <div class="container-xxl pt-5 pb-3">
-            <div class="container">
-                <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                    <h5 class="section-title ff-secondary text-center text-primary fw-normal">
-                        Team Members
-                    </h5>
-                    <h1 class="mb-5">Our Master Chefs</h1>
-                </div>
-                <div class="row g-4" id="IndexRestaurant">
-
-                </div>
-            </div>
-        </div>
-        <!-- Team End -->
-        <!-- Testimonial Start -->
-        <!--<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="container">
-                <div class="text-center">
-                    <h5 class="section-title ff-secondary text-center text-primary fw-normal">
-                        Testimonial
-                    </h5>
-                    <h1 class="mb-5">Our Clients Say!!!</h1>
-                </div>
-                <div class="owl-carousel testimonial-carousel">
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>
-                            Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor
-                            stet amet eirmod eos labore diam
-                        </p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="~/img/testimonial-1.jpg"
-                                 style="width: 50px; height: 50px" />
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>
-                            Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor
-                            stet amet eirmod eos labore diam
-                        </p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="~/img/testimonial-2.jpg"
-                                 style="width: 50px; height: 50px" />
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>
-                            Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor
-                            stet amet eirmod eos labore diam
-                        </p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="~/img/testimonial-3.jpg"
-                                 style="width: 50px; height: 50px" />
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>
-                            Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor
-                            stet amet eirmod eos labore diam
-                        </p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="~/img/testimonial-4.jpg"
-                                 style="width: 50px; height: 50px" />
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>-->
-        <!-- Testimonial End -->
-        <div class="modal fade" tabindex="1" role="dialog" id="form-modal">
-            <div class="modal-dialog bounceIn animated" role="document">
-                
+        <div class="modal" tabindex="-1" role="dialog" id="form-modal">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title"></h5>
-                        <button type="button" class="close d-flex justify-content-end" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-
+                       
                     </div>
-
-                </div>
+                    
                 </div>
             </div>
-
-        @*<div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog zoomIn animated" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel"></h4>
-                        </div>
-                        <div class="modal-body">
-                            ...
-                        </div>
-
-                    </div>
-                </div>
-            </div>*@
+        </div>
+       
 
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s" id="contactUs">
@@ -729,7 +606,7 @@
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
     <script>
-        $(document).ready(() => {
+        @*$(document).ready(() => {
             var data = "@IsRegistered";
             if (data == "true") {
                 showInPopup(location3 + 'CustomerLogin', '');
@@ -738,6 +615,33 @@
                 showInPopup(location3 + 'CustomerReg', 'registration');
             }
             
+        })*@
+
+        $('#btnsubmit3').click(() => {
+            var data = $('#indexForm').serializeArray();
+            $("#errorEmail").html('');
+            $("#errorUserName").html('');
+            console.log(data);
+            $.ajax({
+                url: location3 + "CustomerReg",
+                type: "Post",
+                data: data,
+                success: (response) => {
+                    if (response == "userName") {
+                        $("#ErrorUser").html('UserName is already taken');
+                    }
+                    else if (response == "email") {
+                        $("#ErrorEmail").html('Email is already taken');
+                    }
+                    else if (response == "true") {
+                        showInPopup(location3 + "CustomerLogin", '');
+                    }
+                    else {
+                        alert("Something went wrong");
+                    }
+                }
+
+            })
         })
 
 

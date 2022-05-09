@@ -4,6 +4,7 @@
     ViewData["Title"] = "ApproveOrder";
     Layout = "~/Views/Shared/_RestaurantLayout.cshtml";
 }
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
 <style>
     table {
         border: 1px solid #ccc;
@@ -114,7 +115,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="ShowOrderBody">
 @foreach (var item in Model) {
         <tr>
             <td data-label="Order Id">
@@ -137,7 +138,37 @@
 }
     </tbody>
 </table>
+
 <script>
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/Hubs").build();
+
+    connection.on("ShowCurrentOrders", (response) => {
+
+        $('#ShowOrderBody').empty();
+        for (var i = 0; i < response.length; i++) {
+            $('#ShowOrderBody').append(` <tr>
+            <td data-label="Order Id">
+                ${response[i].orderId}
+            </td>
+            <td data-label="Order Date">
+               ${response[i].orderDate}
+            </td>
+
+            <td data-label="Total Price">
+                ${response[i].totalPrice}
+            </td>
+            <td>
+                <label class="btn btn-danger" onclick="btnApprove(${response[i].orderId})">Approve Order</label>
+            </td>
+            <td>
+                <a href="${location2}ShowOrderDetail/${response[i].orderId}" class="btn btn-success" >Show Order</a>
+            </td>
+        </tr>`)
+        }
+        console.log(response);
+    });
+    connection.start();
     const btnApprove = (id) => {
         $.ajax({
             url: location2 + "ApproveOrder",

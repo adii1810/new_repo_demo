@@ -12,6 +12,7 @@ using EmailServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using My_Project.Areas.Restaurant.Models;
+using My_Project.Hubs;
 
 namespace My_Project
 {
@@ -46,6 +47,7 @@ namespace My_Project
                 options.Cookie.IsEssential = true;
             });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.AddSignalR();
 
             // services.AddRazorPages();
         }
@@ -81,7 +83,10 @@ namespace My_Project
                 endpoints.MapControllerRoute(
                      name: "default",
                      pattern: "{controller=Home}/{action=AdminLogin}/{id?}");
+
+                endpoints.MapHub<MyHub>("/Hubs");
             });
+            
         }
     }
 }

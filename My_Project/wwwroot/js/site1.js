@@ -73,7 +73,7 @@ function generate_table() {
                 data = "<label class='btn btn-danger text-white' id='status_" + response[i].product_Id + "' onClick='changeStatus(" + response[i].product_Id + ")'>InActive</label>"
             }
             $('.customtbl .table tbody').append(`<tr ><td data-label="Sr.No" class="col-2">${i + 1}</td><td data-label="Product Name">${response[i].product_Name}</td>
-                    <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td><td><button class="btn btn-primary"  onClick="Update(${response[i].product_Id})"><i class="fa-solid fa-file-pen"></i></button><button class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button></td></tr>`);
+                    <td data-label="Product Price">${response[i].product_Price}</td><td><div class="Stars" style="--rating:${response[i].rate};"></div><br/><div>${response[i].user} Users Rated</div></td><td data-label="Product Status">${data}</td><td><button class="btn btn-primary"  onClick="Update(${response[i].product_Id})"><i class="fa-solid fa-file-pen"></i></button></td></tr>`);
         }
     }
     //else if (window.location == location1 + "ShowRestaurant") {

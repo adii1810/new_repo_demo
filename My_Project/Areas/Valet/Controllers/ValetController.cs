@@ -1,9 +1,11 @@
 ﻿using EmailServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using My_Project.Areas.Admin.ViewModels;
 using My_Project.Areas.Valet.ViewModels;
+using My_Project.Hubs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,12 +21,13 @@ namespace My_Project.Areas.Valet.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _config;
         public string ValetApiString;
-
-        public ValetController(IEmailSender emailSender, IConfiguration config)
+        private readonly IHubContext<MyHub, IStatusInterface> _context;
+        public ValetController(IEmailSender emailSender, IConfiguration config,IHubContext<MyHub, IStatusInterface> context)
         {
             _emailSender = emailSender;
             _config = config;
             ValetApiString = _config.GetValue<string>("VALETAPISTRING");
+            _context = context;
         }
         public async Task<IActionResult> Index()
         {
@@ -60,6 +63,7 @@ namespace My_Project.Areas.Valet.Controllers
                     var result = httpResponse.Content.ReadAsStringAsync().Result;
                     if (result != "")
                     {
+                        await _context.Clients.All.StatusUpdateProductApproveByValet(OrdId, 2);
                         return Json(result);
                     }
                 }
@@ -205,6 +209,7 @@ namespace My_Project.Areas.Valet.Controllers
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
                 if(result != "")
                 {
+                    await _context.Clients.All.StatusUpdateByValet(OrdId, Status+1);
                     return Json(result);
                 }
             }

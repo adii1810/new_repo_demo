@@ -324,90 +324,315 @@
 
 <div class="container mt-3 mt-md-5">
     <h2 class="text-charcoal hidden-sm-down">Your Orders</h2>
-    @foreach (var item in Model)
-    {
-        <div class="row">
-            <div class="col-12">
-                <div class="list-group mb-5">
-                    <div class="list-group-item p-3 bg-snow" style="position: relative;">
-                        <div class="row w-100 no-gutters">
-                            <div class="col-6 col-md">
-                                <h6 class="text-charcoal mb-0 w-100">Order Number</h6>
-                                <a href="" class="text-pebble mb-0 w-100 mb-2 mb-md-0">@item.OrderId</a>
-                            </div>
-                            <div class="col-6 col-md">
-                                <h6 class="text-charcoal mb-0 w-100">Date</h6>
-                                <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">@item.OrderDate</p>
-                            </div>
-                            <div class="col-6 col-md">
-                                <h6 class="text-charcoal mb-0 w-100">Total</h6>
-                                <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">@item.TotalPrice</p>
-                            </div>
+    <div id="Orders">
+        @foreach (var item in Model)
+        {
+            <div class="row">
+                <div class="col-12">
+                    <div class="list-group mb-5">
+                        <div class="list-group-item p-3 bg-snow" style="position: relative;">
+                            <div class="row w-100 no-gutters">
+                                <div class="col-6 col-md">
+                                    <h6 class="text-charcoal mb-0 w-100">Order Number</h6>
+                                    <a href="" class="text-pebble mb-0 w-100 mb-2 mb-md-0">@item.OrderId</a>
+                                </div>
+                                <div class="col-6 col-md">
+                                    <h6 class="text-charcoal mb-0 w-100">Date</h6>
+                                    <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">@item.OrderDate</p>
+                                </div>
+                                <div class="col-6 col-md">
+                                    <h6 class="text-charcoal mb-0 w-100">Total</h6>
+                                    <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">@item.TotalPrice</p>
+                                </div>
 
-                            <div class="col-12 col-md-3">
-                                <a class="btn btn-primary w-100" onclick="showInPopup('@Url.Action("ShowOrderDetail","Client",new {id = item.OrderId},Context.Request.Scheme)','Order Details')" >View Order</a>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="list-group-item p-3 bg-white">
-                        <div class="row w-100 no-gutters">
-                            <div class="col-12 col-md-9 pr-0 pr-md-3">
-                                <div class="alert p-2 alert-success w-100 mb-0 sec_status" id="sectionStatus_@item.OrderId">
-
-
-                                    <ul class="list-unstyled multi-steps">
-                                        <li id="step-1_@item.OrderId" class=" is-active">
-                                            Pending<div class="progress-bar progress-bar--success">
-                                                <div class="progress-bar__bar"></div>
-                                            </div>
-                                        </li>
-                                        <li id="step-2_@item.OrderId">
-                                            Approved<div class="progress-bar progress-bar--success">
-                                                <div class="progress-bar__bar"></div>
-                                            </div>
-                                        </li>
-                                        <li id="step-3_@item.OrderId" >
-                                            Order Taken<div class="progress-bar progress-bar--success">
-                                                <div class="progress-bar__bar"></div>
-                                            </div>
-                                        </li>
-                                        <li id="step-4_@item.OrderId">
-                                            Order On the way<div class="progress-bar progress-bar--success">
-                                                <div class="progress-bar__bar"></div>
-                                            </div>
-                                        </li>
-                                        <li id="step-5_@item.OrderId">Delivered</li>
-                                    </ul>
-
-
-
+                                <div class="col-12 col-md-3">
+                                    <a class="btn btn-primary w-100" onclick="showInPopup('@Url.Action("ShowOrderDetail","Client",new {id = item.OrderId},Context.Request.Scheme)','Order Details')">View Order</a>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-3">
-                                <a class="btn btn-secondary w-100 mb-2" onclick="showUp(@item.OrderStatus,@item.OrderId)">Track Shipment</a>
+
+                        </div>
+                        <div class="list-group-item p-3 bg-white">
+                            <div class="row w-100 no-gutters">
+                                <div class="col-12 col-md-9 pr-0 pr-md-3">
+                                    <div class="alert p-2 alert-success w-100 mb-0 sec_status" id="sectionStatus_@item.OrderId">
+
+
+                                        <ul class="list-unstyled multi-steps">
+                                            <li id="step-1_@item.OrderId" class=" is-active">
+                                                Pending<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-2_@item.OrderId">
+                                                Approved<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-3_@item.OrderId">
+                                                Order Taken<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-4_@item.OrderId">
+                                                Order On the way<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-5_@item.OrderId">Delivered</li>
+                                        </ul>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <a class="btn btn-secondary w-100 mb-2" onclick="showUp(@item.OrderStatus,@item.OrderId)">Track Shipment</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
             </div>
 
-
-        </div>
-    }
+        }
+    </div>
 </div>
 
-
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
 @section scripts{
     <script>
+       
+
         $('.display-3').html("Order History");
+
+
         $(document).ready(() => {
             $('.sec_status').hide();
             $('#pagination1').hide();
         })
 
-        const showUp = (status, ordid) => {
-            $('#sectionStatus_' + ordid).slideToggle('slow');
+        var connection = new signalR.HubConnectionBuilder().withUrl("/Hubs").build();
+
+        connection.on("StatusUpdated", (response) => {
+            console.log(response);
+            
+            $('#Orders').empty();
+            for (var i in response) {
+                console.log(response[i]);
+
+                
+                $('#status').empty();
+                if (response[i].orderStatus == 0) {
+                    $('#status').append(` <li id="step-1_${response[i].orderId}" class=" is-active">
+                                                Pending<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-2_${response[i].orderId}">
+                                                Approved<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-3_${response[i].orderId}" >
+                                                Order Taken<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-4_${response[i].orderId}">
+                                                Order On the way<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-5_${response[i].orderId}">Delivered</li>`);
+                }
+                else if (response[i].orderStatus == 1) {
+                    $('#status').append(` <li id="step-1_${response[i].orderId}" >
+                                                Pending<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-2_${response[i].orderId}" class=" is-active">
+                                                Approved<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-3_${response[i].orderId}" >
+                                                Order Taken<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-4_${response[i].orderId}">
+                                                Order On the way<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-5_${response[i].orderId}">Delivered</li>`);
+                }
+                else if (response[i].orderStatus == 2) {
+                    $('#status').append(` <li id="step-1_${response[i].orderId}" >
+                                                Pending<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-2_${response[i].orderId}" >
+                                                Approved<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-3_${response[i].orderId}" class=" is-active" >
+                                                Order Taken<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-4_${response[i].orderId}">
+                                                Order On the way<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-5_${response[i].orderId}">Delivered</li>`);
+                }
+                else if (response[i].orderStatus == 3) {
+                    $('#status').append(` <li id="step-1_${response[i].orderId}" >
+                                                Pending<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-2_${response[i].orderId}" >
+                                                Approved<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-3_${response[i].orderId}"  >
+                                                Order Taken<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-4_${response[i].orderId}" class="is-active">
+                                                Order On the way<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-5_${response[i].orderId}">Delivered</li>`);
+                }
+                else if (response[i].orderStatus == 4) {
+                    $('#status').append(` <li id="step-1_${response[i].orderId}" >
+                                                Pending<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-2_${response[i].orderId}" >
+                                                Approved<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-3_${response[i].orderId}"  >
+                                                Order Taken<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-4_${response[i].orderId}" >
+                                                Order On the way<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-5_${response[i].orderId}" class="is-active">Delivered</li>`);
+                }
+                else if (response[i].orderStatus == 5) {
+                    $('#status').append(` <li id="step-1_${response[i].orderId}" >
+                                                Pending<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-2_${response[i].orderId}" >
+                                                Approved<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-3_${response[i].orderId}"  >
+                                                Order Taken<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-4_${response[i].orderId}" >
+                                                Order On the way<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-5_${response[i].orderId}">Delivered</li>`);
+                }
+
+                $('#Orders').append(`<div class="row"><div class="col-12" ><div class="list-group mb-5">
+                        <div class="list-group-item p-3 bg-snow" style="position: relative;">
+                            <div class="row w-100 no-gutters">
+                                <div class="col-6 col-md">
+                                    <h6 class="text-charcoal mb-0 w-100">Order Number</h6>
+                                    <a href="" class="text-pebble mb-0 w-100 mb-2 mb-md-0">${response[i].orderId}</a>
+                                </div>
+                                <div class="col-6 col-md">
+                                    <h6 class="text-charcoal mb-0 w-100">Date</h6>
+                                    <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">${response[i].orderDate}</p>
+                                </div>
+                                <div class="col-6 col-md">
+                                    <h6 class="text-charcoal mb-0 w-100">Total</h6>
+                                    <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">${response[i].totalPrice}</p>
+                                </div>
+
+                                <div class="col-12 col-md-3">
+                                    <a class="btn btn-primary w-100" onclick="showInPopup('${location3 + 'ShowOrderDetail/' + response[i].orderId}','Order Details')" >View Order</a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="list-group-item p-3 bg-white">
+                            <div class="row w-100 no-gutters">
+                                <div class="col-12 col-md-9 pr-0 pr-md-3">
+                                    <div class="alert p-2 alert-success w-100 mb-0 sec_status" id="sectionStatus_${response[i].orderId}">
+
+
+                                        <ul class="list-unstyled multi-steps" id="status">
+                                            <li id="step-1_${response[i].orderId}" class=" is-active">
+                                                Pending<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-2_${response[i].orderId}">
+                                                Approved<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-3_${response[i].orderId}" >
+                                                Order Taken<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-4_${response[i].orderId}">
+                                                Order On the way<div class="progress-bar progress-bar--success">
+                                                    <div class="progress-bar__bar"></div>
+                                                </div>
+                                            </li>
+                                            <li id="step-5_${response[i].orderId}">Delivered</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+
+                                    <a class="btn btn-secondary w-100 mb-2" onclick="showUp(${response[i].orderStatus},${response[i].orderId})">Track Shipment</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div></div></div>`);
+
+               
+            }
+           
+                //Update Dom
+        });
+
+        connection.on("StatusUpdateProductApproveByRestaurant", (ordid, status) => {
+           
             if (status == 0) {
                 $('#step-1_' + ordid).addClass('is-active');
                 $('#step-2_' + ordid).removeClass('is-active');
@@ -450,9 +675,129 @@
                 $('#step-3_' + ordid).removeClass('is-active');
                 $('#step-4_' + ordid).removeClass('is-active');
             }
+            
+        });
 
-        }
+        connection.on("StatusUpdateProductApproveByValet", (ordid, status) => {
+            
+                if (status == 0) {
+                    $('#step-1_' + ordid).addClass('is-active');
+                    $('#step-2_' + ordid).removeClass('is-active');
+                    $('#step-3_' + ordid).removeClass('is-active');
+                    $('#step-4_' + ordid).removeClass('is-active');
+                    $('#step-5_' + ordid).removeClass('is-active');
+                }
+                else if (status == 1) {
+                    $('#step-2_' + ordid).addClass('is-active');
+                    $('#step-1_' + ordid).removeClass('is-active');
+                    $('#step-3_' + ordid).removeClass('is-active');
+                    $('#step-4_' + ordid).removeClass('is-active');
+                    $('#step-5_' + ordid).removeClass('is-active');
+                }
+                else if (status == 2) {
+                    $('#step-3_' + ordid).addClass('is-active');
+                    $('#step-1_' + ordid).removeClass('is-active');
+                    $('#step-2_' + ordid).removeClass('is-active');
+                    $('#step-4_' + ordid).removeClass('is-active');
+                    $('#step-5_' + ordid).removeClass('is-active');
+                }
+                else if (status == 3) {
+                    $('#step-4_' + ordid).addClass('is-active');
+                    $('#step-1_' + ordid).removeClass('is-active');
+                    $('#step-2_' + ordid).removeClass('is-active');
+                    $('#step-3_' + ordid).removeClass('is-active');
+                    $('#step-5_' + ordid).removeClass('is-active');
+                }
+                else if (status == 4) {
+                    $('#step-5_' + ordid).addClass('is-active');
+                    $('#step-1_' + ordid).removeClass('is-active');
+                    $('#step-2_' + ordid).removeClass('is-active');
+                    $('#step-3_' + ordid).removeClass('is-active');
+                    $('#step-4_' + ordid).removeClass('is-active');
+                }
+                else if (status == 5) {
+                    $('#step-5_' + ordid).removeClass('is-active');
+                    $('#step-1_' + ordid).removeClass('is-active');
+                    $('#step-2_' + ordid).removeClass('is-active');
+                    $('#step-3_' + ordid).removeClass('is-active');
+                    $('#step-4_' + ordid).removeClass('is-active');
+                }
+           
+        });
+        connection.on("StatusUpdateByValet", (ordid, status) => {
 
-        
+            if (status == 3) {
+                $('#step-4_' + ordid).addClass('is-active');
+                $('#step-1_' + ordid).removeClass('is-active');
+                $('#step-2_' + ordid).removeClass('is-active');
+                $('#step-3_' + ordid).removeClass('is-active');
+                $('#step-5_' + ordid).removeClass('is-active');
+            }
+            else if (status == 4) {
+                $('#step-5_' + ordid).addClass('is-active');
+                $('#step-1_' + ordid).removeClass('is-active');
+                $('#step-2_' + ordid).removeClass('is-active');
+                $('#step-3_' + ordid).removeClass('is-active');
+                $('#step-4_' + ordid).removeClass('is-active');
+            }
+            else if (status == 5) {
+                $('#step-5_' + ordid).removeClass('is-active');
+                $('#step-1_' + ordid).removeClass('is-active');
+                $('#step-2_' + ordid).removeClass('is-active');
+                $('#step-3_' + ordid).removeClass('is-active');
+                $('#step-4_' + ordid).removeClass('is-active');
+            }
+
+        });
+            connection.start();
+            const showUp = (status, ordid) => {
+
+                $('#sectionStatus_' + ordid).slideToggle('slow');
+                if (status == 0) {
+                    $('#step-1_' + ordid).addClass('is-active');
+                    $('#step-2_' + ordid).removeClass('is-active');
+                    $('#step-3_' + ordid).removeClass('is-active');
+                    $('#step-4_' + ordid).removeClass('is-active');
+                    $('#step-5_' + ordid).removeClass('is-active');
+                }
+                else if (status == 1) {
+                    $('#step-2_' + ordid).addClass('is-active');
+                    $('#step-1_' + ordid).removeClass('is-active');
+                    $('#step-3_' + ordid).removeClass('is-active');
+                    $('#step-4_' + ordid).removeClass('is-active');
+                    $('#step-5_' + ordid).removeClass('is-active');
+                }
+                else if (status == 2) {
+                    $('#step-3_' + ordid).addClass('is-active');
+                    $('#step-1_' + ordid).removeClass('is-active');
+                    $('#step-2_' + ordid).removeClass('is-active');
+                    $('#step-4_' + ordid).removeClass('is-active');
+                    $('#step-5_' + ordid).removeClass('is-active');
+                }
+                else if (status == 3) {
+                    $('#step-4_' + ordid).addClass('is-active');
+                    $('#step-1_' + ordid).removeClass('is-active');
+                    $('#step-2_' + ordid).removeClass('is-active');
+                    $('#step-3_' + ordid).removeClass('is-active');
+                    $('#step-5_' + ordid).removeClass('is-active');
+                }
+                else if (status == 4) {
+                    $('#step-5_' + ordid).addClass('is-active');
+                    $('#step-1_' + ordid).removeClass('is-active');
+                    $('#step-2_' + ordid).removeClass('is-active');
+                    $('#step-3_' + ordid).removeClass('is-active');
+                    $('#step-4_' + ordid).removeClass('is-active');
+                }
+                else if (status == 5) {
+                    $('#step-5_' + ordid).removeClass('is-active');
+                    $('#step-1_' + ordid).removeClass('is-active');
+                    $('#step-2_' + ordid).removeClass('is-active');
+                    $('#step-3_' + ordid).removeClass('is-active');
+                    $('#step-4_' + ordid).removeClass('is-active');
+                }
+
+            }
+
+
     </script>
 }

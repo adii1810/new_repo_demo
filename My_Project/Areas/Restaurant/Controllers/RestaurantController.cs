@@ -19,6 +19,8 @@ using Firebase.Storage;
 using System.Diagnostics;
 using My_Project.Areas.Restaurant.Models;
 using My_Project.Models;
+using Microsoft.AspNetCore.SignalR;
+using My_Project.Hubs;
 
 namespace My_Project.Areas.Restaurant.Controllers
 {
@@ -34,12 +36,12 @@ namespace My_Project.Areas.Restaurant.Controllers
         private static string AuthPassword = "dotnet@123";
 
 
-
+        private readonly IHubContext<MyHub, IStatusInterface> _context;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _config;
         public string AdminApiString;
         public string RestaurantApiString;
-        public RestaurantController(IEmailSender emailSender, IConfiguration config, IHostingEnvironment env)
+        public RestaurantController(IEmailSender emailSender, IConfiguration config, IHostingEnvironment env, IHubContext<MyHub, IStatusInterface> context)
         {
             _emailSender = emailSender;
             _config = config;
@@ -47,12 +49,13 @@ namespace My_Project.Areas.Restaurant.Controllers
             RestaurantApiString = _config.GetValue<string>("RESTAURANTAPISTRING");
 
             _env = env;
+            _context = context;
         }
         public IActionResult Index()
         {
             var sess = HttpContext.Session.GetString("ResId")?.ToString() ?? "";
             if (sess != "" && sess != null)
-                return View();
+                return RedirectToAction("ShowProduct");
             else
                 return RedirectToAction("Login");
 
@@ -799,6 +802,7 @@ namespace My_Project.Areas.Restaurant.Controllers
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
                 if (result != "false")
                 {
+                    await _context.Clients.All.StatusUpdateProductApproveByRestaurant(OrdId, 1);
                     return Json("true");
                 }
             }
