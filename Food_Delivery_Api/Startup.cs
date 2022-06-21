@@ -18,6 +18,7 @@ namespace Food_Delivery_Api
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,11 +35,23 @@ namespace Food_Delivery_Api
             services.AddTransient<IRestaurantInterface, RestaurantMethod>();
             services.AddTransient<ICustomerInterface, CustomerMethod>();
             services.AddTransient<IValetInterface, ValetMethod>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("http://example.com",
+                                                          "http://www.contoso.com", "http://localhost:3000").AllowAnyHeader()
+                                                  .AllowAnyMethod();
+                                  });
+            });
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(MyAllowSpecificOrigins);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -49,6 +62,7 @@ namespace Food_Delivery_Api
             app.UseRouting();
 
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {
